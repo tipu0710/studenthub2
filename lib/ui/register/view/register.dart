@@ -27,6 +27,7 @@ class Register extends StatelessWidget {
     );
   }
 
+
   Widget back(BuildContext context){
     return Align(
       alignment: Alignment.topLeft,
