@@ -65,13 +65,19 @@ class _LoginState extends State<Login> {
                       textAlign: TextAlign.left,
                     ),
                   ),
-                  SizedBox(height: 40,),
+                  SizedBox(
+                    height: 40,
+                  ),
                   email(),
                   password(),
                   remember(),
-                  SizedBox(height: 40,),
+                  SizedBox(
+                    height: 40,
+                  ),
                   login(),
-                  SizedBox(height: 40,),
+                  SizedBox(
+                    height: 40,
+                  ),
                   tfp()
                 ],
               ),
@@ -81,14 +87,17 @@ class _LoginState extends State<Login> {
       ),
     );
   }
-  
-  Widget tfp(){
+
+  Widget tfp() {
     return Container(
       height: 20,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset("assets/images/tfplogo.png", fit: BoxFit.fitHeight,),
+          Image.asset(
+            "assets/images/tfplogo.png",
+            fit: BoxFit.fitHeight,
+          ),
           Text(
             '  TFP Solutions',
             style: TextStyle(
@@ -103,7 +112,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget login(){
+  Widget login() {
     return Container(
       height: 54,
       width: double.infinity,
@@ -122,14 +131,14 @@ class _LoginState extends State<Login> {
             height: 0.8,
           ),
           textHeightBehavior:
-          TextHeightBehavior(applyHeightToFirstAscent: false),
+              TextHeightBehavior(applyHeightToFirstAscent: false),
           textAlign: TextAlign.left,
         ),
       ),
     );
   }
 
-  Widget remember(){
+  Widget remember() {
     return Container(
       height: 20,
       margin: EdgeInsets.only(top: 20),
@@ -169,7 +178,10 @@ class _LoginState extends State<Login> {
             focusNode: emailFocus,
             textInputAction: TextInputAction.next,
             style: TextStyle(
-              color: Color(0xff191E25),
+              fontFamily: 'Roboto',
+              fontSize: 14,
+              color: const Color(0xff1e5aa7),
+              fontWeight: FontWeight.w500,
             ),
             onFieldSubmitted: (v) {
               FocusScope.of(context).requestFocus(passFocus);
@@ -216,7 +228,10 @@ class _LoginState extends State<Login> {
           obscureText: !visible,
           textInputAction: TextInputAction.done,
           style: TextStyle(
-            color: Color(0xff191E25),
+            fontFamily: 'Roboto',
+            fontSize: 14,
+            color: const Color(0xff1e5aa7),
+            fontWeight: FontWeight.w500,
           ),
           decoration: InputDecoration(
               labelText: "Password",

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:studenthub2/login/view/login.dart';
+import 'package:studenthub2/ui/login/view/login.dart';
+import 'package:studenthub2/ui/register/view/register.dart';
 
 class StartPage extends StatelessWidget {
   @override
@@ -9,7 +10,7 @@ class StartPage extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.bottomCenter,
-            child:Container(
+            child: Container(
               height: 311.45,
               child: Image.asset(
                 "assets/images/started_curve.png",
@@ -28,7 +29,7 @@ class StartPage extends StatelessWidget {
             ),
           ),
           loginRow(),
-          bottom(),
+          bottom(context),
         ],
       ),
     );
@@ -38,9 +39,9 @@ class StartPage extends StatelessWidget {
     return Align(
       alignment: Alignment.topCenter,
       child: Builder(
-        builder: (context)=>InkWell(
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (_)=>Login()));
+        builder: (context) => InkWell(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (_) => Login()));
           },
           child: Container(
             margin: EdgeInsets.only(top: 20, left: 20, right: 20),
@@ -75,7 +76,7 @@ class StartPage extends StatelessWidget {
     );
   }
 
-  Widget bottom() {
+  Widget bottom(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Column(
@@ -102,25 +103,38 @@ class StartPage extends StatelessWidget {
           ),
           Container(
             height: 55,
-              width: 335,
-            margin: EdgeInsets.only(top: 40,bottom: 20),
+            width: 335,
+            margin: EdgeInsets.only(top: 40, bottom: 20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5.0),
-              color: const Color(0xff1e5aa7),
             ),
-            child: Center(
-              child: Text(
-                'SIGN UP',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 15,
-                  color: const Color(0xffffffff),
-                  fontWeight: FontWeight.w500,
-                  height: 0.8,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) => Register()));
+              },
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(
+                  Color(0xff1e5aa7),
                 ),
-                textHeightBehavior:
-                TextHeightBehavior(applyHeightToFirstAscent: false),
-                textAlign: TextAlign.left,
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  Color(0xff1e5aa7),
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  'SIGN UP',
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 15,
+                    color: const Color(0xffffffff),
+                    fontWeight: FontWeight.w500,
+                    height: 0.8,
+                  ),
+                  textHeightBehavior:
+                      TextHeightBehavior(applyHeightToFirstAscent: false),
+                  textAlign: TextAlign.left,
+                ),
               ),
             ),
           ),
