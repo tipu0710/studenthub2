@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:studenthub2/ui/login/view/login.dart';
 import 'package:studenthub2/ui/register/view/register.dart';
 
+import '../../../ui_helper/ui_helper.dart';
+
 class StartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -101,43 +103,13 @@ class StartPage extends StatelessWidget {
             ),
             textAlign: TextAlign.left,
           ),
-          Container(
-            height: 55,
-            width: 335,
-            margin: EdgeInsets.only(top: 40, bottom: 20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            child: ElevatedButton(
+          UiHelper().button(
+              context: context,
+              title: 'SIGN UP',
               onPressed: () {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (_) => Register()));
-              },
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(
-                  Color(0xff1e5aa7),
-                ),
-                backgroundColor: MaterialStateProperty.all<Color>(
-                  Color(0xff1e5aa7),
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  'SIGN UP',
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 15,
-                    color: const Color(0xffffffff),
-                    fontWeight: FontWeight.w500,
-                    height: 0.8,
-                  ),
-                  textHeightBehavior:
-                      TextHeightBehavior(applyHeightToFirstAscent: false),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-            ),
-          ),
+              }),
         ],
       ),
     );

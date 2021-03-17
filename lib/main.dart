@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:studenthub2/global.dart';
 
 import 'ui/start/view/start_page.dart';
 
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: primaryColor,
+        scaffoldBackgroundColor: Color(0xfffcfcfc)
       ),
       debugShowCheckedModeBanner: false,
       home: StartPage(),

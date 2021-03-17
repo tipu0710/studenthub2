@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:studenthub2/ui/parent/view/parent.dart';
+
+import '../../../ui_helper/ui_helper.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -74,7 +77,15 @@ class _LoginState extends State<Login> {
                   SizedBox(
                     height: 40,
                   ),
-                  login(),
+                  UiHelper().button(
+                      context: context,
+                      title: "'LOGIN'",
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (_) => Parent()),
+                            (route) => false);
+                      }),
                   SizedBox(
                     height: 40,
                   ),
@@ -108,32 +119,6 @@ class _LoginState extends State<Login> {
             textAlign: TextAlign.left,
           ),
         ],
-      ),
-    );
-  }
-
-  Widget login() {
-    return Container(
-      height: 54,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5.0),
-        color: const Color(0xff1e5aa7),
-      ),
-      child: Center(
-        child: Text(
-          'LOGIN',
-          style: TextStyle(
-            fontFamily: 'Poppins',
-            fontSize: 15,
-            color: const Color(0xffffffff),
-            fontWeight: FontWeight.w500,
-            height: 0.8,
-          ),
-          textHeightBehavior:
-              TextHeightBehavior(applyHeightToFirstAscent: false),
-          textAlign: TextAlign.left,
-        ),
       ),
     );
   }
