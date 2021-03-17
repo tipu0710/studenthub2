@@ -79,7 +79,7 @@ class _LoginState extends State<Login> {
                   ),
                   UiHelper().button(
                       context: context,
-                      title: "'LOGIN'",
+                      title: "LOGIN",
                       onPressed: () {
                         Navigator.pushAndRemoveUntil(
                             context,
