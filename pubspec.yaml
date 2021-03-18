@@ -26,3 +26,9 @@ flutter:
 
   assets:
      - assets/images/
+     - assets/images/test/
+
+  fonts:
+     - family:  Custom
+       fonts:
+        - asset: assets/fonts/Custom.ttf

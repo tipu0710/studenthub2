@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:studenthub2/global.dart';
 import 'package:studenthub2/ui/pin/view/pin.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
-
-import '../../../ui_helper/ui_helper.dart';
 import '../../../ui_helper/ui_helper.dart';
 
 class Register extends StatelessWidget {

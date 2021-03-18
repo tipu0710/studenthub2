@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
-
 import '../../../ui_helper/ui_helper.dart';
 
 class Pin extends StatefulWidget {
