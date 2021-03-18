@@ -56,29 +56,47 @@ class UiHelper {
     );
   }
 
-  Widget back(BuildContext context) {
+  Widget back(BuildContext context, {String title}) {
     return Align(
       alignment: Alignment.topLeft,
-      child: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20.0, top: 20),
-          child: Container(
-            height: 40,
-            width: 40,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: const Color(0xffecebef),
-            ),
-            child: Center(
-              child: Icon(
-                Icons.arrow_back_ios_sharp,
-                size: 18,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20.0, top: 35),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color(0xffecebef),
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.arrow_back_ios_sharp,
+                    size: 18,
+                  ),
+                ),
               ),
             ),
-          ),
+            SizedBox(width: title==null?0:20,),
+            Text(
+              title??'',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 20,
+                color: const Color(0xff252525),
+                fontWeight: FontWeight.w500,
+              ),
+              textHeightBehavior:
+                  TextHeightBehavior(applyHeightToFirstAscent: false),
+              textAlign: TextAlign.left,
+            )
+          ],
         ),
       ),
     );
