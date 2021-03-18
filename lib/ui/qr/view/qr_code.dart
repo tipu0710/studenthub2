@@ -58,6 +58,7 @@ class QrCode extends StatelessWidget {
             child: button(),
           ),
           UiHelper().back(context, title: "Qr Code")
+
         ],
       ),
     );
