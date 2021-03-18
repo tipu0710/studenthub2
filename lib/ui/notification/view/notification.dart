@@ -14,7 +14,8 @@ class Notifications extends StatelessWidget {
               child: ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: 5, itemBuilder: (_, position) => notificationCard()),
+                  itemCount: 5,
+                  itemBuilder: (_, position) => notificationCard()),
             ),
           ),
           Container(
