@@ -24,21 +24,32 @@ class Register extends StatelessWidget {
               margin: EdgeInsets.only(left: 20, right: 20),
               child: Column(
                 children: [
-                  SizedBox(height: 90,),
+                  SizedBox(
+                    height: 90,
+                  ),
                   UiHelper().input(passport, "NRIC/Passport"),
                   UiHelper().input(fullName, "Full Name"),
                   UiHelper().input(studentId, "Student ID"),
                   gender(),
-                  UiHelper().input(phoneNumber, "Phone Number", textInputType: TextInputType.phone),
-                  UiHelper().input(email, "Email", textInputType: TextInputType.emailAddress),
-                  UiHelper().input(country, "Country", textInputType: TextInputType.emailAddress),
-                  UiHelper().input(referralCode, "Referral Code", textInputType: TextInputType.emailAddress),
-                  UiHelper().input(program, "Program", textInputType: TextInputType.emailAddress),
-                  UiHelper().input(intake, "Intake", textInputType: TextInputType.emailAddress),
-                  UiHelper().button(context: context, title: "REQUEST PIN CODE", onPressed: () {
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => Pin()));
-                  }),
+                  UiHelper().input(phoneNumber, "Phone Number",
+                      textInputType: TextInputType.phone),
+                  UiHelper().input(email, "Email",
+                      textInputType: TextInputType.emailAddress),
+                  UiHelper().input(country, "Country",
+                      textInputType: TextInputType.emailAddress),
+                  UiHelper().input(referralCode, "Referral Code",
+                      textInputType: TextInputType.emailAddress),
+                  UiHelper().input(program, "Program",
+                      textInputType: TextInputType.emailAddress),
+                  UiHelper().input(intake, "Intake",
+                      textInputType: TextInputType.emailAddress),
+                  UiHelper().button(
+                      context: context,
+                      title: "REQUEST PIN CODE",
+                      onPressed: () {
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (_) => Pin()));
+                      }),
                 ],
               ),
             ),
@@ -48,7 +59,6 @@ class Register extends StatelessWidget {
       ),
     );
   }
-
 
   Widget gender() {
     String type = "Male";
@@ -85,7 +95,7 @@ class Register extends StatelessWidget {
                         height: 1.5625,
                       ),
                       textHeightBehavior:
-                      TextHeightBehavior(applyHeightToFirstAscent: false),
+                          TextHeightBehavior(applyHeightToFirstAscent: false),
                       textAlign: TextAlign.left,
                     ),
                     contentPadding: EdgeInsets.zero,
@@ -110,7 +120,7 @@ class Register extends StatelessWidget {
                         height: 1.5625,
                       ),
                       textHeightBehavior:
-                      TextHeightBehavior(applyHeightToFirstAscent: false),
+                          TextHeightBehavior(applyHeightToFirstAscent: false),
                       textAlign: TextAlign.left,
                     ),
                     contentPadding: EdgeInsets.zero,
@@ -128,5 +138,4 @@ class Register extends StatelessWidget {
           );
         });
   }
-
 }

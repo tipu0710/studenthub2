@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:studenthub2/global.dart';
-import 'package:studenthub2/ui/qr/view/qr_code.dart';
+import 'package:studenthub2/ui/parent/view/parent.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Color(0xfffcfcfc)
       ),
       debugShowCheckedModeBanner: false,
-      home: QrCode(),
+      home: Parent(),
     );
   }
 

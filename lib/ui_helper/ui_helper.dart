@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:studenthub2/ui/parent/view/parent.dart';
 
 class UiHelper {
   Widget input(TextEditingController controller, String label,
@@ -56,7 +57,7 @@ class UiHelper {
     );
   }
 
-  Widget back(BuildContext context, {String title}) {
+  Widget back(BuildContext context, {String title, Function() onTap}) {
     return Align(
       alignment: Alignment.topLeft,
       child: Padding(
@@ -65,8 +66,8 @@ class UiHelper {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
+              onTap: onTap??() {
+                Parent.tabController.animateTo(0);
               },
               child: Container(
                 height: 40,
