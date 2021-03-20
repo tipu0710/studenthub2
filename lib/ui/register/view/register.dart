@@ -54,7 +54,9 @@ class Register extends StatelessWidget {
               ),
             ),
           ),
-          UiHelper().back(context),
+          UiHelper().back(context, onTap: (){
+            Navigator.pop(context);
+          }),
         ],
       ),
     );

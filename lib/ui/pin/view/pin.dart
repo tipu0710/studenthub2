@@ -37,7 +37,12 @@ class _PinState extends State<Pin> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [body(), UiHelper().back(context)],
+        children: [
+          body(),
+          UiHelper().back(context, onTap: () {
+            Navigator.pop(context);
+          })
+        ],
       ),
     );
   }
