@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:studenthub2/global.dart';
-import 'package:studenthub2/ui/parent/view/parent.dart';
+import 'package:studenthub2/ui/start/view/start_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Color(0xfffcfcfc)
       ),
       debugShowCheckedModeBanner: false,
-      home: Parent(),
+      home: StartPage(),
     );
   }
 

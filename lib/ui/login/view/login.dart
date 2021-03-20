@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:studenthub2/ui/home/view/home.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
 
 import '../../../ui_helper/ui_helper.dart';
@@ -84,7 +83,7 @@ class _LoginState extends State<Login> {
                       onPressed: () {
                         Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(builder: (_) => Home()),
+                            MaterialPageRoute(builder: (_) => Parent()),
                             (route) => false);
                       }),
                   SizedBox(

@@ -19,6 +19,9 @@ class _QrParentState extends State<QrParent>
   @override
   void initState() {
     tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    tabController.addListener(() {
+      changeButton();
+    });
     super.initState();
   }
 
@@ -178,5 +181,19 @@ class _QrParentState extends State<QrParent>
         ],
       ),
     );
+  }
+
+  void changeButton() async {
+    setState(() {
+      positionOfButton = tabController.index == 0
+          ? PositionOfButton.left
+          : PositionOfButton.right;
+      opacity = 0;
+    });
+    await Future.delayed(Duration(milliseconds: 250));
+    setState(() {
+      buttonText = tabController.index == 0 ? "SCAN" : "MY CODE";
+      opacity = 1;
+    });
   }
 }

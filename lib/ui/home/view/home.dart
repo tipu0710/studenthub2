@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:studenthub2/ui/parent/view/parent.dart';
 import 'package:studenthub2/ui_helper/custom_icons.dart';
 
 class Home extends StatelessWidget {
@@ -332,57 +333,62 @@ class Home extends StatelessWidget {
   }
 
   Widget profile() {
-    return Container(
-      margin: EdgeInsets.only(left: 20, right: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            height: 56,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Hi, Abdul Kabir',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 20,
-                    color: const Color(0xff252525),
-                    fontWeight: FontWeight.w500,
-                    height: 1.8,
+    return GestureDetector(
+      onTap: (){
+        Parent.tabController.animateTo(1);
+      },
+      child: Container(
+        margin: EdgeInsets.only(left: 20, right: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              height: 56,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Hi, Abdul Kabir',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 20,
+                      color: const Color(0xff252525),
+                      fontWeight: FontWeight.w500,
+                      height: 1.8,
+                    ),
+                    textHeightBehavior:
+                        TextHeightBehavior(applyHeightToFirstAscent: false),
+                    textAlign: TextAlign.left,
                   ),
-                  textHeightBehavior:
-                      TextHeightBehavior(applyHeightToFirstAscent: false),
-                  textAlign: TextAlign.left,
-                ),
-                Text(
-                  'Student Id: 1234568',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 13,
-                    color: const Color(0xff727272),
-                    height: 2.769230769230769,
+                  Text(
+                    'Student Id: 1234568',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 13,
+                      color: const Color(0xff727272),
+                      height: 2.769230769230769,
+                    ),
+                    textHeightBehavior:
+                        TextHeightBehavior(applyHeightToFirstAscent: false),
+                    textAlign: TextAlign.left,
                   ),
-                  textHeightBehavior:
-                      TextHeightBehavior(applyHeightToFirstAscent: false),
-                  textAlign: TextAlign.left,
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: 56.0,
-            height: 56.0,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15.0),
-              image: DecorationImage(
-                image: const AssetImage('assets/images/test/pp.png'),
-                fit: BoxFit.cover,
+                ],
               ),
             ),
-          ),
-        ],
+            Container(
+              width: 56.0,
+              height: 56.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15.0),
+                image: DecorationImage(
+                  image: const AssetImage('assets/images/test/pp.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
