@@ -1,4 +1,3 @@
-import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:studenthub2/ui/home/view/home.dart';
@@ -7,6 +6,7 @@ import 'package:studenthub2/ui/profile/view/profile.dart';
 import 'package:studenthub2/ui/qr/view/qr_parent.dart';
 import 'package:studenthub2/ui/settings/view/settings.dart';
 import 'package:studenthub2/ui_helper/custom_icons.dart';
+import 'package:studenthub2/ui_helper/nav/fancy_bottom_navigation.dart';
 
 class Parent extends StatefulWidget {
   static TabController tabController;
