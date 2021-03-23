@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:studenthub2/ui/university/view/university_mode.dart';
+import 'package:studenthub2/ui/university/model/university_mode.dart';
 
 class SPData {
   SPData._();

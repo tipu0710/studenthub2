@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
 
@@ -6,7 +8,8 @@ class UiHelper {
       {TextInputAction textInputAction = TextInputAction.next,
       TextInputType textInputType = TextInputType.text,
       String Function(String) validator,
-      IconData suffixIcon, Function(String) onChange}) {
+      IconData suffixIcon,
+      Function(String) onChange}) {
     return Builder(
       builder: (context) => Container(
         margin: EdgeInsets.only(top: 15),
@@ -149,5 +152,56 @@ class UiHelper {
         ),
       ),
     );
+  }
+
+  Widget _searchListCard<T>(
+      {@required List<T> data,
+      @required String Function(T) titleGetFunction,
+      @required Function(T) onTap}) {
+    assert(data != null);
+    assert(titleGetFunction != null);
+    assert(onTap != null);
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: 300, minHeight: 30),
+      child: Container(
+        margin: EdgeInsets.only(left: 20, right: 20),
+        child: Card(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                for (int i = 0; i < data.length; i++)
+                  ListTile(
+                    title: Text(titleGetFunction(data[i])),
+                    onTap: () {
+                      onTap(data[i]);
+                    },
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget searchItem<T>(StreamController streamController,
+      {@required String Function(T) titleGetFunction,
+      @required Function(T) onTap}) {
+    assert(titleGetFunction != null);
+    assert(onTap != null);
+    return StreamBuilder<List<T>>(
+        stream: streamController.stream,
+        builder: (_, snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data.length > 0) {
+              return _searchListCard<T>(
+                data: snapshot.data,
+                titleGetFunction: titleGetFunction,
+                onTap: onTap,
+              );
+            }
+          }
+          return Container();
+        });
   }
 }

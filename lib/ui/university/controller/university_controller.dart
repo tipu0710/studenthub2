@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/service/api/api_service.dart';
 import 'package:studenthub2/service/sp/sp.dart';
-import 'package:studenthub2/ui/login/view/login.dart';
-import 'package:studenthub2/ui/university/view/university_mode.dart';
+import 'package:studenthub2/ui/auth/login/view/login.dart';
+import 'package:studenthub2/ui/university/model/university_mode.dart';
 
 class UniversityController {
   updateController(StreamController<List<UniversityModel>> streamController,

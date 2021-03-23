@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:studenthub2/ui/login/view/login.dart';
-import 'package:studenthub2/ui/register/view/register.dart';
-
+import 'package:studenthub2/ui/auth/login/view/login.dart';
+import 'package:studenthub2/ui/auth/register/view/register.dart';
 import '../../../ui_helper/ui_helper.dart';
 
 class StartPage extends StatelessWidget {

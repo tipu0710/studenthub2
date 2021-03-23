@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/ui/university/controller/university_controller.dart';
-import 'package:studenthub2/ui/university/view/university_mode.dart';
+import 'package:studenthub2/ui/university/model/university_mode.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class University extends StatefulWidget {
@@ -63,16 +63,13 @@ class _UniversityState extends State<University> {
             SizedBox(
               height: 20,
             ),
-            StreamBuilder<List<UniversityModel>>(
-                stream: _streamController.stream,
-                builder: (_, snapshot) {
-                  if (snapshot.hasData) {
-                    if (snapshot.data.length > 0) {
-                      return uniListCard(snapshot.data);
-                    }
-                  }
-                  return Container();
-                }),
+            UiHelper().searchItem(_streamController, titleGetFunction: (uni) {
+              return uni.name;
+            }, onTap: (uni) {
+              _textEditingController.text = uni.name;
+              _universityModel = uni;
+              _streamController.add([]);
+            }),
             SizedBox(
               height: 30,
             ),
@@ -103,30 +100,6 @@ class _UniversityState extends State<University> {
         ),
         textHeightBehavior: TextHeightBehavior(applyHeightToFirstAscent: false),
         textAlign: TextAlign.left,
-      ),
-    );
-  }
-
-  Widget uniListCard(List<UniversityModel> data) {
-    return Container(
-      margin: EdgeInsets.only(left: 20, right: 20),
-      height: 300,
-      child: Card(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              for (int i = 0; i < data.length; i++)
-                ListTile(
-                  title: Text(data[i].name),
-                  onTap: () {
-                    _textEditingController.text = data[i].name;
-                    _universityModel = data[i];
-                    _streamController.add([]);
-                  },
-                ),
-            ],
-          ),
-        ),
       ),
     );
   }

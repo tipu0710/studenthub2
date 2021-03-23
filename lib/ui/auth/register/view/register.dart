@@ -1,60 +1,110 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:studenthub2/global.dart';
+import 'package:studenthub2/ui/auth/model/country_model.dart';
+import 'package:studenthub2/ui/auth/register/controller/reg_controller.dart';
 import 'package:studenthub2/ui/pin/view/pin.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
-import '../../../ui_helper/ui_helper.dart';
+import '../../../../ui_helper/ui_helper.dart';
 
-class Register extends StatelessWidget {
+class Register extends StatefulWidget {
+  @override
+  _RegisterState createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
   final TextEditingController passport = TextEditingController();
+
   final TextEditingController fullName = TextEditingController();
+
   final TextEditingController studentId = TextEditingController();
+
   final TextEditingController phoneNumber = TextEditingController();
+
   final TextEditingController email = TextEditingController();
+
   final TextEditingController country = TextEditingController();
+
   final TextEditingController referralCode = TextEditingController();
+
   final TextEditingController program = TextEditingController();
+
   final TextEditingController intake = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
+  final StreamController<List<CountryModel>> _countryStream =
+      StreamController<List<CountryModel>>.broadcast();
+
+  RegisterController registerController;
+
+  @override
+  void initState() {
+    registerController = RegisterController(_countryStream);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _countryStream.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
           SingleChildScrollView(
-            child: Container(
-              margin: EdgeInsets.only(left: 20, right: 20),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 90,
-                  ),
-                  UiHelper().input(passport, "NRIC/Passport"),
-                  UiHelper().input(fullName, "Full Name"),
-                  UiHelper().input(studentId, "Student ID"),
-                  gender(),
-                  UiHelper().input(phoneNumber, "Phone Number",
-                      textInputType: TextInputType.phone),
-                  UiHelper().input(email, "Email",
-                      textInputType: TextInputType.emailAddress),
-                  UiHelper().input(country, "Country",
-                      textInputType: TextInputType.emailAddress),
-                  UiHelper().input(referralCode, "Referral Code",
-                      textInputType: TextInputType.emailAddress),
-                  UiHelper().input(program, "Program",
-                      textInputType: TextInputType.emailAddress),
-                  UiHelper().input(intake, "Intake",
-                      textInputType: TextInputType.emailAddress),
-                  UiHelper().button(
-                      context: context,
-                      title: "REQUEST PIN CODE",
-                      onPressed: () {
-                        Navigator.push(
-                            context, MaterialPageRoute(builder: (_) => Pin()));
-                      }),
-                ],
+            child: Form(
+              key: _formKey,
+              child: Container(
+                margin: EdgeInsets.only(left: 20, right: 20),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 90,
+                    ),
+                    UiHelper().input(passport, "NRIC/Passport"),
+                    UiHelper().input(fullName, "Full Name"),
+                    UiHelper().input(studentId, "Student ID"),
+                    gender(),
+                    UiHelper().input(phoneNumber, "Phone Number",
+                        textInputType: TextInputType.phone),
+                    UiHelper().input(email, "Email",
+                        textInputType: TextInputType.emailAddress),
+                    UiHelper().input(country, "Country",
+                        textInputType: TextInputType.emailAddress,
+                        onChange: (value) {
+                      registerController.updateCountryStream(value);
+                    }),
+                    UiHelper().searchItem<CountryModel>(_countryStream,
+                        titleGetFunction: (country) {
+                      return country.name;
+                    }, onTap: (c) {
+                      country.text = c.name;
+                      _countryStream.add([]);
+                    }),
+                    UiHelper().input(referralCode, "Referral Code",
+                        textInputType: TextInputType.emailAddress),
+                    UiHelper().input(program, "Program",
+                        textInputType: TextInputType.emailAddress),
+                    UiHelper().input(intake, "Intake",
+                        textInputType: TextInputType.emailAddress),
+                    UiHelper().button(
+                        context: context,
+                        title: "REQUEST PIN CODE",
+                        onPressed: () {
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (_) => Pin()));
+                        }),
+                  ],
+                ),
               ),
             ),
           ),
-          UiHelper().back(context, onTap: (){
+          UiHelper().back(context, onTap: () {
             Navigator.pop(context);
           }),
         ],

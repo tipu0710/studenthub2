@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tfp.studenthub.studenthub2">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="studenthub2"
         android:icon="@mipmap/ic_launcher">

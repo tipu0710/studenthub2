@@ -65,6 +65,6 @@ class ApiService {
   }
 
   static String _fullUrl(String url) {
-    return baseUrl + "/api/v1" + url;
+    return baseUrl + "/api/Home" + url;
   }
 }

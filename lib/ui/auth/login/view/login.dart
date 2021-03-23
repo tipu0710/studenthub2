@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/global.dart';
-import 'package:studenthub2/ui/parent/view/parent.dart';
-
-import '../../../ui_helper/ui_helper.dart';
+import 'package:studenthub2/ui/auth/login/controller/login_controller.dart';
+import 'package:studenthub2/ui/auth/register/view/register.dart';
+import 'package:studenthub2/ui/university/view/university.dart';
+import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -20,6 +21,10 @@ class _LoginState extends State<Login> {
   final FocusNode passFocus = FocusNode();
 
   final ValueNotifier<bool> passVisible = ValueNotifier(false);
+
+  final _formKey = GlobalKey<FormState>();
+
+  final LoginController loginController = LoginController();
 
   bool rememberValue = true;
 
@@ -39,70 +44,74 @@ class _LoginState extends State<Login> {
             ),
           ),
           SingleChildScrollView(
-            child: Container(
-              margin: EdgeInsets.only(left: 20, right: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 100,
-                  ),
-                  Container(
-                    child: Image.asset(
-                      "assets/images/sb_text.png",
-                      height: 41.02,
-                      width: 186.82,
+            child: Form(
+              key: _formKey,
+              child: Container(
+                margin: EdgeInsets.only(left: 20, right: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 100,
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 35),
-                    child: Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 16,
-                        color: const Color(0xffacacac),
-                        height: 1.5625,
+                    Container(
+                      child: Image.asset(
+                        "assets/images/sb_text.png",
+                        height: 41.02,
+                        width: 186.82,
                       ),
-                      textHeightBehavior:
-                          TextHeightBehavior(applyHeightToFirstAscent: false),
-                      textAlign: TextAlign.left,
                     ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  email(),
-                  password(),
-                  remember(),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  UiHelper().button(
-                      context: context,
-                      title: "LOGIN",
-                      onPressed: () {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (_) => Parent()),
-                            (route) => false);
-                      }),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  signUp(),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  tfp(),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  changeUni(),
-                  SizedBox(
-                    height: 40,
-                  ),
-                ],
+                    Container(
+                      margin: EdgeInsets.only(top: 35),
+                      child: Text(
+                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 16,
+                          color: const Color(0xffacacac),
+                          height: 1.5625,
+                        ),
+                        textHeightBehavior:
+                            TextHeightBehavior(applyHeightToFirstAscent: false),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    email(),
+                    password(),
+                    remember(),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    UiHelper().button(
+                        context: context,
+                        title: "LOGIN",
+                        onPressed: () async{
+                          loginController.login();
+                          // Navigator.pushAndRemoveUntil(
+                          //     context,
+                          //     MaterialPageRoute(builder: (_) => Parent()),
+                          //     (route) => false);
+                        }),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    signUp(),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    tfp(),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    changeUni(),
+                    SizedBox(
+                      height: 40,
+                    ),
+                  ],
+                ),
               ),
             ),
           )
@@ -111,36 +120,49 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget signUp(){
-    return Center(
-      child: Text(
-        'Sign Up',
-        style: TextStyle(
-          fontFamily: 'Roboto',
-          fontSize: 18,
-          color: const Color(0xff252525),
-          fontWeight: FontWeight.w500,
-          height: 1.8,
+  Widget signUp() {
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) => Register()));
+      },
+      child: Center(
+        child: Text(
+          'Sign Up',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 18,
+            color: const Color(0xff252525),
+            fontWeight: FontWeight.w500,
+            height: 1.8,
+          ),
+          textHeightBehavior:
+              TextHeightBehavior(applyHeightToFirstAscent: false),
+          textAlign: TextAlign.left,
         ),
-        textHeightBehavior: TextHeightBehavior(applyHeightToFirstAscent: false),
-        textAlign: TextAlign.left,
       ),
     );
   }
 
-  Widget changeUni(){
-    return Center(
-      child: Text(
-        'Change University?',
-        style: TextStyle(
-          fontFamily: 'Roboto',
-          fontSize: 17,
-          color: primaryColor,
-          fontWeight: FontWeight.w500,
-          height: 1.8,
+  Widget changeUni() {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (_) => University()));
+      },
+      child: Center(
+        child: Text(
+          'Change University?',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 17,
+            color: primaryColor,
+            fontWeight: FontWeight.w500,
+            height: 1.8,
+          ),
+          textHeightBehavior:
+              TextHeightBehavior(applyHeightToFirstAscent: false),
+          textAlign: TextAlign.left,
         ),
-        textHeightBehavior: TextHeightBehavior(applyHeightToFirstAscent: false),
-        textAlign: TextAlign.left,
       ),
     );
   }
