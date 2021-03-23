@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:studenthub2/service/api/api_service.dart';
-import 'package:studenthub2/service/sp/process.dart';
+import 'package:studenthub2/service/process/process.dart';
 import 'package:studenthub2/ui/auth/model/country_model.dart';
 
 class RegisterController {

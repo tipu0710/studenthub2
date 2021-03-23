@@ -1,31 +1,41 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/service/api/api_service.dart';
+import 'package:studenthub2/service/process/process.dart';
 import 'package:studenthub2/service/sp/sp.dart';
 import 'package:studenthub2/ui/auth/login/view/login.dart';
 import 'package:studenthub2/ui/university/model/university_mode.dart';
 
 class UniversityController {
-  updateController(StreamController<List<UniversityModel>> streamController,
-      String value) async {
-    List<UniversityModel> list = await getUniList(value);
-    streamController.add(list);
+  List<UniversityModel> _uniList = [];
+  StreamController<List<UniversityModel>> _streamController;
+
+  UniversityController(StreamController<List<UniversityModel>> streamController){
+    this._streamController = streamController;
+    _getUniList();
+  }
+  
+  updateController(String value) async {
+    Iterable list =
+    _uniList.where((element) => element.name.contains(value));
+    List<UniversityModel> finalList = [];
+    list.forEach((element) {
+      finalList.add(element);
+    });
+    _streamController.add(finalList);
   }
 
-  Future<List<UniversityModel>> getUniList(String value) async {
-    List<UniversityModel> list = <UniversityModel>[];
+  void _getUniList() async {
     Response response = await ApiService.getMethod(
-        "http://universities.hipolabs.com/search?name=$value",
-        addBaseUrl: false);
+        "/InstituteMobileApi/GetInstituteList");
 
-    Iterable iterable = response.data;
+    Iterable iterable = jsonDecode(ProcessData.getDecryptedData(response.data['Data']));
     iterable.forEach((element) {
-      list.add(UniversityModel.fromJson(element));
+      _uniList.add(UniversityModel.fromJson(element));
     });
-
-    return list;
   }
 
   addToSP(BuildContext context, UniversityModel universityModel){

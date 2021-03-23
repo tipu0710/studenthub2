@@ -1,36 +1,21 @@
 class UniversityModel {
-  List<String> webPages;
-  String country;
-  String stateProvince;
-  List<String> domains;
+  String id;
+  String code;
   String name;
-  String alphaTwoCode;
 
-  UniversityModel(
-      {this.webPages,
-        this.country,
-        this.stateProvince,
-        this.domains,
-        this.name,
-        this.alphaTwoCode});
+  UniversityModel({this.id, this.code, this.name});
 
   UniversityModel.fromJson(Map<String, dynamic> json) {
-    webPages = json['web_pages'].cast<String>();
-    country = json['country'];
-    stateProvince = json['state-province'];
-    domains = json['domains'].cast<String>();
-    name = json['name'];
-    alphaTwoCode = json['alpha_two_code'];
+    id = json['Id'];
+    code = json['Code'];
+    name = json['Name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['web_pages'] = this.webPages;
-    data['country'] = this.country;
-    data['state-province'] = this.stateProvince;
-    data['domains'] = this.domains;
-    data['name'] = this.name;
-    data['alpha_two_code'] = this.alphaTwoCode;
+    data['Id'] = this.id;
+    data['Code'] = this.code;
+    data['Name'] = this.name;
     return data;
   }
 }

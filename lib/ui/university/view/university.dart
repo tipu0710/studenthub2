@@ -15,12 +15,13 @@ class _UniversityState extends State<University> {
   final StreamController<List<UniversityModel>> _streamController =
       StreamController<List<UniversityModel>>.broadcast();
 
-  final UniversityController _universityController = UniversityController();
+  UniversityController _universityController;
 
   UniversityModel _universityModel;
 
   @override
   void initState() {
+    _universityController = UniversityController(_streamController);
     super.initState();
   }
 
@@ -54,14 +55,8 @@ class _UniversityState extends State<University> {
               child: UiHelper().input(_textEditingController, "University",
                   suffixIcon: Icons.search,
                   textInputAction: TextInputAction.done, onChange: (data) {
-                if (data.length > 4) {
-                  _universityController.updateController(
-                      _streamController, data);
-                }
+                _universityController.updateController(data);
               }),
-            ),
-            SizedBox(
-              height: 20,
             ),
             UiHelper().searchItem(_streamController, titleGetFunction: (uni) {
               return uni.name;

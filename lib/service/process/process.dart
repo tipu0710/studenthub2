@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:encrypt/encrypt.dart' as encrypt;
 
@@ -13,5 +12,8 @@ class ProcessData{
         encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: 'PKCS7'));
     final decrypted = encrypter.decrypt64(data, iv: iv);
     return decrypted;
+  }
+  static String getEncryptedData(String data){
+
   }
 }
