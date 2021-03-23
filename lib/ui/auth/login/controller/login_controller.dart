@@ -1,14 +1,10 @@
-import 'package:dio/dio.dart';
-import 'package:studenthub2/service/api/api_service.dart';
 import 'package:studenthub2/service/sp/process.dart';
 
 class LoginController {
+  String b =
+      "BwYEU+0OExgPAOwSneaDc4VTpCEoYb5ak4HJc6E29vkwYbaZmoop4RQ4c/LUpyr4FDtFvPLoJlm4aIzXfJ12tUSSLUZjZ9R/nmTwq/Qq5DaUSYxH/9r2ICIoSWbuFeo3xC2FoBa2xrTc6PDUJq7do83lz1dOzwpG2WoztAK+k7/YDZkRWE/Xvcb51mQteHfiabY/koSmeRUwVWKf47vYZsN4crjMk9v0PUz7GK4mSIC5+lgLKhUVdr101K8ROAj526/5Ozm4e9WKO8fWZLVY4oOpGMr7os5SXkwoXBuGA8ssPExVRZ2ILz+5E2rp94Qbf+IQB4S2d7OEJxmvhOxqpKYTXyYMFoxbDT6SZ2ZSXhfbHEP8AAv3yFIkS6EyHGhlPo5blLeUnh30O44whXhHWN4sQ8BP500cSCRpuXF+JGKPYiW1rgA3sppl7zczwuvcguIeE/hMBpAYsu/xSAnCRErQDEg5xTtibZHF7dZK1/5cg/aWHWUHBhbSt6SkwoSp1pqZhgIN5ILIldZ960m+Ts6dXI/FHvoh++Bh98pSoWNTAs5vgZG8WXjSQRA4uPb4fnHz5sc/FIPnCGF7e8Neuv7Ghvq47UPNht2vD9x1Pv1/LCRQ/GN0A2RnZ800/AgjdH6eCAvsTz8DGfF8PtX+gGIdTM/DpZvqBD8IZSdElJr/G2XAN9pGEAz+pam4qlthHW+MWDSDNV+zAG0FQlhFq0P2GK7Z+BVpD2LvkcLENcP/BrYYyN5Ct9OSBwTqizbtp3BhMJXn3NTDOJgXZnYv9iwvR2xoy/7qkc68q4/5jDowBqaN0OjlijkVkoFdauN1hnBrbtKcZmPgGAqKAWrE1hzBlxbYaTJkqI++rTnw2EZ7NM0b5Gflqir648BRAbF3LUyZncyYroX2wwbncOQm7Gm/cClXvvT49ICNGwYf81a/0IstTlt7bbH5m7YAD8v7";
   login() async {
-    // Response response = await ApiService.getMethod(
-    //     "https://studenthub.smartcampus.com.my/api/Home/CountryMobileApi/GetPagedCountry?textkey=&pageSize=-1&pageNo=-1",
-    //     allowToken: false,
-    //     addBaseUrl: false);
-    // String s = Process.getDecryptedData(response.data['Data']);
-    // print(s);
+    String s = ProcessData.getDecryptedData(b);
+    print(s);
   }
 }
