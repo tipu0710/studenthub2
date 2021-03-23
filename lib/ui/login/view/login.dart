@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:studenthub2/global.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
 
 import '../../../ui_helper/ui_helper.dart';
@@ -89,12 +90,57 @@ class _LoginState extends State<Login> {
                   SizedBox(
                     height: 40,
                   ),
-                  tfp()
+                  signUp(),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  tfp(),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  changeUni(),
+                  SizedBox(
+                    height: 40,
+                  ),
                 ],
               ),
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget signUp(){
+    return Center(
+      child: Text(
+        'Sign Up',
+        style: TextStyle(
+          fontFamily: 'Roboto',
+          fontSize: 18,
+          color: const Color(0xff252525),
+          fontWeight: FontWeight.w500,
+          height: 1.8,
+        ),
+        textHeightBehavior: TextHeightBehavior(applyHeightToFirstAscent: false),
+        textAlign: TextAlign.left,
+      ),
+    );
+  }
+
+  Widget changeUni(){
+    return Center(
+      child: Text(
+        'Change University?',
+        style: TextStyle(
+          fontFamily: 'Roboto',
+          fontSize: 17,
+          color: primaryColor,
+          fontWeight: FontWeight.w500,
+          height: 1.8,
+        ),
+        textHeightBehavior: TextHeightBehavior(applyHeightToFirstAscent: false),
+        textAlign: TextAlign.left,
       ),
     );
   }

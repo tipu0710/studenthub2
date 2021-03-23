@@ -5,7 +5,8 @@ class UiHelper {
   Widget input(TextEditingController controller, String label,
       {TextInputAction textInputAction = TextInputAction.next,
       TextInputType textInputType = TextInputType.text,
-      String Function(String) validator}) {
+      String Function(String) validator,
+      IconData suffixIcon, Function(String) onChange}) {
     return Builder(
       builder: (context) => Container(
         margin: EdgeInsets.only(top: 15),
@@ -13,6 +14,7 @@ class UiHelper {
           keyboardType: textInputType,
           controller: controller,
           textInputAction: textInputAction,
+          onChanged: onChange,
           style: TextStyle(
             fontFamily: 'Roboto',
             fontSize: 14,
@@ -23,6 +25,8 @@ class UiHelper {
             FocusScope.of(context).requestFocus();
           },
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(left: 10, right: 15),
+            suffixIcon: suffixIcon != null ? Icon(suffixIcon) : null,
             labelText: label,
             labelStyle: TextStyle(
               fontFamily: 'Roboto',
@@ -66,9 +70,10 @@ class UiHelper {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             GestureDetector(
-              onTap: onTap??() {
-                Parent.tabController.animateTo(0);
-              },
+              onTap: onTap ??
+                  () {
+                    Parent.tabController.animateTo(0);
+                  },
               child: Container(
                 height: 40,
                 width: 40,
@@ -84,9 +89,11 @@ class UiHelper {
                 ),
               ),
             ),
-            SizedBox(width: title==null?0:20,),
+            SizedBox(
+              width: title == null ? 0 : 20,
+            ),
             Text(
-              title??'',
+              title ?? '',
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 20,

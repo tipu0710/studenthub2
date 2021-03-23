@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:studenthub2/global.dart';
-import 'package:studenthub2/ui/start/view/start_page.dart';
+import 'package:studenthub2/service/sp/sp.dart';
+import 'package:studenthub2/ui/login/view/login.dart';
+import 'package:studenthub2/ui/university/view/university.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SPData.spData.initSP();
   runApp(MyApp());
 }
 
@@ -14,13 +18,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: primaryColor,
-        scaffoldBackgroundColor: Color(0xfffcfcfc)
-      ),
+          primarySwatch: primaryColor,
+          scaffoldBackgroundColor: Color(0xfffcfcfc)),
       debugShowCheckedModeBanner: false,
-      home: StartPage(),
+      home: SPData.spData.sharedPreferences.containsKey("UNI")
+          ? Login()
+          : University(),
     );
   }
-
 }
-
