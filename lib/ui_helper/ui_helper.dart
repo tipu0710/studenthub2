@@ -17,6 +17,7 @@ class UiHelper {
           keyboardType: textInputType,
           controller: controller,
           textInputAction: textInputAction,
+          obscureText: textInputType == TextInputType.visiblePassword,
           onChanged: onChange,
           style: TextStyle(
             fontFamily: 'Roboto',
@@ -117,7 +118,7 @@ class UiHelper {
       {@required BuildContext context,
       @required String title,
       @required Function() onPressed,
-      double topMargin = 40}) {
+      double topMargin = 40, Color color}) {
     return Container(
       height: 55,
       width: 335,
@@ -129,10 +130,10 @@ class UiHelper {
         onPressed: onPressed,
         style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all<Color>(
-            Color(0xff1e5aa7),
+            color??Color(0xff1e5aa7),
           ),
           backgroundColor: MaterialStateProperty.all<Color>(
-            Color(0xff1e5aa7),
+            color??Color(0xff1e5aa7),
           ),
         ),
         child: Center(

@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:studenthub2/ui/parent/view/parent.dart';
-import '../../../ui_helper/ui_helper.dart';
+import 'package:studenthub2/ui/auth/pin/controller/pin_controller.dart';
+import '../../../../ui_helper/ui_helper.dart';
 
 class Pin extends StatefulWidget {
   @override
@@ -12,17 +12,27 @@ class Pin extends StatefulWidget {
 }
 
 class _PinState extends State<Pin> {
+
   var onTapRecognizer;
+
   TextEditingController textEditingController = TextEditingController();
+
   StreamController<ErrorAnimationType> errorController;
+
   bool hasError = false;
-  String currentText = "";
+
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   final formKey = GlobalKey<FormState>();
+
+  String otp = "";
+
+  PinController pinController;
 
   @override
   void dispose() {
     errorController.close();
+    pinController.dispose();
     super.dispose();
   }
 
@@ -30,6 +40,7 @@ class _PinState extends State<Pin> {
   void initState() {
     onTapRecognizer = TapGestureRecognizer()..onTap = () async {};
     errorController = StreamController<ErrorAnimationType>();
+    pinController = PinController(context, errorController);
     super.initState();
   }
 
@@ -38,6 +49,15 @@ class _PinState extends State<Pin> {
     return Scaffold(
       body: Stack(
         children: [
+          Positioned(
+            bottom: -20,
+            right: -10,
+            child: Image.asset(
+              "assets/images/reg_img.png",
+              height: 246,
+              width: 246,
+            ),
+          ),
           body(),
           UiHelper().back(context, onTap: () {
             Navigator.pop(context);
@@ -90,10 +110,7 @@ class _PinState extends State<Pin> {
                 context: context,
                 title: "REGISTER",
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (_) => Parent()),
-                      (route) => false);
+                  pinController.checkPin(otp);
                 },
                 topMargin: 10),
             Container(
@@ -146,7 +163,7 @@ class _PinState extends State<Pin> {
           print("Completed");
         },
         onChanged: (value) {
-          print(value);
+          otp = value;
         },
         beforeTextPaste: (text) {
           print("Allowing to paste $text");

@@ -13,14 +13,14 @@ class UniversityController {
   List<UniversityModel> _uniList = [];
   StreamController<List<UniversityModel>> _streamController;
 
-  UniversityController(StreamController<List<UniversityModel>> streamController){
+  UniversityController(
+      StreamController<List<UniversityModel>> streamController) {
     this._streamController = streamController;
     _getUniList();
   }
-  
+
   updateController(String value) async {
-    Iterable list =
-    _uniList.where((element) => element.name.contains(value));
+    Iterable list = _uniList.where((element) => element.name.contains(value));
     List<UniversityModel> finalList = [];
     list.forEach((element) {
       finalList.add(element);
@@ -29,16 +29,17 @@ class UniversityController {
   }
 
   void _getUniList() async {
-    Response response = await ApiService.getMethod(
-        "/InstituteMobileApi/GetInstituteList");
+    Response response =
+        await ApiService.getMethod("/InstituteMobileApi/GetInstituteList", allowToken: false);
 
-    Iterable iterable = jsonDecode(ProcessData.getDecryptedData(response.data['Data']));
+    Iterable iterable =
+        jsonDecode(ProcessData.getDecryptedData(response.data['Data']));
     iterable.forEach((element) {
       _uniList.add(UniversityModel.fromJson(element));
     });
   }
 
-  addToSP(BuildContext context, UniversityModel universityModel){
+  addToSP(BuildContext context, UniversityModel universityModel) {
     SPData.spData.setUniversity(universityModel);
     Navigator.push(
       context,

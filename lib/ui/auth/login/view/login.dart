@@ -24,9 +24,15 @@ class _LoginState extends State<Login> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final LoginController loginController = LoginController();
+  LoginController loginController;
 
   bool rememberValue = true;
+
+  @override
+  void initState() {
+    loginController = LoginController(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

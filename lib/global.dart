@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
 
 const MaterialColor primaryColor = const MaterialColor(
   0xFF1e5aa7,
@@ -15,3 +16,18 @@ const MaterialColor primaryColor = const MaterialColor(
     900: const Color(0xFF1e5aa7),
   },
 );
+
+showMessage(String message,
+    {Color backgroundColor = primaryColor,
+      ToastPosition toastPosition = ToastPosition.bottom,
+      Color textColor = Colors.white,
+      double fontSize = 16.0}) {
+  showToast(
+    message,
+    duration: Duration(seconds: 3),
+    position: toastPosition,
+    backgroundColor: backgroundColor.withOpacity(0.8),
+    radius: 3.0,
+    textStyle: TextStyle(fontSize: fontSize, color: textColor),
+  );
+}

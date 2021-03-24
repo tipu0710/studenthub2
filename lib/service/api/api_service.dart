@@ -5,8 +5,8 @@ class ApiService {
 
   static Future<Response> postMethod(String endPoints,
       {Map<String, dynamic> map,
-        bool allowToken = true,
-        bool allowFullUrl = true}) async {
+      bool allowToken = true,
+      bool allowFullUrl = true}) async {
     Dio dio = new Dio();
     // if (allowToken) {
     //   dio.options.headers['Content-Type'] = 'application/json';
@@ -15,10 +15,8 @@ class ApiService {
     // }
 
     try {
-      Response response = await dio.post(
-        allowFullUrl ? _fullUrl(endPoints) : endPoints,
-        data: map,
-      );
+      Response response =
+          await dio.post(allowFullUrl ? _fullUrl(endPoints) : endPoints);
       return response;
     } on DioError catch (e) {
       if (e.response != null) {
@@ -33,8 +31,8 @@ class ApiService {
 
   static Future<Response> getMethod(String endPoints,
       {Map<String, dynamic> map,
-        bool addBaseUrl,
-        bool allowToken = true}) async {
+      bool addBaseUrl,
+      bool allowToken = true}) async {
     Dio dio = new Dio();
     // if (allowToken) {
     //   dio.options.headers['Authorization'] =

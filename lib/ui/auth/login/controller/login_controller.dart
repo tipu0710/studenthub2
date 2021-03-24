@@ -1,11 +1,17 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:studenthub2/service/process/process.dart';
+import 'package:studenthub2/ui/auth/password/view/password.dart';
 
 class LoginController {
-  String b =
-      "MsgozdDtkY+WFyRPyD2mZkVC5VuliYhluKfKkm/HzalbVaeYmJaDmWLvVxh7GrL0Ft0KcbstG3X4+sNopDVPEGaChQjLX20Pb6Yx/gpOf7xjoL8ITjSWYjpdcUBIlXQueN90zUyR5zVTlBylYakDZ5EuSs2/nd8m+SnGtGDPir7VxFkRauGe4J4zASNU2Bn8lBuUYJdV96t+WojXINJoWLKRThz4hfKzM0rhkoqVho6NjB/ySMTrp9RNU8m+anY9+vll11P6Rn28O21lYSTTj7VvYAJzp61KdSz4H98ih0h3ORmRENl7WOtSvXH012ZvWuWK2eCz5O02SCn+NOqvCeAjf8NtVRnE8mt5/tK7KCtSzgVi6pEoADWH644Fr1ulaIxVinTqQ7usgYK5PX7lHoWPRt/VVI4zzxQs3W2P44/CWQdjpBWF3vt1EfqOUgXHwS1PX01ug1O8ibaGDBeq5SG9S5oct44MQUoNFbLflusjALiJc47fU0HbL2GA9J1D";
+  BuildContext _context;
+  LoginController(BuildContext context){
+    this._context = context;
+  }
+  String b = "PwJCA0JG1SJHUYF4cu1rPnif/VcqQMc8oLwgc/bB3s36My5tZDtJdiAzOvfGetSMbw6IzwPtlzvMHts/wZ+dbRHK8BTcbjzHuLRBPC3tGBMehsB7k69NQkg0gIoKp4dqoV1+N+YHXS+ObTgvmu3v+s84kOungqTitaaa3v5BQ8WmzzU2m0Lc2NZmkmFWsU8AUDMmB8HtXsx1rWwBBzBjVmjte0Gd90Ja/TN+jZNtPBtgIJsmgzCVzOgJ2pWyCM2zQvNv6XUiHzqJc/hyy5jo/VD8Ay7pAsjh4ePnSV2SvrMmAvDwPpfmSz0C6XIHcL04EBAoSuXIGr8X69A2MqmXBIB5WaRmhMClsYS9i4+4U4B8Pil2wQ2xWLb0WGOctQ+aHQsZfKWg2f81PlYNTacKeQifmGXNRp6M+909HGBOW+CSNMBDXfKg5ciInQWWsn8GySgLzWl8SjI0/DyBQM3bqE9SKx/KZy6T7jIIz8qSD4iFtQRNP8DCFQPWsxRuU/0ANgpbKorao4oa3AnI1Dg8lg==";
   login() async {
-
     String s = ProcessData.getDecryptedData(b);
     print(s);
+    Navigator.push(_context, MaterialPageRoute(builder: (_)=>Password()));
   }
 }
