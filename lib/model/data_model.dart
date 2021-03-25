@@ -10,7 +10,7 @@ class DataModel {
     data = json['Data'];
     hasError = json['HasError'];
     dataExtra = json['DataExtra'];
-    errors = json['Errors'].cast<String>();
+    errors = json['Errors']==null?[]:json['Errors'].cast<String>();
   }
 
   Map<String, dynamic> toJson() {

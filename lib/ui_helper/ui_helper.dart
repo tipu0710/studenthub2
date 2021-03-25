@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
 
@@ -118,7 +117,8 @@ class UiHelper {
       {@required BuildContext context,
       @required String title,
       @required Function() onPressed,
-      double topMargin = 40, Color color}) {
+      double topMargin = 40,
+      Color color}) {
     return Container(
       height: 55,
       width: 335,
@@ -130,10 +130,10 @@ class UiHelper {
         onPressed: onPressed,
         style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all<Color>(
-            color??Color(0xff1e5aa7),
+            color ?? Color(0xff1e5aa7),
           ),
           backgroundColor: MaterialStateProperty.all<Color>(
-            color??Color(0xff1e5aa7),
+            color ?? Color(0xff1e5aa7),
           ),
         ),
         child: Center(

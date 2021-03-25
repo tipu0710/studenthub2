@@ -94,12 +94,12 @@ class _LoginState extends State<Login> {
                     UiHelper().button(
                         context: context,
                         title: "LOGIN",
-                        onPressed: () async{
-                          loginController.login();
-                          // Navigator.pushAndRemoveUntil(
-                          //     context,
-                          //     MaterialPageRoute(builder: (_) => Parent()),
-                          //     (route) => false);
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            print(rememberValue);
+                            loginController.login(emailController.text,
+                                passwordController.text, rememberValue);
+                          }
                         }),
                     SizedBox(
                       height: 40,

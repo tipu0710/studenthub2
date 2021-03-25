@@ -78,7 +78,7 @@ class RegisterController {
     Response response = await ApiService.getMethod(
         "/CountryMobileApi/GetPagedCountry?textkey=&pageSize=-1&pageNo=-1",
         allowToken: false);
-    String s = ProcessData.getDecryptedData(response.data['Data']);
+    String s = DataProcess.getDecryptedData(response.data['Data']);
     Iterable iterable = jsonDecode(s);
     iterable.forEach((element) {
       _countryList.add(CountryModel.fromJson(element));
@@ -87,9 +87,9 @@ class RegisterController {
 
   Future<bool> getReferInfo(String refer) async {
     Response response = await ApiService.getMethod(
-        "/InstituteMobileApi/GetInstituteByReferralCode?input=${ProcessData.getEncryptedData(refer)}",
+        "/InstituteMobileApi/GetInstituteByReferralCode?input=${DataProcess.getEncryptedData(refer)}",
         allowToken: false);
-    String s = ProcessData.getDecryptedData(response.data['DataExtra']);
+    String s = DataProcess.getDecryptedData(response.data['DataExtra']);
     IntakeModel intakeModel = IntakeModel.fromJson(jsonDecode(s));
     _intakeList = intakeModel.intakeList;
     _programList = intakeModel.programmeList;
@@ -100,7 +100,7 @@ class RegisterController {
     StudentRegModel studentRegModel = SPData.spData.getStudentRegInfo();
     if (studentRegModel != null) {
       RegisterModel reg = RegisterModel.fromJson(
-          jsonDecode(ProcessData.getDecryptedData(studentRegModel.data)));
+          jsonDecode(DataProcess.getDecryptedData(studentRegModel.data)));
       if (reg.emailAddress == registerModel.emailAddress &&
           !studentRegModel.verified) {
         Navigator.push(_context, MaterialPageRoute(builder: (_) => Pin()));
@@ -109,7 +109,7 @@ class RegisterController {
     }
     String s = jsonEncode(registerModel.toJson());
     Response response = await ApiService.postMethod(
-        "https://studenthub.smartcampus.com.my/api/Home/StudentMobileApi/Register?input=${ProcessData.getEncryptedData(s)}",
+        "https://studenthub.smartcampus.com.my/api/Home/StudentMobileApi/Register?input=${DataProcess.getEncryptedData(s)}",
         allowToken: false,
         allowFullUrl: false);
     DataModel dataModel = DataModel.fromJson(response.data);
@@ -118,10 +118,13 @@ class RegisterController {
       showMessage(dataModel.errors.first);
       return;
     }
+    if(dataModel.dataExtra!=null){
+      print(DataProcess.getDecryptedData(dataModel.dataExtra));
+    }
     await SPData.spData.setStudentRegInfo(
         StudentRegModel(data: dataModel.data, verified: false));
-    print(ProcessData.getDecryptedData(dataModel.data));
-    print(ProcessData.getDecryptedData(dataModel.dataExtra));
+    print(DataProcess.getDecryptedData(dataModel.data));
+    print(DataProcess.getDecryptedData(dataModel.dataExtra));
     Navigator.push(_context, MaterialPageRoute(builder: (_) => Pin()));
   }
 

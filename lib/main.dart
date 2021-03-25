@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:studenthub2/global.dart';
 import 'package:studenthub2/service/sp/sp.dart';
+import 'package:studenthub2/ui/auth/login/model/login_model.dart';
+import 'package:studenthub2/ui/parent/view/parent.dart';
 import 'package:studenthub2/ui/university/view/university.dart';
 
 import 'ui/auth/login/view/login.dart';
@@ -27,9 +29,21 @@ class MyApp extends StatelessWidget {
             primarySwatch: primaryColor,
             scaffoldBackgroundColor: Color(0xfffcfcfc)),
         debugShowCheckedModeBanner: false,
-        home: SPData.spData.getUniversity() != null ? Login() : University(),
+        home: getHome(),
       ),
     );
+  }
+
+  Widget getHome() {
+    LoginModel loginModel = SPData.spData.getLoginInfo();
+    if(loginModel!=null){
+      setLoginInfo = loginModel;
+    }
+    return loginModel == null
+        ? SPData.spData.getUniversity() != null
+            ? Login()
+            : University()
+        : Parent();
   }
 }
 

@@ -33,7 +33,7 @@ class UniversityController {
         await ApiService.getMethod("/InstituteMobileApi/GetInstituteList", allowToken: false);
 
     Iterable iterable =
-        jsonDecode(ProcessData.getDecryptedData(response.data['Data']));
+        jsonDecode(DataProcess.getDecryptedData(response.data['Data']));
     iterable.forEach((element) {
       _uniList.add(UniversityModel.fromJson(element));
     });

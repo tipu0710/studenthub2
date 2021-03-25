@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:studenthub2/global.dart';
 import 'package:studenthub2/model/student_reg.dart';
+import 'package:studenthub2/service/process/process.dart';
+import 'package:studenthub2/ui/auth/login/model/login_model.dart';
 import 'package:studenthub2/ui/university/model/university_mode.dart';
 
 class SPData {
@@ -39,4 +42,26 @@ class SPData {
     }
     return null;
   }
+
+  Future<bool> saveLoginInfo(LoginModel loginModel) async {
+    return await _sharedPreferences.setString(
+        "LOGIN", DataProcess.getEncryptedData(jsonEncode(loginModel.toJson())));
+  }
+
+  Future<void> removeLoginInfo() async {
+    setLoginInfo = null;
+    if (_sharedPreferences.containsKey("LOGIN")) {
+      return await _sharedPreferences.remove("LOGIN");
+    }
+  }
+
+  LoginModel getLoginInfo() {
+    if (_sharedPreferences.containsKey("LOGIN")) {
+      return LoginModel.fromJson(jsonDecode(
+          DataProcess.getDecryptedData(_sharedPreferences.getString("LOGIN"))));
+    }
+    return null;
+  }
+
+
 }

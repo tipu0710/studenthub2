@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:studenthub2/global.dart';
 
 class ApiService {
   static String baseUrl = "http://studenthub.smartcampus.com.my";
@@ -34,10 +35,10 @@ class ApiService {
       bool addBaseUrl,
       bool allowToken = true}) async {
     Dio dio = new Dio();
-    // if (allowToken) {
-    //   dio.options.headers['Authorization'] =
-    //   'Token ${locator.get<AuthModel>().key}';
-    // }
+    if (allowToken && loginInfo != null) {
+      dio.options.headers['Authorization'] =
+      'Bearer ${loginInfo.token}';
+    }
     try {
       Response response;
       if (map != null) {

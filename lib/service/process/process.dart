@@ -1,6 +1,6 @@
 import 'package:encrypt/encrypt.dart' as encrypt;
 
-class ProcessData {
+class DataProcess {
   static final _key =
       encrypt.Key.fromBase64("nwRXfxsNX/R4dXBMLlX/u/CA2eYz7HBr2gfi8dRy12o=");
 

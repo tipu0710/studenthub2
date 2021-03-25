@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:studenthub2/ui/auth/login/model/login_model.dart';
+
+import 'ui/profile/model/profile_model.dart';
 
 const MaterialColor primaryColor = const MaterialColor(
   0xFF1e5aa7,
@@ -19,9 +22,9 @@ const MaterialColor primaryColor = const MaterialColor(
 
 showMessage(String message,
     {Color backgroundColor = primaryColor,
-      ToastPosition toastPosition = ToastPosition.bottom,
-      Color textColor = Colors.white,
-      double fontSize = 16.0}) {
+    ToastPosition toastPosition = ToastPosition.bottom,
+    Color textColor = Colors.white,
+    double fontSize = 16.0}) {
   showToast(
     message,
     duration: Duration(seconds: 3),
@@ -31,3 +34,11 @@ showMessage(String message,
     textStyle: TextStyle(fontSize: fontSize, color: textColor),
   );
 }
+
+LoginModel _loginModel;
+set setLoginInfo(LoginModel loginModel) => _loginModel = loginModel;
+LoginModel get loginInfo => _loginModel;
+
+ProfileModel _profileModel;
+set setProfile(ProfileModel profileModel)=>_profileModel = profileModel;
+ProfileModel get profileModel => _profileModel;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:studenthub2/global.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class Profile extends StatelessWidget {

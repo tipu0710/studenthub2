@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:studenthub2/ui/auth/password/controller/password_controller.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class Password extends StatelessWidget {
@@ -91,7 +92,8 @@ class Password extends StatelessWidget {
               UiHelper()
                   .button(context: context, title: "CONFIRM", color:Colors.green, onPressed: () {
                     if(_formKey.currentState.validate()){
-
+                      PasswordController pass = PasswordController(context);
+                      pass.setInitPassword(passController.text);
                     }
               })
             ],
