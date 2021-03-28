@@ -42,7 +42,7 @@ class Profile extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(top: 35),
                       child: Text(
-                        'Adem Smith',
+                        profileModel.fullName,
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 22,
@@ -58,7 +58,7 @@ class Profile extends StatelessWidget {
                     Container(
                         margin: EdgeInsets.only(top: 0),
                       child: Text(
-                        '12345678964300',
+                        profileModel.id,
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 15,
@@ -74,7 +74,7 @@ class Profile extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(top: 5),
                       child: Text(
-                        'Diploma in Animation',
+                        profileModel.institutionDetails.programmeName,
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 18,
@@ -112,7 +112,7 @@ class Profile extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: 'Amsterdam',
+                              text: profileModel.institutionDetails.instituteName,
                               style: TextStyle(
                                 fontSize: 25,
                                 color: const Color(0xff252525),
