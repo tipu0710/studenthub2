@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:studenthub2/global.dart';
 import 'package:studenthub2/ui/auth/login/controller/login_controller.dart';
 import 'package:studenthub2/ui/auth/register/view/register.dart';
 import 'package:studenthub2/ui/university/view/university.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
+import '../../../../global.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -94,10 +94,11 @@ class _LoginState extends State<Login> {
                     UiHelper().button(
                         context: context,
                         title: "LOGIN",
+                        anim: true,
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             print(rememberValue);
-                            loginController.login(emailController.text,
+                            await loginController.login(emailController.text,
                                 passwordController.text, rememberValue);
                           }
                         }),

@@ -26,9 +26,9 @@ class RegisterModel {
     identityNumber = json['IdentityNumber'];
     fullName = json['FullName'];
     studentId = json['StudentId'];
-    sex = json['Sex'];
+    sex = json['Sex'].toString();
     emailAddress = json['EmailAddress'];
-    countryId = json['CountryId'];
+    countryId = json['CountryId'].toString();
     contactNumber = json['ContactNumber'];
     instituteId = json['InstituteId'];
     intakeId = json['IntakeId'];

@@ -109,23 +109,29 @@ class _PinState extends State<Pin> {
             UiHelper().button(
                 context: context,
                 title: "REGISTER",
-                onPressed: () {
-                  pinController.checkPin(otp);
+                anim: true,
+                onPressed: () async{
+                  await pinController.checkPin(otp);
                 },
                 topMargin: 10),
-            Container(
-              margin: EdgeInsets.only(top: 20),
-              child: Text(
-                'Resend The Code',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 12,
-                  color: const Color(0xffff3939),
-                  height: 1.5,
+            GestureDetector(
+              onTap: (){
+                pinController.resendCode();
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: 20),
+                child: Text(
+                  'Resend The Code',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 12,
+                    color: const Color(0xffff3939),
+                    height: 1.5,
+                  ),
+                  textHeightBehavior:
+                      TextHeightBehavior(applyHeightToFirstAscent: false),
+                  textAlign: TextAlign.center,
                 ),
-                textHeightBehavior:
-                    TextHeightBehavior(applyHeightToFirstAscent: false),
-                textAlign: TextAlign.center,
               ),
             )
           ],
@@ -140,7 +146,7 @@ class _PinState extends State<Pin> {
       child: PinCodeTextField(
         backgroundColor: Colors.transparent,
         appContext: context,
-        length: 6,
+        length: pinController.studentRegModel.otp.length,
         obscureText: false,
         animationType: AnimationType.fade,
         cursorHeight: 25,
@@ -148,7 +154,7 @@ class _PinState extends State<Pin> {
             shape: PinCodeFieldShape.box,
             borderRadius: BorderRadius.circular(5),
             fieldHeight: 50,
-            fieldWidth: 50,
+            fieldWidth: 40,
             activeFillColor: Colors.white,
             inactiveColor: Colors.white,
             activeColor: Colors.white,

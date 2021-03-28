@@ -20,7 +20,8 @@ class UniversityController {
   }
 
   updateController(String value) async {
-    Iterable list = _uniList.where((element) => element.name.contains(value));
+    Iterable list = _uniList.where(
+        (element) => element.name.toLowerCase().contains(value.toLowerCase()));
     List<UniversityModel> finalList = [];
     list.forEach((element) {
       finalList.add(element);
@@ -29,8 +30,9 @@ class UniversityController {
   }
 
   void _getUniList() async {
-    Response response =
-        await ApiService.getMethod("/InstituteMobileApi/GetInstituteList", allowToken: false);
+    Response response = await ApiService.getMethod(
+        "/InstituteMobileApi/GetInstituteList",
+        allowToken: false);
 
     Iterable iterable =
         jsonDecode(DataProcess.getDecryptedData(response.data['Data']));

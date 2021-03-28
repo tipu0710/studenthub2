@@ -12,13 +12,25 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #c
   cupertino_icons: ^1.0.2
-  dio: ^3.0.10
-  encrypt: ^4.1.0
-  pin_code_fields: ^6.1.0
-  shared_preferences: ^2.0.5
-  oktoast: ^3.0.0
   cached_network_image: ^2.5.1
+  #d
+  dio: ^3.0.10
+  #e
+  encrypt: ^4.1.0
+  #f
+  #o
+  oktoast: ^3.0.0
+  #p
+  pin_code_fields: ^6.1.0
+  #q
+  qr_code_scanner: ^0.3.5
+  #s
+  shared_preferences: ^2.0.5
+  simple_animations: ^3.0.3
+  supercharged: ^2.0.0
+
 
 dev_dependencies:
   flutter_test:

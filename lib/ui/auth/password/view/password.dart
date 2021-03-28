@@ -59,7 +59,9 @@ class Password extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              UiHelper().input(passController, "Password", textInputType: TextInputType.visiblePassword,validator: (value) {
+              UiHelper().input(passController, "Password",
+                  textInputType: TextInputType.visiblePassword,
+                  validator: (value) {
                 RegExp regExp =
                     RegExp(r"^(?=.*[a-z])(?=.*[A-Z])[\w! @#$%^&*()+-/.]{8,}$")
                       ..isCaseSensitive;
@@ -71,8 +73,7 @@ class Password extends StatelessWidget {
                 }
               }),
               UiHelper().input(rePassController, "Confirm Password",
-                  textInputAction: TextInputAction.done,
-                  validator: (value) {
+                  textInputAction: TextInputAction.done, validator: (value) {
                 if (value == passController.text) {
                   return null;
                 } else {
@@ -89,13 +90,17 @@ class Password extends StatelessWidget {
                   ),
                 ),
               ),
-              UiHelper()
-                  .button(context: context, title: "CONFIRM", color:Colors.green, onPressed: () {
-                    if(_formKey.currentState.validate()){
+              UiHelper().button(
+                  context: context,
+                  title: "CONFIRM",
+                  anim: true,
+                  color: Colors.green,
+                  onPressed: () async{
+                    if (_formKey.currentState.validate()) {
                       PasswordController pass = PasswordController(context);
-                      pass.setInitPassword(passController.text);
+                      await pass.setInitPassword(passController.text);
                     }
-              })
+                  })
             ],
           ),
         ),

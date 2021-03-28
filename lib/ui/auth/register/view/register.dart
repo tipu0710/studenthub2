@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/global.dart';
-import 'package:studenthub2/model/student_reg.dart';
 import 'package:studenthub2/service/sp/sp.dart';
 import 'package:studenthub2/ui/auth/model/country_model.dart';
 import 'package:studenthub2/ui/auth/register/controller/reg_controller.dart';
@@ -160,7 +159,9 @@ class _RegisterState extends State<Register> {
                     UiHelper().button(
                         context: context,
                         title: "REQUEST PIN CODE",
-                        onPressed: validate),
+                        onPressed: validate,
+                      anim: true,
+                    ),
                   ],
                 ),
               ),
@@ -174,7 +175,7 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  validate() {
+  validate() async{
     if (_formKey.currentState.validate()) {
       UniversityModel uni = SPData.spData.getUniversity();
       RegisterModel registerModel = RegisterModel(
@@ -188,7 +189,7 @@ class _RegisterState extends State<Register> {
           programmeId: programmeList.id,
           sex: gender.toString(),
           studentId: studentId.text);
-      registerController.register(registerModel);
+      await registerController.register(registerModel);
     }
   }
 

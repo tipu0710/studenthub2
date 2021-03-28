@@ -2,9 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
-class QrCode extends StatelessWidget {
+class QrCode extends StatefulWidget {
+  @override
+  _QrCodeState createState() => _QrCodeState();
+}
+
+class _QrCodeState extends State<QrCode> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -158,4 +164,7 @@ class QrCode extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

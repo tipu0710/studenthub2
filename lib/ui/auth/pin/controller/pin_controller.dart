@@ -17,31 +17,62 @@ import 'package:studenthub2/ui/auth/register/model/register_model.dart';
 class PinController {
   StreamController<ErrorAnimationType> _streamController;
   BuildContext _context;
+  RegisterModel registerModel;
+  StudentRegModel studentRegModel;
+
   PinController(BuildContext context,
       StreamController<ErrorAnimationType> streamController) {
     this._streamController = streamController;
     this._context = context;
+
+    studentRegModel = SPData.spData.getStudentRegInfo();
+    registerModel = RegisterModel.fromJson(
+        jsonDecode(DataProcess.getDecryptedData(studentRegModel.data)));
+    print(registerModel.toJson());
   }
-  void checkPin(String pin) async {
-    if (pin.length != 6) {
+  Future<void> checkPin(String pin) async {
+    if (pin.length != studentRegModel.otp.length) {
       _streamController.add(ErrorAnimationType.shake);
     } else {
-      StudentRegModel studentRegModel = SPData.spData.getStudentRegInfo();
-      RegisterModel registerModel = RegisterModel.fromJson(
-          jsonDecode(DataProcess.getDecryptedData(studentRegModel.data)));
+      print({"StudentId ": registerModel.studentId, "Code": pin});
       String data = DataProcess.getEncryptedData(
           jsonEncode({"StudentId ": registerModel.studentId, "Code": pin}));
+      print(data);
       Response response = await ApiService.postMethod(
-          "/StudentMobileApi/VerifyOTP?input=$data");
+          "https://studenthub.smartcampus.com.my/api/Home/StudentMobileApi/VerifyOTP?input=$data",
+          allowFullUrl: false);
       DataModel dataModel = DataModel.fromJson(response.data);
       if (dataModel.hasError) {
+        _streamController.add(ErrorAnimationType.shake);
         showMessage(dataModel.errors.first);
         return;
       } else {
+        if (dataModel.dataExtra != null) {
+          print(DataProcess.getDecryptedData(dataModel.dataExtra));
+          print(DataProcess.getDecryptedData(dataModel.data));
+        }
         studentRegModel.verified = true;
         SPData.spData.setStudentRegInfo(studentRegModel);
-        Navigator.push(_context, MaterialPageRoute(builder: (_)=>Password()));
+        Navigator.push(_context, MaterialPageRoute(builder: (_) => Password()));
       }
+    }
+  }
+
+  Future<String> resendCode() async {
+    String s = DataProcess.getEncryptedData(registerModel.emailAddress);
+    print(
+        "https://studenthub.smartcampus.com.my/api/Home/StudentMobileApi/ResendOTP?input=$s");
+    Response response = await ApiService.postMethod(
+        "https://studenthub.smartcampus.com.my/api/Home/StudentMobileApi/ResendOTP?input=$s",
+        allowFullUrl: false);
+    DataModel dataModel = DataModel.fromJson(response.data);
+    if (dataModel.hasError) {
+      showMessage(dataModel.errors.first);
+      return null;
+    } else {
+      showMessage("OTP sent!");
+      print(DataProcess.getDecryptedData(dataModel.data));
+      return DataProcess.getDecryptedData(dataModel.data);
     }
   }
 

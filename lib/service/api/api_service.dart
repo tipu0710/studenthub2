@@ -9,11 +9,9 @@ class ApiService {
       bool allowToken = true,
       bool allowFullUrl = true}) async {
     Dio dio = new Dio();
-    // if (allowToken) {
-    //   dio.options.headers['Content-Type'] = 'application/json';
-    //   dio.options.headers['Authorization'] =
-    //   'Token ${locator.get<AuthModel>().key}';
-    // }
+    if (allowToken && loginInfo != null) {
+      dio.options.headers['Authorization'] = 'Bearer ${loginInfo.token}';
+    }
 
     try {
       Response response =
@@ -36,8 +34,7 @@ class ApiService {
       bool allowToken = true}) async {
     Dio dio = new Dio();
     if (allowToken && loginInfo != null) {
-      dio.options.headers['Authorization'] =
-      'Bearer ${loginInfo.token}';
+      dio.options.headers['Authorization'] = 'Bearer ${loginInfo.token}';
     }
     try {
       Response response;

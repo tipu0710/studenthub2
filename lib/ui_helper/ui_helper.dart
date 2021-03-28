@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
+import 'package:studenthub2/ui_helper/button_anim.dart';
 
 class UiHelper {
   Widget input(TextEditingController controller, String label,
@@ -117,42 +118,103 @@ class UiHelper {
       {@required BuildContext context,
       @required String title,
       @required Function() onPressed,
+      bool anim = false,
       double topMargin = 40,
-      Color color}) {
-    return Container(
-      height: 55,
-      width: 335,
-      margin: EdgeInsets.only(top: topMargin, bottom: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5.0),
-      ),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(
-            color ?? Color(0xff1e5aa7),
-          ),
-          backgroundColor: MaterialStateProperty.all<Color>(
-            color ?? Color(0xff1e5aa7),
-          ),
-        ),
-        child: Center(
-          child: Text(
-            title,
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 15,
-              color: const Color(0xffffffff),
-              fontWeight: FontWeight.w500,
-              height: 0.8,
+      Color color,
+      double width,
+      double height,
+      double fontSize}) {
+    ValueNotifier<AnimState> valueNotifier = ValueNotifier(AnimState.init);
+    return anim
+        ? LoadingButton(
+            key: UniqueKey(),
+            mainChild: Container(
+              height: height ?? 55,
+              width: width ?? 335,
+              margin: EdgeInsets.only(top: topMargin, bottom: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              child: ElevatedButton(
+                onPressed: () async {
+                  valueNotifier.value = AnimState.loadingStart;
+                  try{
+                    await onPressed();
+                  }catch (e){
+                    print(e);
+                  }
+                  valueNotifier.value = AnimState.loadingEnd;
+                },
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all<Color>(
+                    color ?? Color(0xff1e5aa7),
+                  ),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    color ?? Color(0xff1e5aa7),
+                  ),
+                ),
+                child: ValueListenableBuilder(
+                  valueListenable: valueNotifier,
+                  builder: (_, value, __) => value != AnimState.loadingStart
+                      ? Center(
+                          child: Text(
+                            title,
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: fontSize ?? 15,
+                              color: const Color(0xffffffff),
+                              fontWeight: FontWeight.w500,
+                              height: 0.8,
+                            ),
+                            textHeightBehavior: TextHeightBehavior(
+                                applyHeightToFirstAscent: false),
+                            textAlign: TextAlign.left,
+                          ),
+                        )
+                      : Container(),
+                ),
+              ),
             ),
-            textHeightBehavior:
-                TextHeightBehavior(applyHeightToFirstAscent: false),
-            textAlign: TextAlign.left,
-          ),
-        ),
-      ),
-    );
+            secondaryChild: Container(
+                margin: EdgeInsets.only(top: topMargin, bottom: 20),
+                height: 30,
+                width: 30,
+                child: CircularProgressIndicator()),
+            valueNotifier: valueNotifier)
+        : Container(
+            height: height ?? 55,
+            width: width ?? 335,
+            margin: EdgeInsets.only(top: topMargin, bottom: 20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            child: ElevatedButton(
+              onPressed: onPressed,
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(
+                  color ?? Color(0xff1e5aa7),
+                ),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  color ?? Color(0xff1e5aa7),
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: fontSize ?? 15,
+                    color: const Color(0xffffffff),
+                    fontWeight: FontWeight.w500,
+                    height: 0.8,
+                  ),
+                  textHeightBehavior:
+                      TextHeightBehavior(applyHeightToFirstAscent: false),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ),
+          );
   }
 
   Widget _searchListCard<T>(

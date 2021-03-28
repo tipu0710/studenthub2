@@ -99,6 +99,7 @@ class RegisterController {
   register(RegisterModel registerModel) async {
     StudentRegModel studentRegModel = SPData.spData.getStudentRegInfo();
     if (studentRegModel != null) {
+      print(studentRegModel.otp);
       RegisterModel reg = RegisterModel.fromJson(
           jsonDecode(DataProcess.getDecryptedData(studentRegModel.data)));
       if (reg.emailAddress == registerModel.emailAddress &&
@@ -118,11 +119,15 @@ class RegisterController {
       showMessage(dataModel.errors.first);
       return;
     }
-    if(dataModel.dataExtra!=null){
+    if (dataModel.dataExtra != null) {
       print(DataProcess.getDecryptedData(dataModel.dataExtra));
     }
+    String otp =
+        jsonDecode(DataProcess.getDecryptedData(dataModel.dataExtra))['OTP']
+            .toString();
+    print(otp);
     await SPData.spData.setStudentRegInfo(
-        StudentRegModel(data: dataModel.data, verified: false));
+        StudentRegModel(data: dataModel.data, verified: false, otp: otp));
     print(DataProcess.getDecryptedData(dataModel.data));
     print(DataProcess.getDecryptedData(dataModel.dataExtra));
     Navigator.push(_context, MaterialPageRoute(builder: (_) => Pin()));
