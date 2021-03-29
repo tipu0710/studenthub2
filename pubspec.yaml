@@ -20,10 +20,14 @@ dependencies:
   #e
   encrypt: ^4.1.0
   #f
+  #i
+  intl: ^0.17.0
+  #m
   #o
   oktoast: ^3.0.0
   #p
   pin_code_fields: ^6.1.0
+  permission_handler: ^6.1.1
   #q
   qr_code_scanner: ^0.3.5
   #s

@@ -159,21 +159,33 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 menuCard(
-                    cardColor: Color(0xfff9f9ff),
-                    title: "Merit",
-                    icon: CustomIcons.badge,
-                    iconColor: Color(0xff1E5AA7),
-                    firstChild: true),
+                  cardColor: Color(0xfff9f9ff),
+                  title: "Merit",
+                  icon: CustomIcons.badge,
+                  iconColor: Color(0xff1E5AA7),
+                  onTap: () {
+                    print("Merit");
+                  },
+                  firstChild: true,
+                ),
                 menuCard(
-                    cardColor: Color(0xffFEF6F4),
-                    title: "OneMall",
-                    icon: CustomIcons.shopping_bag,
-                    iconColor: Color(0xffFF8364)),
+                  cardColor: Color(0xffFEF6F4),
+                  title: "OneMall",
+                  icon: CustomIcons.shopping_bag,
+                  iconColor: Color(0xffFF8364),
+                  onTap: () {
+                    print("OneMall");
+                  },
+                ),
                 menuCard(
-                    cardColor: Color(0xffF2F8FC),
-                    title: "OneJob",
-                    icon: CustomIcons.businessman,
-                    iconColor: Color(0xff47D4F9)),
+                  cardColor: Color(0xffF2F8FC),
+                  title: "OneJob",
+                  icon: CustomIcons.businessman,
+                  iconColor: Color(0xff47D4F9),
+                  onTap: () {
+                    print("OneJob");
+                  },
+                ),
               ],
             ),
             SizedBox(
@@ -183,21 +195,37 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 menuCard(
-                    cardColor: Color(0xffFEF6F4),
-                    title: "ClubHouse",
-                    icon: CustomIcons.reading_book,
-                    iconColor: Color(0xffFF8364),
-                    firstChild: true),
+                  cardColor: Color(0xffFEF6F4),
+                  title: "ClubHouse",
+                  icon: CustomIcons.reading_book,
+                  iconColor: Color(0xffFF8364),
+                  onTap: () {
+                    print("ClubHouse");
+                  },
+                  firstChild: true,
+                ),
                 menuCard(
-                    cardColor: Color(0xffF2F8FC),
-                    title: "MyCalender",
-                    icon: CustomIcons.calendar,
-                    iconColor: Color(0xff47D4F9)),
+                  cardColor: Color(0xffF2F8FC),
+                  title: "MyCalender",
+                  icon: CustomIcons.calendar,
+                  iconColor: Color(0xff47D4F9),
+                  onTap: () {
+                    print("MyCalender");
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (_) => CalendarPluginCheck()));
+                  },
+                ),
                 menuCard(
-                    cardColor: Color(0xfff9f9ff),
-                    title: "Lost & Found",
-                    icon: CustomIcons.found,
-                    iconColor: Color(0xff1E5AA7)),
+                  cardColor: Color(0xfff9f9ff),
+                  title: "Lost & Found",
+                  icon: CustomIcons.found,
+                  iconColor: Color(0xff1E5AA7),
+                  onTap: () {
+                    print("Lost & Found");
+                  },
+                ),
               ],
             ),
           ],
@@ -324,46 +352,50 @@ class _HomeState extends State<Home> {
       @required String title,
       @required IconData icon,
       @required Color iconColor,
+      @required void Function() onTap,
       bool firstChild = false}) {
     return ConstrainedBox(
       constraints: BoxConstraints(
         maxHeight: 114,
         maxWidth: 106,
       ),
-      child: Container(
-        width: 106.0,
-        height: 114.0,
-        margin: EdgeInsets.only(left: firstChild ? 0 : 5),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18.0),
-          color: cardColor,
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                color: iconColor,
-                size: 35,
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                title,
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 13,
-                  color: const Color(0xff252525),
-                  fontWeight: FontWeight.w500,
-                  height: 2.769230769230769,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: 106.0,
+          height: 114.0,
+          margin: EdgeInsets.only(left: firstChild ? 0 : 5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18.0),
+            color: cardColor,
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  icon,
+                  color: iconColor,
+                  size: 35,
                 ),
-                textHeightBehavior:
-                    TextHeightBehavior(applyHeightToFirstAscent: false),
-                textAlign: TextAlign.center,
-              ),
-            ],
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 13,
+                    color: const Color(0xff252525),
+                    fontWeight: FontWeight.w500,
+                    height: 2.769230769230769,
+                  ),
+                  textHeightBehavior:
+                      TextHeightBehavior(applyHeightToFirstAscent: false),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         ),
       ),
