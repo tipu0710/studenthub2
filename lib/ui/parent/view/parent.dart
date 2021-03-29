@@ -27,28 +27,38 @@ class _ParentState extends State<Parent> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: TabBarView(
-          controller: Parent.tabController,
-          children: [
-            Home(),
-            Profile(),
-            QrParent(),
-            Notifications(),
-            Settings()
-          ],
-        ),
-        bottomNavigationBar: FancyBottomNavigation(
-          tabs: [
-            TabData(iconData: CustomIcons.home, title: "Home"),
-            TabData(iconData: CustomIcons.user, title: "Profile"),
-            TabData(iconData: CustomIcons.qr_code, title: "QR"),
-            TabData(iconData: CustomIcons.bell, title: "Notifications"),
-            TabData(iconData: CustomIcons.settings, title: "Settings"),
-          ],
-          onTabChangedListener: (position) {
-              Parent.tabController.animateTo(position);
-          },
-        ));
+    return WillPopScope(
+      onWillPop: () async{
+        if(Parent.tabController.index != 0){
+          Parent.tabController.animateTo(0);
+          return false;
+        }else{
+          return true;
+        }
+      },
+      child: Scaffold(
+          body: TabBarView(
+            controller: Parent.tabController,
+            children: [
+              Home(),
+              Profile(),
+              QrParent(),
+              Notifications(),
+              Settings()
+            ],
+          ),
+          bottomNavigationBar: FancyBottomNavigation(
+            tabs: [
+              TabData(iconData: CustomIcons.home, title: "Home"),
+              TabData(iconData: CustomIcons.user, title: "Profile"),
+              TabData(iconData: CustomIcons.qr_code, title: "QR"),
+              TabData(iconData: CustomIcons.bell, title: "Notifications"),
+              TabData(iconData: CustomIcons.settings, title: "Settings"),
+            ],
+            onTabChangedListener: (position) {
+                Parent.tabController.animateTo(position);
+            },
+          )),
+    );
   }
 }

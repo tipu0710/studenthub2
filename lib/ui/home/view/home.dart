@@ -42,9 +42,13 @@ class _HomeState extends State<Home> {
                 children: [
                   profile(loading),
                   menu(loading),
-                  announcementTitle('Latest Announcement', loading),
+                  !loading && homeController.homeModel.eventList.length > 0
+                      ? announcementTitle('Latest Announcement', loading)
+                      : Container(),
                   announcement(loading),
-                  announcementTitle("Channel", loading),
+                  step > 0
+                      ? announcementTitle("Channel", loading)
+                      : Container(),
                   for (int i = 0; i < step; i++)
                     orientationCard(
                         cardColor: homeController.getColor(i).first,
@@ -204,7 +208,8 @@ class _HomeState extends State<Home> {
 
   Widget announcement(bool loading) {
     return Container(
-      height: 196,
+      height:
+          !loading && homeController.homeModel.eventList.length > 0 ? 196 : 0,
       margin: EdgeInsets.only(top: 15),
       child: ListView.builder(
           itemCount: loading ? 1 : homeController.homeModel.eventList.length,

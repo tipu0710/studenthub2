@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,24 +12,57 @@ import 'package:studenthub2/service/process/process.dart';
 import 'package:studenthub2/service/sp/sp.dart';
 import 'package:studenthub2/ui/auth/password/view/password.dart';
 import 'package:studenthub2/ui/auth/register/model/register_model.dart';
+import 'package:studenthub2/ui/auth/reset_pass/model/reset_pass_model.dart';
 
 class PinController {
   StreamController<ErrorAnimationType> _streamController;
   BuildContext _context;
   RegisterModel registerModel;
   StudentRegModel studentRegModel;
+  PassResetModel _passResetModel;
 
   PinController(BuildContext context,
-      StreamController<ErrorAnimationType> streamController) {
+      StreamController<ErrorAnimationType> streamController,
+      {PassResetModel passResetModel}) {
     this._streamController = streamController;
     this._context = context;
+    this._passResetModel = passResetModel;
 
-    studentRegModel = SPData.spData.getStudentRegInfo();
-    registerModel = RegisterModel.fromJson(
-        jsonDecode(DataProcess.getDecryptedData(studentRegModel.data)));
-    print(registerModel.toJson());
+    if (_passResetModel == null) {
+      studentRegModel = SPData.spData.getStudentRegInfo();
+      registerModel = RegisterModel.fromJson(
+          jsonDecode(DataProcess.getDecryptedData(studentRegModel.data)));
+      print(registerModel.toJson());
+    }
   }
   Future<void> checkPin(String pin) async {
+    if (_passResetModel != null) {
+      _pinForReset(pin);
+    } else {
+      _pinForNew(pin);
+    }
+  }
+
+  _pinForReset(String pin) async {
+    if (pin.length != _passResetModel.code.length) {
+      _streamController.add(ErrorAnimationType.shake);
+    } else {
+      if (pin == _passResetModel.code) {
+        Navigator.push(
+          _context,
+          MaterialPageRoute(
+            builder: (_) => Password(
+              passResetModel: _passResetModel,
+            ),
+          ),
+        );
+      } else {
+        _streamController.add(ErrorAnimationType.shake);
+      }
+    }
+  }
+
+  _pinForNew(String pin) async {
     if (pin.length != studentRegModel.otp.length) {
       _streamController.add(ErrorAnimationType.shake);
     } else {

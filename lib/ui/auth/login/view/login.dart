@@ -103,6 +103,10 @@ class _LoginState extends State<Login> {
                           }
                         }),
                     SizedBox(
+                      height: 15,
+                      child: forgotPass(),
+                    ),
+                    SizedBox(
                       height: 40,
                     ),
                     signUp(),
@@ -322,6 +326,24 @@ class _LoginState extends State<Login> {
             if (value.isEmpty) return "Password is required";
             return null;
           }),
+    );
+  }
+
+  Widget forgotPass() {
+    return GestureDetector(
+      onTap: loginController.gotoResetPass,
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: Text(
+          'Forgot password?',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 13,
+            color: const Color(0xff252525),
+          ),
+          textAlign: TextAlign.left,
+        ),
+      ),
     );
   }
 }

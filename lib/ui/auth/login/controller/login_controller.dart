@@ -8,6 +8,7 @@ import 'package:studenthub2/service/api/api_service.dart';
 import 'package:studenthub2/service/process/process.dart';
 import 'package:studenthub2/service/sp/sp.dart';
 import 'package:studenthub2/ui/auth/login/model/login_model.dart';
+import 'package:studenthub2/ui/auth/reset_pass/view/reset_pass.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
 
 class LoginController {
@@ -42,5 +43,10 @@ class LoginController {
       Navigator.pushAndRemoveUntil(_context,
           MaterialPageRoute(builder: (_) => Parent()), (route) => false);
     }
+  }
+
+  void gotoResetPass() {
+    Navigator.push(
+        _context, MaterialPageRoute(builder: (_) => ResetPassword()));
   }
 }

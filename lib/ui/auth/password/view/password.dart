@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:studenthub2/ui/auth/password/controller/password_controller.dart';
+import 'package:studenthub2/ui/auth/reset_pass/model/reset_pass_model.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class Password extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController passController = TextEditingController();
   final TextEditingController rePassController = TextEditingController();
+
+  final PassResetModel passResetModel;
+
+  Password({Key key, this.passResetModel}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,10 +101,15 @@ class Password extends StatelessWidget {
                   title: "CONFIRM",
                   anim: true,
                   color: Colors.green,
-                  onPressed: () async{
+                  onPressed: () async {
                     if (_formKey.currentState.validate()) {
-                      PasswordController pass = PasswordController(context);
-                      await pass.setInitPassword(passController.text);
+                      PasswordController pass = PasswordController(context,
+                          passResetModel: passResetModel);
+                      if (passResetModel != null) {
+                        await pass.resetPassword(passController.text);
+                      } else {
+                        await pass.setInitPassword(passController.text);
+                      }
                     }
                   })
             ],

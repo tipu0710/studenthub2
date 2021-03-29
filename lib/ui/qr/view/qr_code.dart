@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:studenthub2/global.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class QrCode extends StatefulWidget {
@@ -26,7 +27,7 @@ class _QrCodeState extends State<QrCode> with AutomaticKeepAliveClientMixin {
                     height: 20,
                   ),
                   Text(
-                    'Adem Smith',
+                    profileModel.fullName,
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 22,
@@ -40,7 +41,7 @@ class _QrCodeState extends State<QrCode> with AutomaticKeepAliveClientMixin {
                   ),
                   SizedBox(height: 3),
                   Text(
-                    'Webspert.com',
+                    profileModel.institutionDetails.programmeName,
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 15,

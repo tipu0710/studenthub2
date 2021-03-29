@@ -4,15 +4,20 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:studenthub2/ui/auth/pin/controller/pin_controller.dart';
+import 'package:studenthub2/ui/auth/reset_pass/model/reset_pass_model.dart';
 import '../../../../ui_helper/ui_helper.dart';
 
 class Pin extends StatefulWidget {
+  /// [passResetModel] will provided only from reset password
+
+  final PassResetModel passResetModel;
+
+  const Pin({Key key, this.passResetModel}) : super(key: key);
   @override
   _PinState createState() => _PinState();
 }
 
 class _PinState extends State<Pin> {
-
   var onTapRecognizer;
 
   TextEditingController textEditingController = TextEditingController();
@@ -40,7 +45,8 @@ class _PinState extends State<Pin> {
   void initState() {
     onTapRecognizer = TapGestureRecognizer()..onTap = () async {};
     errorController = StreamController<ErrorAnimationType>();
-    pinController = PinController(context, errorController);
+    pinController = PinController(context, errorController,
+        passResetModel: widget.passResetModel);
     super.initState();
   }
 
@@ -77,7 +83,7 @@ class _PinState extends State<Pin> {
           children: [
             Container(
               child: Text(
-                'Sign Up New Student',
+                widget.passResetModel != null ? "Reset Password" : 'Sign Up New Student',
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 20,
@@ -108,32 +114,34 @@ class _PinState extends State<Pin> {
             pinField(),
             UiHelper().button(
                 context: context,
-                title: "REGISTER",
+                title: widget.passResetModel != null ? "SUBMIT" : "REGISTER",
                 anim: true,
-                onPressed: () async{
+                onPressed: () async {
                   await pinController.checkPin(otp);
                 },
                 topMargin: 10),
-            GestureDetector(
-              onTap: (){
-                pinController.resendCode();
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Text(
-                  'Resend The Code',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 12,
-                    color: const Color(0xffff3939),
-                    height: 1.5,
-                  ),
-                  textHeightBehavior:
-                      TextHeightBehavior(applyHeightToFirstAscent: false),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            )
+            widget.passResetModel != null
+                ? Container()
+                : GestureDetector(
+                    onTap: () {
+                      pinController.resendCode();
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: Text(
+                        'Resend The Code',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 12,
+                          color: const Color(0xffff3939),
+                          height: 1.5,
+                        ),
+                        textHeightBehavior:
+                            TextHeightBehavior(applyHeightToFirstAscent: false),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )
           ],
         ),
       ),
@@ -146,7 +154,9 @@ class _PinState extends State<Pin> {
       child: PinCodeTextField(
         backgroundColor: Colors.transparent,
         appContext: context,
-        length: pinController.studentRegModel.otp.length,
+        length: widget.passResetModel == null
+            ? pinController.studentRegModel.otp.length
+            : widget.passResetModel.code.length,
         obscureText: false,
         animationType: AnimationType.fade,
         cursorHeight: 25,

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:studenthub2/global.dart';
 
 class ApiService {
-  static String baseUrl = "http://studenthub.smartcampus.com.my";
+  static String baseUrl = "https://studenthub.smartcampus.com.my";
 
   static Future<Response> postMethod(String endPoints,
       {Map<String, dynamic> map,
@@ -12,7 +12,7 @@ class ApiService {
     if (allowToken && loginInfo != null) {
       dio.options.headers['Authorization'] = 'Bearer ${loginInfo.token}';
     }
-
+    print(_fullUrl(endPoints));
     try {
       Response response =
           await dio.post(allowFullUrl ? _fullUrl(endPoints) : endPoints);

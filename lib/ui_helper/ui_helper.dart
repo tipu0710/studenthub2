@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:studenthub2/global.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
 import 'package:studenthub2/ui_helper/button_anim.dart';
 
@@ -142,6 +143,7 @@ class UiHelper {
                     await onPressed();
                   }catch (e){
                     print(e);
+                    showMessage("Something went wrong!");
                   }
                   valueNotifier.value = AnimState.loadingEnd;
                 },
