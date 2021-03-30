@@ -43,11 +43,11 @@ class UniversityController {
 
   addToSP(BuildContext context, UniversityModel universityModel) {
     SPData.spData.setUniversity(universityModel);
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => Login(),
-      ),
-    );
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (_) => Login(),
+        ),
+        (route) => false);
   }
 }

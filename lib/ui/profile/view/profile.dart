@@ -51,12 +51,12 @@ class Profile extends StatelessWidget {
                           height: 1.6363636363636365,
                         ),
                         textHeightBehavior:
-                        TextHeightBehavior(applyHeightToFirstAscent: false),
+                            TextHeightBehavior(applyHeightToFirstAscent: false),
                         textAlign: TextAlign.left,
                       ),
                     ),
                     Container(
-                        margin: EdgeInsets.only(top: 0),
+                      margin: EdgeInsets.only(top: 0),
                       child: Text(
                         profileModel.id,
                         style: TextStyle(
@@ -67,7 +67,7 @@ class Profile extends StatelessWidget {
                           height: 2.4,
                         ),
                         textHeightBehavior:
-                        TextHeightBehavior(applyHeightToFirstAscent: false),
+                            TextHeightBehavior(applyHeightToFirstAscent: false),
                         textAlign: TextAlign.left,
                       ),
                     ),
@@ -83,7 +83,7 @@ class Profile extends StatelessWidget {
                           height: 2,
                         ),
                         textHeightBehavior:
-                        TextHeightBehavior(applyHeightToFirstAscent: false),
+                            TextHeightBehavior(applyHeightToFirstAscent: false),
                         textAlign: TextAlign.left,
                       ),
                     ),
@@ -112,7 +112,8 @@ class Profile extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: profileModel.institutionDetails.instituteName,
+                              text:
+                                  profileModel.institutionDetails.instituteName,
                               style: TextStyle(
                                 fontSize: 25,
                                 color: const Color(0xff252525),
@@ -122,11 +123,13 @@ class Profile extends StatelessWidget {
                           ],
                         ),
                         textHeightBehavior:
-                        TextHeightBehavior(applyHeightToFirstAscent: false),
+                            TextHeightBehavior(applyHeightToFirstAscent: false),
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    SizedBox(height: 30,),
+                    SizedBox(
+                      height: 30,
+                    ),
                   ],
                 ),
               ),

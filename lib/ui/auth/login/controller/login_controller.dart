@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:studenthub2/global.dart';
 import 'package:studenthub2/model/data_model.dart';
 import 'package:studenthub2/service/api/api_service.dart';
@@ -10,6 +11,8 @@ import 'package:studenthub2/service/sp/sp.dart';
 import 'package:studenthub2/ui/auth/login/model/login_model.dart';
 import 'package:studenthub2/ui/auth/reset_pass/view/reset_pass.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
+import 'package:studenthub2/ui/profile/controller/profile_controller.dart';
+import 'package:studenthub2/ui/university/model/university_mode.dart';
 
 class LoginController {
   BuildContext _context;
@@ -36,12 +39,28 @@ class LoginController {
     } else {
       LoginModel loginModel = LoginModel.fromJson(
           jsonDecode(DataProcess.getDecryptedData(dataModel.data)));
+
       if (saveInfo) {
         SPData.spData.saveLoginInfo(loginModel);
       }
       setLoginInfo = loginModel;
-      Navigator.pushAndRemoveUntil(_context,
-          MaterialPageRoute(builder: (_) => Parent()), (route) => false);
+
+      await ProfileController.getProfile();
+
+      UniversityModel universityModel = SPData.spData.getUniversity();
+
+      if (profileModel.institutionDetails.instituteName ==
+          universityModel.name) {
+        Navigator.pushAndRemoveUntil(_context,
+            MaterialPageRoute(builder: (_) => Parent()), (route) => false);
+      } else {
+        showMessage(
+          "Please select correct university!\nUniversity doesn't match!",
+          toastPosition: ToastPosition.center,
+        );
+        setLoginInfo = null;
+        await SPData.spData.removeLoginInfo();
+      }
     }
   }
 

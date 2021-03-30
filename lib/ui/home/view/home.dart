@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/global.dart';
 import 'package:studenthub2/service/api/api_service.dart';
+import 'package:studenthub2/ui/calender/view/calender.dart';
 import 'package:studenthub2/ui/home/controller/home_controller.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
 import 'package:studenthub2/ui_helper/custom_icons.dart';
@@ -211,10 +212,10 @@ class _HomeState extends State<Home> {
                   iconColor: Color(0xff47D4F9),
                   onTap: () {
                     print("MyCalender");
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (_) => CalendarPluginCheck()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => Calender()));
                   },
                 ),
                 menuCard(

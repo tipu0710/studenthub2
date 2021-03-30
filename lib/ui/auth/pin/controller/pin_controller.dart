@@ -48,14 +48,14 @@ class PinController {
       _streamController.add(ErrorAnimationType.shake);
     } else {
       if (pin == _passResetModel.code) {
-        Navigator.push(
-          _context,
-          MaterialPageRoute(
-            builder: (_) => Password(
-              passResetModel: _passResetModel,
+        Navigator.pushAndRemoveUntil(
+            _context,
+            MaterialPageRoute(
+              builder: (_) => Password(
+                passResetModel: _passResetModel,
+              ),
             ),
-          ),
-        );
+            (route) => false);
       } else {
         _streamController.add(ErrorAnimationType.shake);
       }
@@ -85,7 +85,12 @@ class PinController {
         }
         studentRegModel.verified = true;
         SPData.spData.setStudentRegInfo(studentRegModel);
-        Navigator.push(_context, MaterialPageRoute(builder: (_) => Password()));
+        Navigator.pushAndRemoveUntil(
+            _context,
+            MaterialPageRoute(
+              builder: (_) => Password(),
+            ),
+            (route) => false);
       }
     }
   }

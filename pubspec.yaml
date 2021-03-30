@@ -22,6 +22,8 @@ dependencies:
   #f
   #i
   intl: ^0.17.0
+  #l
+  flutter_local_notifications: ^5.0.0
   #m
   #o
   oktoast: ^3.0.0
@@ -35,6 +37,10 @@ dependencies:
   simple_animations: ^3.0.3
   supercharged: ^2.0.0
   share: ^2.0.1
+  #t
+  table_calendar: ^2.2.1
+  #u
+  url_launcher: ^6.0.3
 
 
 dev_dependencies:

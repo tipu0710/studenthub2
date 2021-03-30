@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:studenthub2/global.dart';
+import 'package:studenthub2/ui/calender/controller/event_notification.dart';
 import 'package:studenthub2/ui/home/view/home.dart';
 import 'package:studenthub2/ui/notification/view/notification.dart';
 import 'package:studenthub2/ui/profile/view/profile.dart';
@@ -23,6 +25,10 @@ class _ParentState extends State<Parent> with SingleTickerProviderStateMixin {
     Parent.tabController =
         TabController(length: 5, vsync: this, initialIndex: 0);
     super.initState();
+    setContext = context;
+    requestPermissions();
+    configureDidReceiveLocalNotificationSubject();
+    configureSelectNotificationSubject();
   }
 
   @override

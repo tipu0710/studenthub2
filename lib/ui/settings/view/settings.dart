@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:studenthub2/service/sp/sp.dart';
-import 'package:studenthub2/ui/auth/login/view/login.dart';
+import 'package:studenthub2/global.dart';
+import 'package:studenthub2/ui/settings/controller/settings_controller.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SettingsController settingsController = SettingsController(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -22,9 +23,15 @@ class Settings extends StatelessWidget {
                   SizedBox(
                     height: 15,
                   ),
-                  childCard("Uni Website"),
-                  childCard("Uni Facebook"),
-                  childCard("Uni Instagram"),
+                  childCard("Uni Website", onTap: () {
+                    settingsController.launchUrl(institute?.webUrl);
+                  }),
+                  childCard("Uni Facebook", onTap: () {
+                    settingsController.launchUrl(institute?.facebookUrl);
+                  }),
+                  childCard("Uni Instagram", onTap: () {
+                    settingsController.launchUrl(institute?.instagramUrl);
+                  }),
                   SizedBox(
                     height: 40,
                   ),
@@ -32,16 +39,16 @@ class Settings extends StatelessWidget {
                   SizedBox(
                     height: 15,
                   ),
-                  childCard("Contact Us"),
-                  childCard("Uni Facebook"),
-                  childCard("Uni Instagram"),
+                  childCard("Contact Us", onTap: () {
+                    settingsController.launchUrl(institute?.emailAddress);
+                  }),
+                  // childCard("Uni Facebook", onTap: () {
+                  //   settingsController.launchUrl(institute.webUrl);
+                  // }),
+                  // childCard("Uni Instagram"),
                   childCard("Logout", iconData: CupertinoIcons.power,
                       onTap: () {
-                    SPData.spData.removeLoginInfo();
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (_) => Login()),
-                        (route) => false);
+                    settingsController.logout();
                   }),
                   SizedBox(
                     height: 40,

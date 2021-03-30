@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:studenthub2/ui/auth/login/model/login_model.dart';
+import 'package:studenthub2/ui/home/model/home_model.dart';
 
 import 'ui/profile/model/profile_model.dart';
 
@@ -42,3 +43,12 @@ LoginModel get loginInfo => _loginModel;
 ProfileModel _profileModel;
 set setProfile(ProfileModel profileModel)=>_profileModel = profileModel;
 ProfileModel get profileModel => _profileModel;
+
+Institute _institute;
+set setInstitute(Institute institute)=>_institute = institute;
+Institute get institute => _institute;
+
+BuildContext _context;
+set setContext(BuildContext context)=>_context = context;
+BuildContext get buildContext => _context;
+

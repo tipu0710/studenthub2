@@ -9,11 +9,14 @@ import 'package:studenthub2/ui/parent/view/parent.dart';
 import 'package:studenthub2/ui/university/view/university.dart';
 
 import 'ui/auth/login/view/login.dart';
+import 'ui/calender/controller/event_notification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = new MyHttpOverrides();
+  await configureLocalTimeZone();
   await SPData.spData.initSP();
+  await initNotification();
   runApp(MyApp());
 }
 

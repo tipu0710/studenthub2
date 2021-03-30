@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:studenthub2/global.dart';
@@ -20,9 +19,6 @@ class HomeController {
     await ProfileController.getProfile();
     Response response =
         await ApiService.getMethod("/DashboardMobileApi/GetDashBoardDataExtra");
-    try {} catch (e) {
-      throw e;
-    }
     DataModel dataModel = DataModel.fromJson(response.data);
     if (dataModel.hasError) {
       showMessage(dataModel.errors.first);

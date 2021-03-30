@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:studenthub2/global.dart';
 import 'package:studenthub2/model/student_reg.dart';
@@ -30,6 +29,13 @@ class SPData {
     return null;
   }
 
+  Future<void> removeUniversity() async {
+    setLoginInfo = null;
+    if (_sharedPreferences.containsKey("UNI")) {
+      return await _sharedPreferences.remove("UNI");
+    }
+  }
+
   Future<bool> setStudentRegInfo(StudentRegModel data) async {
     return await _sharedPreferences.setString(
         "SREG", jsonEncode(data.toJson()));
@@ -41,6 +47,13 @@ class SPData {
           jsonDecode(_sharedPreferences.getString("SREG")));
     }
     return null;
+  }
+
+  Future<void> removeRegInfo() async {
+    setLoginInfo = null;
+    if (_sharedPreferences.containsKey("SREG")) {
+      return await _sharedPreferences.remove("SREG");
+    }
   }
 
   Future<bool> saveLoginInfo(LoginModel loginModel) async {
