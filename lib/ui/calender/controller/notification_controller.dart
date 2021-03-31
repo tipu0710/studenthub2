@@ -5,9 +5,9 @@ import 'package:studenthub2/ui/parent/view/parent.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-class EventNotification {
-  EventNotification._();
-  static EventNotification en = EventNotification._();
+class NotificationController {
+  NotificationController._();
+  static NotificationController n = NotificationController._();
   static BuildContext context;
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -71,12 +71,18 @@ class EventNotification {
       @required String body,
       @required int id,
       @required payload,
-      @required Duration duration}) async {
-    await flutterLocalNotificationsPlugin.zonedSchedule(id, title, body,
-        tz.TZDateTime.now(tz.local).add(duration), platformChannelSpecifics,
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime);
+      @required DateTime dateTime}) async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      id,
+      title,
+      body,
+      tz.TZDateTime.from(dateTime, tz.local),
+      platformChannelSpecifics,
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time
+    );
   }
 
   Future<List<PendingNotificationRequest>> getPendingNotifications() async {

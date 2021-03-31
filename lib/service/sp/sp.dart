@@ -76,5 +76,15 @@ class SPData {
     return null;
   }
 
+  int getNotificationId(){
+    int i;
+    if (_sharedPreferences.containsKey("id")) {
+      i = _sharedPreferences.getInt("id");
+    }else{
+      i = -1;
+    }
+    _sharedPreferences.setInt("id", i++);
+    return i;
+  }
 
 }

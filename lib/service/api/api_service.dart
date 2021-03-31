@@ -12,7 +12,6 @@ class ApiService {
     if (allowToken && loginInfo != null) {
       dio.options.headers['Authorization'] = 'Bearer ${loginInfo.token}';
     }
-    print(_fullUrl(endPoints));
     try {
       Response response =
           await dio.post(allowFullUrl ? _fullUrl(endPoints) : endPoints);

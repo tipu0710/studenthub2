@@ -9,20 +9,20 @@ import 'package:studenthub2/ui/parent/view/parent.dart';
 import 'package:studenthub2/ui/university/view/university.dart';
 
 import 'ui/auth/login/view/login.dart';
-import 'ui/calender/controller/event_notification.dart';
+import 'ui/calender/controller/notification_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = new MyHttpOverrides();
   await SPData.spData.initSP();
-  await EventNotification.en.initNotification();
+  await NotificationController.n.initNotification();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    EventNotification.context = context;
+    NotificationController.context = context;
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return OKToast(
       child: MaterialApp(

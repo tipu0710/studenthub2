@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:studenthub2/global.dart';
+import 'package:studenthub2/ui/calender/controller/calender_controller.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class EventCreationDialog extends StatefulWidget {
+  final DateTime selectedDate;
+
+  const EventCreationDialog({Key key, @required this.selectedDate}) : super(key: key);
   @override
   _EventCreationDialogState createState() => _EventCreationDialogState();
 }
 
 class _EventCreationDialogState extends State<EventCreationDialog> {
-  List<String> tagList = [];
-  TextEditingController nameController = new TextEditingController();
   TextEditingController detailsController = new TextEditingController();
-  TextEditingController tagsController = new TextEditingController();
+  TextEditingController dateController;
 
   double margin = 20;
+  DateTime selectedDate;
+
+  @override
+  void initState() {
+    selectedDate = widget.selectedDate;
+    dateController = TextEditingController(
+        text: DateFormat("yyyy-MM-dd").format(selectedDate));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,10 +103,11 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                   ),
                   child: Center(
                     child: TextFormField(
-                      controller: tagsController,
+                      controller: dateController,
+                      readOnly: true,
+                      onTap: _selectDate,
                       keyboardType: TextInputType.text,
                       style: TextStyle(
-                        fontFamily: 'HelveticaNeue LT 65 Medium',
                         fontSize: 13,
                         color: const Color(0xff505763),
                       ),
@@ -108,17 +121,11 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                         disabledBorder: InputBorder.none,
                       ),
                       validator: (text) {
-                        if (tagList.isNotEmpty) {
+                        if (text == null || text.isEmpty) {
                           return "";
                         } else {
                           return null;
                         }
-                      },
-                      onFieldSubmitted: (String value) {
-                        setState(() {
-                          tagList.add(value);
-                          tagsController.clear();
-                        });
                       },
                     ),
                   ),
@@ -173,8 +180,13 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                 ),
                 UiHelper().button(
                     context: context,
+                    anim: true,
                     title: "SAVE",
-                    onPressed: () {},
+                    onPressed: () async {
+                      await EventController()
+                          .createEvent(selectedDate, detailsController.text);
+                      Navigator.pop(context);
+                    },
                     height: 27,
                     width: 78,
                     fontSize: 12,
@@ -183,5 +195,22 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
             ),
           )),
     );
+  }
+
+  Future _selectDate() async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate, // Refer step 1
+      lastDate: DateTime(DateTime.now().year + 1),
+      firstDate: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day),
+      helpText: "Select Event Date",
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        dateController.text = DateFormat("yyyy-MM-dd").format(selectedDate);
+      });
+    }
   }
 }
