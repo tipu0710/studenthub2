@@ -14,15 +14,15 @@ import 'ui/calender/controller/event_notification.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = new MyHttpOverrides();
-  await configureLocalTimeZone();
   await SPData.spData.initSP();
-  await initNotification();
+  await EventNotification.en.initNotification();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    EventNotification.context = context;
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return OKToast(
       child: MaterialApp(

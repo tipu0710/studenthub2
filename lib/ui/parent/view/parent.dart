@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:studenthub2/global.dart';
 import 'package:studenthub2/ui/calender/controller/event_notification.dart';
 import 'package:studenthub2/ui/home/view/home.dart';
 import 'package:studenthub2/ui/notification/view/notification.dart';
@@ -25,20 +24,23 @@ class _ParentState extends State<Parent> with SingleTickerProviderStateMixin {
     Parent.tabController =
         TabController(length: 5, vsync: this, initialIndex: 0);
     super.initState();
-    setContext = context;
-    requestPermissions();
-    configureDidReceiveLocalNotificationSubject();
-    configureSelectNotificationSubject();
+    EventNotification.en.iosNotificationPermission();
+    EventNotification.en.scheduleNotification(
+        title: "Schedule",
+        body: "This is fucking Schedule notification",
+        id: 0,
+        payload: "payload",
+        duration: Duration(seconds: 60));
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async{
-        if(Parent.tabController.index != 0){
+      onWillPop: () async {
+        if (Parent.tabController.index != 0) {
           Parent.tabController.animateTo(0);
           return false;
-        }else{
+        } else {
           return true;
         }
       },
@@ -62,7 +64,7 @@ class _ParentState extends State<Parent> with SingleTickerProviderStateMixin {
               TabData(iconData: CustomIcons.settings, title: "Settings"),
             ],
             onTabChangedListener: (position) {
-                Parent.tabController.animateTo(position);
+              Parent.tabController.animateTo(position);
             },
           )),
     );

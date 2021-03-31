@@ -14,14 +14,12 @@ class _CalenderState extends State<Calender> {
   CalendarController _controller;
   Map<DateTime, List<dynamic>> _events;
   List<dynamic> _selectedEvents;
-  TextEditingController _eventController;
   SharedPreferences prefs;
 
   @override
   void initState() {
     super.initState();
     _controller = CalendarController();
-    _eventController = TextEditingController();
     _events = {};
     _selectedEvents = [];
     initPrefs();

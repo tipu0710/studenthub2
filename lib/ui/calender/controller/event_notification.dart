@@ -1,146 +1,140 @@
-import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:rxdart/subjects.dart';
-import 'package:studenthub2/global.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+class EventNotification {
+  EventNotification._();
+  static EventNotification en = EventNotification._();
+  static BuildContext context;
 
-/// Streams are created so that app can respond to notification-related events
-/// since the plugin is initialised in the `main` function
-final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
-BehaviorSubject<ReceivedNotification>();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
-final BehaviorSubject<String> selectNotificationSubject =
-BehaviorSubject<String>();
+  static const String channelID = "tfp.studenthub.studenthub2";
 
-const MethodChannel platform =
-MethodChannel('dexterx.dev/flutter_local_notifications_example');
+  static const IOSNotificationDetails iOSPlatformChannelSpecifics =
+      IOSNotificationDetails(threadIdentifier: channelID);
 
-class ReceivedNotification {
-  ReceivedNotification({
-    @required this.id,
-    @required this.title,
-    @required this.body,
-    @required this.payload,
-  });
+  static const AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails(channelID, channelID, 'TFP Smart campus',
+          importance: Importance.max, priority: Priority.high, showWhen: false);
+  static const NotificationDetails platformChannelSpecifics =
+      NotificationDetails(
+          android: androidPlatformChannelSpecifics,
+          iOS: iOSPlatformChannelSpecifics);
 
-  final int id;
-  final String title;
-  final String body;
-  final String payload;
-}
+  initNotification() async {
+    // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+    final IOSInitializationSettings initializationSettingsIOS =
+        IOSInitializationSettings(
+            onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+            android: initializationSettingsAndroid,
+            iOS: initializationSettingsIOS);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: selectNotification);
 
-String selectedNotificationPayload;
-
-Future<void> configureLocalTimeZone() async {
-  tz.initializeTimeZones();
-  final String timeZoneName =
-  await platform.invokeMethod<String>('getTimeZoneName');
-  tz.setLocalLocation(tz.getLocation(timeZoneName));
-}
-
-initNotification() async{
-  final NotificationAppLaunchDetails notificationAppLaunchDetails =
-  await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
-  if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
-    selectedNotificationPayload = notificationAppLaunchDetails.payload;
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.local);
   }
 
-  const AndroidInitializationSettings initializationSettingsAndroid =
-  AndroidInitializationSettings('app_icon');
+  cancelNotification(int notificationId) async {
+    await flutterLocalNotificationsPlugin.cancel(notificationId);
+  }
 
-  /// Note: permissions aren't requested here just to demonstrate that can be
-  /// done later
-  final IOSInitializationSettings initializationSettingsIOS =
-  IOSInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
-      onDidReceiveLocalNotification:
-          (int id, String title, String body, String payload) async {
-        didReceiveLocalNotificationSubject.add(ReceivedNotification(
-            id: id, title: title, body: body, payload: payload));
-      });
-  const MacOSInitializationSettings initializationSettingsMacOS =
-  MacOSInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false);
-  final InitializationSettings initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsIOS,
-      macOS: initializationSettingsMacOS);
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onSelectNotification: (String payload) async {
-        if (payload != null) {
-          debugPrint('notification payload: $payload');
-        }
-        selectedNotificationPayload = payload;
-        selectNotificationSubject.add(payload);
-      });
-}
+  cancelAllNotification() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
+  }
 
-void requestPermissions() {
-  flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-      IOSFlutterLocalNotificationsPlugin>()
-      ?.requestPermissions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-  flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-      MacOSFlutterLocalNotificationsPlugin>()
-      ?.requestPermissions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-}
+  Future<NotificationAppLaunchDetails> notificationDetails() async {
+    return await flutterLocalNotificationsPlugin
+        .getNotificationAppLaunchDetails();
+  }
 
-void configureDidReceiveLocalNotificationSubject() {
-  didReceiveLocalNotificationSubject.stream
-      .listen((ReceivedNotification receivedNotification) async {
-    await showDialog(
-      context: buildContext,
+  showNotification(
+      {@required String title,
+      @required String body,
+      @required int id,
+      @required payload}) async {
+    await flutterLocalNotificationsPlugin
+        .show(id, title, body, platformChannelSpecifics, payload: payload);
+  }
+
+  scheduleNotification(
+      {@required String title,
+      @required String body,
+      @required int id,
+      @required payload,
+      @required Duration duration}) async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(id, title, body,
+        tz.TZDateTime.now(tz.local).add(duration), platformChannelSpecifics,
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime);
+  }
+
+  Future<List<PendingNotificationRequest>> getPendingNotifications() async {
+    return await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+  }
+
+  Future<List<ActiveNotification>> getAndroidActiveNotifications() async {
+    return await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.getActiveNotifications();
+  }
+
+  Future<bool> iosNotificationPermission() async {
+    return await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+  }
+
+  Future onDidReceiveLocalNotification(
+      int id, String title, String body, String payload) async {
+    // display a dialog with the notification details, tap ok to go to another page
+    showDialog(
+      context: context,
       builder: (BuildContext context) => CupertinoAlertDialog(
-        title: receivedNotification.title != null
-            ? Text(receivedNotification.title)
-            : null,
-        content: receivedNotification.body != null
-            ? Text(receivedNotification.body)
-            : null,
-        actions: <Widget>[
+        title: Text(title),
+        content: Text(body),
+        actions: [
           CupertinoDialogAction(
             isDefaultAction: true,
+            child: Text('Ok'),
             onPressed: () async {
               Navigator.of(context, rootNavigator: true).pop();
               await Navigator.push(
                 context,
-                MaterialPageRoute<void>(
-                  builder: (BuildContext context) =>
-                      Parent(),
+                MaterialPageRoute(
+                  builder: (context) => Parent(),
                 ),
               );
             },
-            child: const Text('Ok'),
           )
         ],
       ),
     );
-  });
-}
+  }
 
-void configureSelectNotificationSubject() {
-  selectNotificationSubject.stream.listen((String payload) async {
-    await Navigator.push(buildContext, MaterialPageRoute(builder: (_)=>Parent()));
-  });
+  Future selectNotification(String payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: $payload');
+    }
+    await Navigator.push(
+      context,
+      MaterialPageRoute<void>(builder: (context) => Parent()),
+    );
+  }
 }

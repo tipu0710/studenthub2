@@ -48,7 +48,3 @@ Institute _institute;
 set setInstitute(Institute institute)=>_institute = institute;
 Institute get institute => _institute;
 
-BuildContext _context;
-set setContext(BuildContext context)=>_context = context;
-BuildContext get buildContext => _context;
-

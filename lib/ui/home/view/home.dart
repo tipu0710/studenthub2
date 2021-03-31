@@ -17,7 +17,7 @@ class _HomeState extends State<Home> {
   HomeController homeController;
   @override
   void initState() {
-    homeController = HomeController(context);
+    homeController = HomeController();
     super.initState();
   }
 

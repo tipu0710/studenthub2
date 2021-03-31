@@ -10,10 +10,6 @@ import 'package:studenthub2/ui/profile/controller/profile_controller.dart';
 
 class HomeController {
   HomeModel homeModel;
-  BuildContext _context;
-  HomeController(BuildContext context) {
-    this._context = context;
-  }
 
   Future<bool> getDashboard() async {
     await ProfileController.getProfile();
