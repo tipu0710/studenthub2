@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:studenthub2/global.dart';
 import 'package:studenthub2/ui/auth/pin/controller/pin_controller.dart';
 import 'package:studenthub2/ui/auth/reset_pass/model/reset_pass_model.dart';
 import '../../../../ui_helper/ui_helper.dart';
@@ -32,7 +33,11 @@ class _PinState extends State<Pin> {
 
   String otp = "";
 
+  ValueNotifier<int> valueNotifier = new ValueNotifier(60*2);
+
   PinController pinController;
+
+  Timer _timer;
 
   @override
   void dispose() {
@@ -43,11 +48,33 @@ class _PinState extends State<Pin> {
 
   @override
   void initState() {
-    onTapRecognizer = TapGestureRecognizer()..onTap = () async {};
-    errorController = StreamController<ErrorAnimationType>();
     pinController = PinController(context, errorController,
         passResetModel: widget.passResetModel);
+    onTapRecognizer = TapGestureRecognizer()
+      ..onTap = () async {
+        if (valueNotifier.value == 0) {
+          await pinController.resendCode();
+          valueNotifier.value = 60*2;
+          playTimer();
+          setState(() {
+            showMessage("Code send!\nCheck email!");
+          });
+        }
+      };
+    errorController = StreamController<ErrorAnimationType>();
+    playTimer();
     super.initState();
+  }
+
+  void playTimer() {
+    if (_timer != null && _timer.isActive) return;
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (valueNotifier.value > 0) {
+        valueNotifier.value = valueNotifier.value - 1;
+      } else {
+        _timer.cancel();
+      }
+    });
   }
 
   @override
@@ -83,7 +110,9 @@ class _PinState extends State<Pin> {
           children: [
             Container(
               child: Text(
-                widget.passResetModel != null ? "Reset Password" : 'Sign Up New Student',
+                widget.passResetModel != null
+                    ? "Reset Password"
+                    : 'Sign Up New Student',
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 20,
@@ -122,26 +151,53 @@ class _PinState extends State<Pin> {
                 topMargin: 10),
             widget.passResetModel != null
                 ? Container()
-                : GestureDetector(
-                    onTap: () {
-                      pinController.resendCode();
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: 20),
-                      child: Text(
-                        'Resend The Code',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 12,
-                          color: const Color(0xffff3939),
-                          height: 1.5,
-                        ),
-                        textHeightBehavior:
-                            TextHeightBehavior(applyHeightToFirstAscent: false),
+                : ValueListenableBuilder<int>(
+                    valueListenable: valueNotifier,
+                    builder: (_, value, __) {
+                      return RichText(
                         textAlign: TextAlign.center,
-                      ),
-                    ),
-                  )
+                        text: TextSpan(
+                            text: "Didn't receive the code? ",
+                            style:
+                                TextStyle(color: Colors.black54, fontSize: 15),
+                            children: [
+                              TextSpan(
+                                  text: value == 0
+                                      ? " RESEND"
+                                      : " Wait $value sec",
+                                  recognizer: onTapRecognizer,
+                                  style: TextStyle(
+                                      color: value == 0
+                                          ? Color(0xFFFF4646)
+                                          : primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16))
+                            ]),
+                      );
+                    },
+                  ),
+            // widget.passResetModel != null
+            //     ? Container()
+            //     : GestureDetector(
+            //         onTap: () {
+            //           pinController.resendCode();
+            //         },
+            //         child: Container(
+            //           margin: EdgeInsets.only(top: 20),
+            //           child: Text(
+            //             'Resend The Code',
+            //             style: TextStyle(
+            //               fontFamily: 'Roboto',
+            //               fontSize: 12,
+            //               color: const Color(0xffff3939),
+            //               height: 1.5,
+            //             ),
+            //             textHeightBehavior:
+            //                 TextHeightBehavior(applyHeightToFirstAscent: false),
+            //             textAlign: TextAlign.center,
+            //           ),
+            //         ),
+            //       )
           ],
         ),
       ),

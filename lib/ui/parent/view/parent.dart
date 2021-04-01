@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:studenthub2/ui/calender/controller/notification_controller.dart';
+import 'package:studenthub2/ui/calendar/controller/notification_controller.dart';
 import 'package:studenthub2/ui/home/view/home.dart';
 import 'package:studenthub2/ui/notification/view/notification.dart';
 import 'package:studenthub2/ui/profile/view/profile.dart';

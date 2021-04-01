@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:studenthub2/global.dart';
-import 'package:studenthub2/ui/calender/controller/calender_controller.dart';
+import 'package:studenthub2/ui/calendar/controller/calendar_controller.dart';
+import 'package:studenthub2/ui/calendar/model/event_model.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class EventCreationDialog extends StatefulWidget {
@@ -183,9 +184,9 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                     anim: true,
                     title: "SAVE",
                     onPressed: () async {
-                      await EventController()
+                      EventModel event = await EventController()
                           .createEvent(selectedDate, detailsController.text);
-                      Navigator.pop(context);
+                      Navigator.pop(context, event);
                     },
                     height: 27,
                     width: 78,

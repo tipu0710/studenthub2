@@ -9,7 +9,7 @@ import 'package:studenthub2/ui/parent/view/parent.dart';
 import 'package:studenthub2/ui/university/view/university.dart';
 
 import 'ui/auth/login/view/login.dart';
-import 'ui/calender/controller/notification_controller.dart';
+import 'ui/calendar/controller/notification_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

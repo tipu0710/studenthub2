@@ -26,8 +26,6 @@ class _LoginState extends State<Login> {
 
   LoginController loginController;
 
-  bool rememberValue = true;
-
   @override
   void initState() {
     loginController = LoginController(context);
@@ -87,27 +85,27 @@ class _LoginState extends State<Login> {
                     ),
                     email(),
                     password(),
-                    remember(),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    UiHelper().button(
-                        context: context,
-                        title: "LOGIN",
-                        anim: true,
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            print(rememberValue);
-                            await loginController.login(emailController.text,
-                                passwordController.text, rememberValue);
-                          }
-                        }),
+                    SizedBox(height: 5,),
                     SizedBox(
                       height: 15,
                       child: forgotPass(),
                     ),
                     SizedBox(
                       height: 40,
+                    ),
+                    UiHelper().button(
+                        context: context,
+                        title: "LOGIN",
+                        bottomMargin: 5,
+                        anim: true,
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            await loginController.login(
+                                emailController.text, passwordController.text);
+                          }
+                        }),
+                    SizedBox(
+                      height: 0,
                     ),
                     signUp(),
                     SizedBox(
@@ -131,24 +129,35 @@ class _LoginState extends State<Login> {
     );
   }
 
+
   Widget signUp() {
     return InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (_) => Register()));
       },
-      child: Center(
-        child: Text(
-          'Sign Up',
-          style: TextStyle(
-            fontFamily: 'Roboto',
-            fontSize: 18,
-            color: const Color(0xff252525),
-            fontWeight: FontWeight.w500,
-            height: 1.8,
-          ),
-          textHeightBehavior:
-              TextHeightBehavior(applyHeightToFirstAscent: false),
-          textAlign: TextAlign.left,
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: RichText(
+          text: TextSpan(
+              text: "New User? ",
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 12,
+                color: const Color(0xff252525),
+                fontWeight: FontWeight.w500,
+                height: 1.8,
+              ),
+              children: [
+                TextSpan(
+                    text: "  Sign Up",
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 13,
+                      color: primaryColor,
+                      fontWeight: FontWeight.w500,
+                      height: 1.8,
+                    ))
+              ]),
         ),
       ),
     );
@@ -189,45 +198,13 @@ class _LoginState extends State<Login> {
             fit: BoxFit.fitHeight,
           ),
           Text(
-            '  TFP Solutions',
+            '  TFP SOLUTIONS BERHAD',
             style: TextStyle(
               fontFamily: 'Microsoft YaHei UI',
               fontSize: 15,
               color: const Color(0xff494949),
             ),
             textAlign: TextAlign.left,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget remember() {
-    return Container(
-      height: 20,
-      margin: EdgeInsets.only(top: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'Remember me next time ',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: 13,
-              color: const Color(0xff252525),
-            ),
-            textAlign: TextAlign.left,
-          ),
-          FittedBox(
-            child: CupertinoSwitch(
-              value: rememberValue,
-              activeColor: Color(0xff1E5AA7),
-              onChanged: (value) {
-                setState(() {
-                  rememberValue = value;
-                });
-              },
-            ),
           ),
         ],
       ),

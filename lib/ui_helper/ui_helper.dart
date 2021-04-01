@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:studenthub2/global.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
 import 'package:studenthub2/ui_helper/button_anim.dart';
@@ -9,8 +10,13 @@ class UiHelper {
       {TextInputAction textInputAction = TextInputAction.next,
       TextInputType textInputType = TextInputType.text,
       String Function(String) validator,
-      IconData suffixIcon,
+      Widget suffixIcon,
+      bool obscureText,
+      bool capsOn = false,
       Function(String) onChange}) {
+    if (obscureText == null) {
+      obscureText = textInputType == TextInputType.visiblePassword;
+    }
     return Builder(
       builder: (context) => Container(
         margin: EdgeInsets.only(top: 15),
@@ -18,8 +24,9 @@ class UiHelper {
           keyboardType: textInputType,
           controller: controller,
           textInputAction: textInputAction,
-          obscureText: textInputType == TextInputType.visiblePassword,
+          obscureText: obscureText ?? false,
           onChanged: onChange,
+          inputFormatters: capsOn ? [UpperCaseTextFormatter()] : [],
           style: TextStyle(
             fontFamily: 'Roboto',
             fontSize: 14,
@@ -31,7 +38,7 @@ class UiHelper {
           },
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(left: 10, right: 15),
-            suffixIcon: suffixIcon != null ? Icon(suffixIcon) : null,
+            suffixIcon: suffixIcon,
             labelText: label,
             labelStyle: TextStyle(
               fontFamily: 'Roboto',
@@ -121,6 +128,7 @@ class UiHelper {
       @required Function() onPressed,
       bool anim = false,
       double topMargin = 40,
+      double bottomMargin = 20,
       Color color,
       double width,
       double height,
@@ -132,16 +140,16 @@ class UiHelper {
             mainChild: Container(
               height: height ?? 55,
               width: width ?? 335,
-              margin: EdgeInsets.only(top: topMargin, bottom: 20),
+              margin: EdgeInsets.only(top: topMargin, bottom: bottomMargin),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
               ),
               child: ElevatedButton(
                 onPressed: () async {
                   valueNotifier.value = AnimState.loadingStart;
-                  try{
+                  try {
                     await onPressed();
-                  }catch (e){
+                  } catch (e) {
                     print(e);
                     showMessage("Something went wrong!");
                   }
@@ -268,5 +276,16 @@ class UiHelper {
           }
           return Container();
         });
+  }
+}
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text?.toUpperCase(),
+      selection: newValue.selection,
+    );
   }
 }

@@ -20,7 +20,7 @@ class LoginController {
     this._context = context;
   }
 
-  login(String email, String password, bool saveInfo) async {
+  login(String email, String password) async {
     Map<String, dynamic> map = {
       "username": email,
       "password": password,
@@ -40,9 +40,8 @@ class LoginController {
       LoginModel loginModel = LoginModel.fromJson(
           jsonDecode(DataProcess.getDecryptedData(dataModel.data)));
 
-      if (saveInfo) {
-        SPData.spData.saveLoginInfo(loginModel);
-      }
+      SPData.spData.saveLoginInfo(loginModel);
+
       setLoginInfo = loginModel;
 
       await ProfileController.getProfile();

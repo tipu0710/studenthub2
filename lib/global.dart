@@ -5,6 +5,17 @@ import 'package:studenthub2/ui/home/model/home_model.dart';
 
 import 'ui/profile/model/profile_model.dart';
 
+extension StringExtension on String {
+  String capitalize() {
+    String string = '';
+    var s = this.split(' ');
+    s.forEach((element) {
+      string += "${element[0].toUpperCase()}${element.substring(1)} ";
+    });
+    return string.trim();
+  }
+}
+
 const MaterialColor primaryColor = const MaterialColor(
   0xFF1e5aa7,
   const <int, Color>{

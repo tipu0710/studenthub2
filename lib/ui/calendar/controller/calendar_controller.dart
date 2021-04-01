@@ -6,8 +6,9 @@ import 'package:studenthub2/model/data_model.dart';
 import 'package:studenthub2/service/api/api_service.dart';
 import 'package:studenthub2/service/process/process.dart';
 import 'package:studenthub2/service/sp/sp.dart';
-import 'package:studenthub2/ui/calender/controller/notification_controller.dart';
-import 'package:studenthub2/ui/calender/model/event_model.dart';
+import 'package:studenthub2/ui/calendar/model/event_model.dart';
+
+import 'notification_controller.dart';
 
 class EventController {
   Future<List<EventModel>> getEvents(
@@ -40,7 +41,7 @@ class EventController {
     }
   }
 
-  createEvent(DateTime dateTime, String description) async {
+  Future<EventModel> createEvent(DateTime dateTime, String description) async {
     Map<String, dynamic> map = {
       "Date": "${dateTime.year}-${dateTime.month}-${dateTime.day}T00:00:00",
       "Details": description
@@ -56,8 +57,15 @@ class EventController {
     DataModel dataModel = DataModel.fromJson(response.data);
     if (dataModel.hasError) {
       showMessage(dataModel.errors.first);
+      return null;
     } else {
       print(DataProcess.getDecryptedData(dataModel.data));
+
+      EventModel eventModel = EventModel.fromJson(
+        jsonDecode(
+          DataProcess.getDecryptedData(dataModel.data),
+        ),
+      );
 
       NotificationController.n.scheduleNotification(
         title: "Attention!",
@@ -68,6 +76,7 @@ class EventController {
             DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0),
       );
       showMessage("Event added!");
+      return eventModel;
     }
   }
 }

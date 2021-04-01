@@ -35,13 +35,12 @@ class _ShimmerLoadingState extends State<ShimmerLoading> {
     if (!widget.isLoading) {
       return widget.child;
     }
-
     return ShaderMask(
       blendMode: BlendMode.srcATop,
       shaderCallback: (bounds) {
         return _shimmerGradient.createShader(bounds);
       },
-      child: widget.child,
+      child: IgnorePointer(ignoring: widget.isLoading, child: widget.child),
     );
   }
 }

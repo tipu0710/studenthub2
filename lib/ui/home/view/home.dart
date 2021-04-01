@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/global.dart';
 import 'package:studenthub2/service/api/api_service.dart';
-import 'package:studenthub2/ui/calender/view/calender.dart';
+import 'package:studenthub2/ui/calendar/view/calendar.dart';
 import 'package:studenthub2/ui/home/controller/home_controller.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
 import 'package:studenthub2/ui_helper/custom_icons.dart';
@@ -215,7 +215,7 @@ class _HomeState extends State<Home> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => Calender()));
+                            builder: (_) => Calendar()));
                   },
                 ),
                 menuCard(
@@ -469,7 +469,7 @@ class _HomeState extends State<Home> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      'Student Id: ${profileModel?.id ?? 0}',
+                      'Student Id: ${profileModel?.institutionDetails?.matricId ?? 0}',
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: 13,

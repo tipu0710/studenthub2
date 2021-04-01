@@ -53,7 +53,7 @@ class _UniversityState extends State<University> {
             Container(
               margin: EdgeInsets.only(left: 20, right: 20),
               child: UiHelper().input(_textEditingController, "University",
-                  suffixIcon: Icons.search,
+                  suffixIcon: Icon(Icons.search),
                   textInputAction: TextInputAction.done, onChange: (data) {
                 _universityController.updateController(data);
               }),

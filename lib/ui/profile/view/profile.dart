@@ -58,7 +58,7 @@ class Profile extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.only(top: 0),
                       child: Text(
-                        profileModel.id,
+                        profileModel.institutionDetails.matricId,
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 15,

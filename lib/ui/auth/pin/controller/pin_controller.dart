@@ -48,14 +48,13 @@ class PinController {
       _streamController.add(ErrorAnimationType.shake);
     } else {
       if (pin == _passResetModel.code) {
-        Navigator.pushAndRemoveUntil(
+        Navigator.push(
             _context,
             MaterialPageRoute(
               builder: (_) => Password(
                 passResetModel: _passResetModel,
               ),
-            ),
-            (route) => false);
+            ));
       } else {
         _streamController.add(ErrorAnimationType.shake);
       }
@@ -79,26 +78,20 @@ class PinController {
         showMessage(dataModel.errors.first);
         return;
       } else {
-        if (dataModel.dataExtra != null) {
-          print(DataProcess.getDecryptedData(dataModel.dataExtra));
-          print(DataProcess.getDecryptedData(dataModel.data));
-        }
+        print(DataProcess.getDecryptedData(dataModel.data));
         studentRegModel.verified = true;
         SPData.spData.setStudentRegInfo(studentRegModel);
-        Navigator.pushAndRemoveUntil(
+        Navigator.push(
             _context,
             MaterialPageRoute(
               builder: (_) => Password(),
-            ),
-            (route) => false);
+            ));
       }
     }
   }
 
   Future<String> resendCode() async {
     String s = DataProcess.getEncryptedData(registerModel.emailAddress);
-    print(
-        "https://studenthub.smartcampus.com.my/api/Home/StudentMobileApi/ResendOTP?input=$s");
     Response response = await ApiService.postMethod(
         "https://studenthub.smartcampus.com.my/api/Home/StudentMobileApi/ResendOTP?input=$s",
         allowFullUrl: false);
@@ -114,6 +107,6 @@ class PinController {
   }
 
   void dispose() {
-    _streamController.close();
+    _streamController?.close();
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/ui/auth/password/controller/password_controller.dart';
 import 'package:studenthub2/ui/auth/reset_pass/model/reset_pass_model.dart';
@@ -7,6 +8,7 @@ class Password extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController passController = TextEditingController();
   final TextEditingController rePassController = TextEditingController();
+  final ValueNotifier<bool> passVisible = ValueNotifier(false);
 
   final PassResetModel passResetModel;
 
@@ -28,7 +30,8 @@ class Password extends StatelessWidget {
           ),
           body(context),
           UiHelper().back(context, onTap: () {
-            Navigator.pop(context);
+            int count = 0;
+            Navigator.of(context).popUntil((_) => count++ >= 2);
           })
         ],
       ),
@@ -78,14 +81,27 @@ class Password extends StatelessWidget {
                   return "Invalid Password";
                 }
               }),
-              UiHelper().input(rePassController, "Confirm Password",
-                  textInputAction: TextInputAction.done, validator: (value) {
-                if (value == passController.text) {
-                  return null;
-                } else {
-                  return "Password doesn't match";
-                }
-              }),
+              ValueListenableBuilder(
+                  valueListenable: passVisible,
+                  builder: (_, visible, __) => UiHelper().input(
+                          rePassController, "Confirm Password",
+                          obscureText: !visible,
+                          textInputAction: TextInputAction.done,
+                          textInputType: TextInputType.visiblePassword,
+                          suffixIcon: IconButton(
+                              icon: Icon(
+                                  visible ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
+                                  color: Color(0xffB4B4B4)),
+                              onPressed: () {
+                                passVisible.value = !visible;
+                              }),
+                          validator: (value) {
+                        if (value == passController.text) {
+                          return null;
+                        } else {
+                          return "Password doesn't match";
+                        }
+                      })),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Container(

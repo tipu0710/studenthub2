@@ -132,7 +132,8 @@ class _RegisterState extends State<Register> {
                           registerController.getReferInfo(referralCode.text);
                         }
                       },
-                      child: UiHelper().input(referralCode, "Referral Code"),
+                      child: UiHelper()
+                          .input(referralCode, "Referral Code", capsOn: true),
                     ),
                     UiHelper().input(program, "Program", onChange: (value) {
                       registerController.updateProgramStream(value);
@@ -157,9 +158,9 @@ class _RegisterState extends State<Register> {
                       _intakeStream.add([]);
                     }),
                     UiHelper().button(
-                        context: context,
-                        title: "REQUEST PIN CODE",
-                        onPressed: validate,
+                      context: context,
+                      title: "REQUEST PIN CODE",
+                      onPressed: validate,
                       anim: true,
                     ),
                   ],
@@ -175,7 +176,7 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  validate() async{
+  validate() async {
     if (_formKey.currentState.validate()) {
       UniversityModel uni = SPData.spData.getUniversity();
       RegisterModel registerModel = RegisterModel(
@@ -201,7 +202,7 @@ class _RegisterState extends State<Register> {
           return Container(
             margin: EdgeInsets.only(top: 15),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
@@ -214,57 +215,60 @@ class _RegisterState extends State<Register> {
                   ),
                   textAlign: TextAlign.left,
                 ),
-                Expanded(child: Container()),
-                Container(
-                  width: 100,
-                  child: RadioListTile<int>(
-                    title: Text(
-                      'Male',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 16,
-                        color: const Color(0xffacacac),
-                        height: 1.5625,
+                Row(
+                  children: [
+                    Container(
+                      width: 100,
+                      child: RadioListTile<int>(
+                        title: Text(
+                          'Male',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 16,
+                            color: const Color(0xffacacac),
+                            height: 1.5625,
+                          ),
+                          textHeightBehavior: TextHeightBehavior(
+                              applyHeightToFirstAscent: false),
+                          textAlign: TextAlign.left,
+                        ),
+                        contentPadding: EdgeInsets.zero,
+                        activeColor: primaryColor,
+                        value: 0,
+                        groupValue: gender,
+                        onChanged: (int value) {
+                          gender = value;
+                          valueNotifier.value = value;
+                        },
                       ),
-                      textHeightBehavior:
-                          TextHeightBehavior(applyHeightToFirstAscent: false),
-                      textAlign: TextAlign.left,
                     ),
-                    contentPadding: EdgeInsets.zero,
-                    activeColor: primaryColor,
-                    value: 0,
-                    groupValue: gender,
-                    onChanged: (int value) {
-                      gender = value;
-                      valueNotifier.value = value;
-                    },
-                  ),
-                ),
-                Container(
-                  width: 115,
-                  child: RadioListTile<int>(
-                    title: Text(
-                      'Female',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 16,
-                        color: const Color(0xffacacac),
-                        height: 1.5625,
+                    Container(
+                      width: 115,
+                      child: RadioListTile<int>(
+                        title: Text(
+                          'Female',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 16,
+                            color: const Color(0xffacacac),
+                            height: 1.5625,
+                          ),
+                          textHeightBehavior: TextHeightBehavior(
+                              applyHeightToFirstAscent: false),
+                          textAlign: TextAlign.left,
+                        ),
+                        contentPadding: EdgeInsets.zero,
+                        activeColor: primaryColor,
+                        value: 1,
+                        groupValue: gender,
+                        onChanged: (int value) {
+                          gender = value;
+                          valueNotifier.value = value;
+                        },
                       ),
-                      textHeightBehavior:
-                          TextHeightBehavior(applyHeightToFirstAscent: false),
-                      textAlign: TextAlign.left,
                     ),
-                    contentPadding: EdgeInsets.zero,
-                    activeColor: primaryColor,
-                    value: 1,
-                    groupValue: gender,
-                    onChanged: (int value) {
-                      gender = value;
-                      valueNotifier.value = value;
-                    },
-                  ),
-                ),
+                  ],
+                )
               ],
             ),
           );

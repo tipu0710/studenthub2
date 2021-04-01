@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:studenthub2/global.dart';
-import 'package:studenthub2/ui/calender/controller/calender_controller.dart';
-import 'package:studenthub2/ui/calender/model/event_model.dart';
-import 'package:studenthub2/ui/calender/view/event_create_dialog.dart';
+import 'package:studenthub2/ui/calendar/controller/calendar_controller.dart';
+import 'package:studenthub2/ui/calendar/model/event_model.dart';
 import 'package:studenthub2/ui_helper/effect.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class Calender extends StatefulWidget {
+import 'event_create_dialog.dart';
+
+class Calendar extends StatefulWidget {
   @override
-  _CalenderState createState() => _CalenderState();
+  _CalendarState createState() => _CalendarState();
 }
 
-class _CalenderState extends State<Calender> {
+class _CalendarState extends State<Calendar> {
   CalendarController _controller;
   Map<DateTime, List<dynamic>> _events;
   List<dynamic> _selectedEvents;
@@ -106,7 +107,7 @@ class _CalenderState extends State<Calender> {
               ),
             ),
           ),
-          UiHelper().back(context, title: "Calender", onTap: () {
+          UiHelper().back(context, title: "Calendar", onTap: () {
             Navigator.pop(context);
           }),
         ],
@@ -177,14 +178,18 @@ class _CalenderState extends State<Calender> {
   }
 
   _showAddDialog() async {
-    await showDialog(
+    EventModel eventModel = await showDialog(
         context: context,
         builder: (context) => EventCreationDialog(
               selectedDate: _controller.selectedDay,
             ));
-    setState(() {
-      _selectedEvents = _events[_controller.selectedDay];
-    });
+    if(mounted && eventModel != null){
+      setState(() {
+        _events = Map<DateTime, List<dynamic>>.from(decodeMap(eventModel));
+        _selectedEvents = _events[_controller.selectedDay];
+      });
+    }
+
   }
 
   void getData() async {
