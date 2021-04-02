@@ -284,7 +284,6 @@ class _HomeState extends State<Home> {
   }
 
   Widget eventCard(String title, String image, int position, bool loading) {
-    print(image);
     return ShimmerLoading(
       isLoading: loading,
       child: Container(
@@ -354,7 +353,6 @@ class _HomeState extends State<Home> {
 
   Widget announcementCard(String title, String description, String image,
       int position, bool loading) {
-    print(image);
     return ShimmerLoading(
       isLoading: loading,
       child: Container(

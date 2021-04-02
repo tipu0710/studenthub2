@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:studenthub2/global.dart';
 import 'package:studenthub2/model/data_model.dart';
 import 'package:studenthub2/service/api/api_service.dart';
@@ -41,9 +42,32 @@ class EventController {
     }
   }
 
-  Future<EventModel> createEvent(DateTime dateTime, String description) async {
+  Future<EventModel> createEvent(
+      DateTime dateTime, TimeOfDay timeOfDay, String description) async {
+    print(
+        "${_doubleString(
+          dateTime.year.toString(),
+        )}-${_doubleString(
+          dateTime.month.toString(),
+        )}-${_doubleString(
+          dateTime.day.toString(),
+        )}T${_doubleString(
+          timeOfDay.hour.toString(),
+        )}:${_doubleString(
+          timeOfDay.minute.toString(),
+        )}:00");
     Map<String, dynamic> map = {
-      "Date": "${dateTime.year}-${dateTime.month}-${dateTime.day}T00:00:00",
+      "Date": "${_doubleString(
+        dateTime.year.toString(),
+      )}-${_doubleString(
+        dateTime.month.toString(),
+      )}-${_doubleString(
+        dateTime.day.toString(),
+      )}T${_doubleString(
+        timeOfDay.hour.toString(),
+      )}:${_doubleString(
+        timeOfDay.minute.toString(),
+      )}:00",
       "Details": description
     };
     Response response = await ApiService.postMethod(
@@ -72,11 +96,19 @@ class EventController {
         body: description,
         id: SPData.spData.getNotificationId(),
         payload: "payload",
-        dateTime:
-            DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0),
+        dateTime: DateTime(dateTime.year, dateTime.month, dateTime.day,
+            timeOfDay.hour, timeOfDay.minute, 0),
       );
       showMessage("Event added!");
       return eventModel;
+    }
+  }
+
+  String _doubleString(String s) {
+    if (s.length == 2) {
+      return s;
+    } else {
+      return '0$s';
     }
   }
 }

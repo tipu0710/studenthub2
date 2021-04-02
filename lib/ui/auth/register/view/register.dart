@@ -215,59 +215,62 @@ class _RegisterState extends State<Register> {
                   ),
                   textAlign: TextAlign.left,
                 ),
-                Row(
-                  children: [
-                    Container(
-                      width: 100,
-                      child: RadioListTile<int>(
-                        title: Text(
-                          'Male',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 16,
-                            color: const Color(0xffacacac),
-                            height: 1.5625,
+                Container(
+                  width: 216,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 100,
+                        child: RadioListTile<int>(
+                          title: Text(
+                            'Male',
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 16,
+                              color: const Color(0xffacacac),
+                              height: 1.5625,
+                            ),
+                            textHeightBehavior: TextHeightBehavior(
+                                applyHeightToFirstAscent: false),
+                            textAlign: TextAlign.left,
                           ),
-                          textHeightBehavior: TextHeightBehavior(
-                              applyHeightToFirstAscent: false),
-                          textAlign: TextAlign.left,
+                          contentPadding: EdgeInsets.zero,
+                          activeColor: primaryColor,
+                          value: 0,
+                          groupValue: gender,
+                          onChanged: (int value) {
+                            gender = value;
+                            valueNotifier.value = value;
+                          },
                         ),
-                        contentPadding: EdgeInsets.zero,
-                        activeColor: primaryColor,
-                        value: 0,
-                        groupValue: gender,
-                        onChanged: (int value) {
-                          gender = value;
-                          valueNotifier.value = value;
-                        },
                       ),
-                    ),
-                    Container(
-                      width: 115,
-                      child: RadioListTile<int>(
-                        title: Text(
-                          'Female',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 16,
-                            color: const Color(0xffacacac),
-                            height: 1.5625,
+                      Container(
+                        width: 115,
+                        child: RadioListTile<int>(
+                          title: Text(
+                            'Female',
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 16,
+                              color: const Color(0xffacacac),
+                              height: 1.5625,
+                            ),
+                            textHeightBehavior: TextHeightBehavior(
+                                applyHeightToFirstAscent: false),
+                            textAlign: TextAlign.left,
                           ),
-                          textHeightBehavior: TextHeightBehavior(
-                              applyHeightToFirstAscent: false),
-                          textAlign: TextAlign.left,
+                          contentPadding: EdgeInsets.zero,
+                          activeColor: primaryColor,
+                          value: 1,
+                          groupValue: gender,
+                          onChanged: (int value) {
+                            gender = value;
+                            valueNotifier.value = value;
+                          },
                         ),
-                        contentPadding: EdgeInsets.zero,
-                        activeColor: primaryColor,
-                        value: 1,
-                        groupValue: gender,
-                        onChanged: (int value) {
-                          gender = value;
-                          valueNotifier.value = value;
-                        },
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 )
               ],
             ),

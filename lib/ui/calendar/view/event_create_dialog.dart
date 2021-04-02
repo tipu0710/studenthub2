@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:studenthub2/global.dart';
@@ -8,7 +9,8 @@ import 'package:studenthub2/ui_helper/ui_helper.dart';
 class EventCreationDialog extends StatefulWidget {
   final DateTime selectedDate;
 
-  const EventCreationDialog({Key key, @required this.selectedDate}) : super(key: key);
+  const EventCreationDialog({Key key, @required this.selectedDate})
+      : super(key: key);
   @override
   _EventCreationDialogState createState() => _EventCreationDialogState();
 }
@@ -16,15 +18,21 @@ class EventCreationDialog extends StatefulWidget {
 class _EventCreationDialogState extends State<EventCreationDialog> {
   TextEditingController detailsController = new TextEditingController();
   TextEditingController dateController;
+  TextEditingController timeController;
 
   double margin = 20;
   DateTime selectedDate;
+  TimeOfDay selectedTime = TimeOfDay.now();
 
   @override
   void initState() {
     selectedDate = widget.selectedDate;
     dateController = TextEditingController(
         text: DateFormat("yyyy-MM-dd").format(selectedDate));
+    timeController = TextEditingController(
+        text: dateTimeFormatter(
+            "${selectedTime.hour}:${selectedTime.minute}:00",
+            dateType: DateType.time));
     super.initState();
   }
 
@@ -34,7 +42,7 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
       backgroundColor: Colors.transparent,
       child: Container(
           width: 320.0,
-          height: 400,
+          height: 460,
           padding: EdgeInsets.only(
               left: margin * 2, right: margin * 2, top: margin, bottom: margin),
           decoration: BoxDecoration(
@@ -72,7 +80,7 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                     GestureDetector(
                       onTap: () => Navigator.pop(context),
                       child: Container(
-                        margin: EdgeInsets.only(top: 5),
+                        padding: EdgeInsets.all(5),
                         child: Icon(
                           Icons.close,
                           size: 16,
@@ -107,6 +115,55 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                       controller: dateController,
                       readOnly: true,
                       onTap: _selectDate,
+                      keyboardType: TextInputType.text,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: const Color(0xff505763),
+                      ),
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(
+                            left: 20, right: 20, bottom: 0, top: 0),
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                      ),
+                      validator: (text) {
+                        if (text == null || text.isEmpty) {
+                          return "";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: margin - 10),
+                  child: Text(
+                    'Time',
+                    style: TextStyle(
+                      fontFamily: 'HelveticaNeue LT 65 Medium',
+                      fontSize: 12,
+                      color: const Color(0xff505763),
+                      height: 1.83,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Container(
+                  height: 45,
+                  margin: EdgeInsets.only(top: 5),
+                  decoration: BoxDecoration(
+                    border:
+                        Border.all(width: 0.2, color: const Color(0xff606060)),
+                  ),
+                  child: Center(
+                    child: TextFormField(
+                      controller: timeController,
+                      readOnly: true,
+                      onTap: _selectTime,
                       keyboardType: TextInputType.text,
                       style: TextStyle(
                         fontSize: 13,
@@ -184,8 +241,8 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                     anim: true,
                     title: "SAVE",
                     onPressed: () async {
-                      EventModel event = await EventController()
-                          .createEvent(selectedDate, detailsController.text);
+                      EventModel event = await EventController().createEvent(
+                          selectedDate, selectedTime, detailsController.text);
                       Navigator.pop(context, event);
                     },
                     height: 27,
@@ -211,6 +268,23 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
       setState(() {
         selectedDate = picked;
         dateController.text = DateFormat("yyyy-MM-dd").format(selectedDate);
+      });
+    }
+  }
+
+  Future<Null> _selectTime() async {
+    final TimeOfDay picked = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    );
+
+    if (picked != null && picked != selectedTime) {
+      print('Time selected: ${selectedTime.toString()}');
+      setState(() {
+        selectedTime = picked;
+        timeController.text = dateTimeFormatter(
+            "${selectedTime.hour}:${selectedTime.minute}:00",
+            dateType: DateType.time);
       });
     }
   }

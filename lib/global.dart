@@ -61,17 +61,15 @@ GeneralInstitute get institute => _institute;
 
 enum DateType { date, time, dateTime }
 
-String dateTimeFormatter(String date, {DateType dateType = DateType.dateTime}) {
-  var splitedDateTime = date.split('T');
-  var splitedDate = splitedDateTime.first.split('-');
-  var formattedDate =
-      splitedDate.last + '-' + splitedDate[1] + '-' + splitedDate.first;
+String dateTimeFormatter(String date,
+    {DateType dateType = DateType.dateTime, String splitedFormat = 'T'}) {
+  var splitedDateTime = date.split(splitedFormat);
   var splitedTime = splitedDateTime.last.split(':');
   splitedTime.last = splitedTime.last.split('.').first;
   var formattedTime = '';
   int hour = int.parse(splitedTime.first);
-  String minute = splitedTime[1];
-  String second = splitedTime.last;
+  String minute = splitedTime[1].length==2?splitedTime[1]:'0${splitedTime[1]}';
+  String second = int.parse(splitedTime.last) == 0 ? '' : splitedTime.last;
   var type = "";
   if (hour == 0) {
     formattedTime = "12";
@@ -88,20 +86,30 @@ String dateTimeFormatter(String date, {DateType dateType = DateType.dateTime}) {
     String s = hour.toString();
     formattedTime = s.length == 2 ? s : "0$s";
   }
-  formattedTime = formattedTime + ':' + minute + ':' + second + ' $type';
+  formattedTime = formattedTime +
+      ':' +
+      minute +
+      "${second == '' ? '' : ':'}" +
+      second +
+      ' $type';
 
   switch (dateType) {
     case DateType.dateTime:
-      return formattedDate + ' ' + formattedTime;
+      return _formatDate(splitedDateTime.first) + ' ' + formattedTime;
       break;
     case DateType.time:
       return formattedTime;
       break;
     case DateType.date:
-      return formattedDate;
+      return _formatDate(splitedDateTime.first);
       break;
     default:
       return date;
       break;
   }
+}
+
+String _formatDate(String date) {
+  var splitedDate = date.split('-');
+  return splitedDate.last + '-' + splitedDate[1] + '-' + splitedDate.first;
 }
