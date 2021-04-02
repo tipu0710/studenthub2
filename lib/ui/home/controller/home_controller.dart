@@ -7,6 +7,7 @@ import 'package:studenthub2/service/api/api_service.dart';
 import 'package:studenthub2/service/process/process.dart';
 import 'package:studenthub2/ui/home/model/home_model.dart';
 import 'package:studenthub2/ui/profile/controller/profile_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeController {
   HomeModel homeModel;
@@ -21,6 +22,7 @@ class HomeController {
     } else {
       homeModel = HomeModel.fromJson(
           jsonDecode(DataProcess.getDecryptedData(dataModel.dataExtra)));
+      setInstitute = homeModel.institute;
     }
     return !dataModel.hasError;
   }
@@ -39,5 +41,15 @@ class HomeController {
 
   List<Color> getColor(int position) {
     return _colorList[position % _colorList.length];
+  }
+
+  launchUrl(String url) async {
+    if (url == null || url.isEmpty) {
+      print("Not available!");
+    } else if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      print("Not available!");
+    }
   }
 }

@@ -15,6 +15,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   HomeController homeController;
+  bool loading = true;
   @override
   void initState() {
     homeController = HomeController();
@@ -23,7 +24,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    bool loading = true;
     return Scaffold(
       body: SingleChildScrollView(
         child: FutureBuilder<bool>(
@@ -32,18 +32,24 @@ class _HomeState extends State<Home> {
             int step = 1;
             if (snapshot.hasError) {
               print(snapshot.error);
+              //showMessage(snapshot.error.toString());
             }
             if (snapshot.hasData) {
               loading = false;
-              step = homeController.homeModel.channelList.length;
+              step = homeController?.homeModel?.channelList?.length ?? 0;
             }
             return Container(
-              margin: EdgeInsets.only(top: 35),
+              margin: EdgeInsets.only(top: 40),
               child: Column(
                 children: [
                   profile(loading),
                   menu(loading),
                   !loading && homeController.homeModel.eventList.length > 0
+                      ? announcementTitle('Latest Events', loading)
+                      : Container(),
+                  event(loading),
+                  !loading &&
+                          homeController.homeModel.announcementList.length > 0
                       ? announcementTitle('Latest Announcement', loading)
                       : Container(),
                   announcement(loading),
@@ -60,9 +66,9 @@ class _HomeState extends State<Home> {
                                 "",
                         subtitle: loading
                             ? ""
-                            : homeController
+                            : dateTimeFormatter(homeController
                                     ?.homeModel?.channelList[i].lastChanged ??
-                                "",
+                                ""),
                         loading: loading),
                   ad(loading),
                   SizedBox(
@@ -213,9 +219,7 @@ class _HomeState extends State<Home> {
                   onTap: () {
                     print("MyCalender");
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => Calendar()));
+                        context, MaterialPageRoute(builder: (_) => Calendar()));
                   },
                 ),
                 menuCard(
@@ -235,7 +239,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget announcement(bool loading) {
+  Widget event(bool loading) {
     return Container(
       height:
           !loading && homeController.homeModel.eventList.length > 0 ? 196 : 0,
@@ -243,7 +247,7 @@ class _HomeState extends State<Home> {
       child: ListView.builder(
           itemCount: loading ? 1 : homeController.homeModel.eventList.length,
           scrollDirection: Axis.horizontal,
-          itemBuilder: (_, position) => announcementCard(
+          itemBuilder: (_, position) => eventCard(
               loading ? "" : homeController.homeModel.eventList[position].name,
               loading
                   ? null
@@ -253,8 +257,33 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget announcementCard(
-      String title, String image, int position, bool loading) {
+  Widget announcement(bool loading) {
+    return Container(
+      height: !loading && homeController.homeModel.announcementList.length > 0
+          ? 196
+          : 0,
+      margin: EdgeInsets.only(top: 15),
+      child: ListView.builder(
+          itemCount:
+              loading ? 1 : homeController.homeModel.announcementList.length,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (_, position) => announcementCard(
+              loading
+                  ? ""
+                  : homeController.homeModel.announcementList[position].title,
+              loading
+                  ? ""
+                  : homeController
+                      .homeModel.announcementList[position].description,
+              loading
+                  ? null
+                  : homeController.homeModel.announcementList[position].image,
+              position,
+              loading)),
+    );
+  }
+
+  Widget eventCard(String title, String image, int position, bool loading) {
     print(image);
     return ShimmerLoading(
       isLoading: loading,
@@ -292,6 +321,91 @@ class _HomeState extends State<Home> {
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.circular(17.0),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    top: 8.0, bottom: 8, right: 10, left: 15),
+                child: Container(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 14,
+                      color: const Color(0xff252525),
+                      fontWeight: FontWeight.w500,
+                      height: 2.5714285714285716,
+                    ),
+                    textHeightBehavior:
+                        TextHeightBehavior(applyHeightToFirstAscent: false),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget announcementCard(String title, String description, String image,
+      int position, bool loading) {
+    print(image);
+    return ShimmerLoading(
+      isLoading: loading,
+      child: Container(
+        height: 195,
+        width: 270,
+        margin: EdgeInsets.only(right: 20, left: position == 0 ? 20 : 0),
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                height: 195,
+                width: 270,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(17.0),
+                  color: const Color(0xffffffff),
+                  border:
+                      Border.all(width: 1.0, color: const Color(0xffeeeeee)),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                height: 155,
+                width: 270,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: image == null
+                        ? AssetImage("assets/images/test/an_1.png")
+                        : CachedNetworkImageProvider(
+                            ApiService.baseUrl + image,
+                          ),
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.circular(17.0),
+                ),
+                child: Container(
+                  height: 155,
+                  width: 270,
+                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(17.0),
+                    color: Colors.black.withOpacity(0.5),
+                  ),
+                  child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        description,
+                        style: TextStyle(color: Colors.white),
+                      )),
                 ),
               ),
             ),
@@ -405,29 +519,41 @@ class _HomeState extends State<Home> {
 
   Widget ad(bool loading) {
     return Container(
-      height: 115,
+      height:
+          !loading && homeController.homeModel.eventList.length > 0 ? 196 : 0,
       margin: EdgeInsets.only(top: 40),
       child: ListView.builder(
-          itemCount: 3,
+          itemCount: loading ? 1 : homeController.homeModel.addList.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (_, position) => adCard(
-              "assets/images/test/test${position + 1}.png", position, loading)),
+              loading
+                  ? null
+                  : ApiService.baseUrl +
+                      homeController.homeModel.addList[position].image,
+              loading ? "" : homeController.homeModel.addList[position].link,
+              position,
+              loading)),
     );
   }
 
-  Widget adCard(String image, int position, bool loading) {
+  Widget adCard(String image, String link, int position, bool loading) {
     return ShimmerLoading(
       isLoading: loading,
-      child: Container(
-        width: 183,
-        height: 114,
-        margin: EdgeInsets.only(left: position == 0 ? 20 : 0, right: 20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18.0),
-          color: const Color(0xfff3f1ec),
-          image: DecorationImage(
-            image: AssetImage(image),
-            fit: BoxFit.fill,
+      child: GestureDetector(
+        onTap: () {
+          homeController.launchUrl(link);
+        },
+        child: Container(
+          width: MediaQuery.of(context).size.width*.8,
+          margin: EdgeInsets.only(left: position == 0 ? 20 : 0, right: 20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18.0),
+            image: DecorationImage(
+              image: loading
+                  ? AssetImage("assets/images/test/test1.png")
+                  : CachedNetworkImageProvider(image),
+              fit: BoxFit.fitWidth,
+            ),
           ),
         ),
       ),
@@ -446,8 +572,28 @@ class _HomeState extends State<Home> {
         child: Container(
           margin: EdgeInsets.only(left: 20, right: 20),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              loading
+                  ? Container(
+                      height: 50,
+                      width: 50,
+                    )
+                  : homeController?.homeModel?.institute?.logo != null
+                      ? Container(
+                          height: 50,
+                          width: 50,
+                          child: CachedNetworkImage(
+                            imageUrl: ApiService.baseUrl +
+                                homeController.homeModel.institute.logo,
+                            height: 50,
+                            width: 50,
+                          ),
+                        )
+                      : Container(),
+              SizedBox(
+                width: 10,
+              ),
               Container(
                 height: 56,
                 child: Column(
@@ -467,6 +613,7 @@ class _HomeState extends State<Home> {
                           TextHeightBehavior(applyHeightToFirstAscent: false),
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                     Text(
                       'Student Id: ${profileModel?.institutionDetails?.matricId ?? 0}',
@@ -479,10 +626,13 @@ class _HomeState extends State<Home> {
                       textHeightBehavior:
                           TextHeightBehavior(applyHeightToFirstAscent: false),
                       textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                   ],
                 ),
               ),
+              Spacer(),
               Container(
                 width: 56.0,
                 height: 56.0,

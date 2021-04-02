@@ -52,10 +52,56 @@ set setLoginInfo(LoginModel loginModel) => _loginModel = loginModel;
 LoginModel get loginInfo => _loginModel;
 
 ProfileModel _profileModel;
-set setProfile(ProfileModel profileModel)=>_profileModel = profileModel;
+set setProfile(ProfileModel profileModel) => _profileModel = profileModel;
 ProfileModel get profileModel => _profileModel;
 
-Institute _institute;
-set setInstitute(Institute institute)=>_institute = institute;
-Institute get institute => _institute;
+GeneralInstitute _institute;
+set setInstitute(GeneralInstitute institute) => _institute = institute;
+GeneralInstitute get institute => _institute;
 
+enum DateType { date, time, dateTime }
+
+String dateTimeFormatter(String date, {DateType dateType = DateType.dateTime}) {
+  var splitedDateTime = date.split('T');
+  var splitedDate = splitedDateTime.first.split('-');
+  var formattedDate =
+      splitedDate.last + '-' + splitedDate[1] + '-' + splitedDate.first;
+  var splitedTime = splitedDateTime.last.split(':');
+  splitedTime.last = splitedTime.last.split('.').first;
+  var formattedTime = '';
+  int hour = int.parse(splitedTime.first);
+  String minute = splitedTime[1];
+  String second = splitedTime.last;
+  var type = "";
+  if (hour == 0) {
+    formattedTime = "12";
+    type = "AM";
+  } else if (hour == 12) {
+    formattedTime = "12";
+    type = "PM";
+  } else if (hour > 12) {
+    type = "PM";
+    String s = (hour - 12).toString();
+    formattedTime = s.length == 2 ? s : "0$s";
+  } else {
+    type = "AM";
+    String s = hour.toString();
+    formattedTime = s.length == 2 ? s : "0$s";
+  }
+  formattedTime = formattedTime + ':' + minute + ':' + second + ' $type';
+
+  switch (dateType) {
+    case DateType.dateTime:
+      return formattedDate + ' ' + formattedTime;
+      break;
+    case DateType.time:
+      return formattedTime;
+      break;
+    case DateType.date:
+      return formattedDate;
+      break;
+    default:
+      return date;
+      break;
+  }
+}

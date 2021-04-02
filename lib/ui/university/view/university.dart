@@ -28,6 +28,7 @@ class _UniversityState extends State<University> {
   @override
   void dispose() {
     _streamController.close();
+    _universityController.dispose();
     super.dispose();
   }
 

@@ -50,4 +50,7 @@ class UniversityController {
         ),
         (route) => false);
   }
+  dispose(){
+    _streamController?.close();
+  }
 }

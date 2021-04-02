@@ -20,7 +20,7 @@ class _ParentState extends State<Parent> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     Parent.tabController =
         TabController(length: 5, vsync: this, initialIndex: 0);
     super.initState();

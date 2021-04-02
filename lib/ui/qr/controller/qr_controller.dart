@@ -8,6 +8,7 @@ import 'package:studenthub2/ui/parent/view/parent.dart';
 
 class QrController {
   joinEvent(String id) async {
+    print(DataProcess.getEncryptedData(id));
     Response response = await ApiService.postMethod(
         "https://studenthub.smartcampus.com.my/api/Home/DashboardMobileApi/EventCheckin?input=${DataProcess.getEncryptedData(id)}",
         allowFullUrl: false, allowToken: true);
