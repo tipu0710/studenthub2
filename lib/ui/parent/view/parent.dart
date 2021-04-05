@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:studenthub2/global.dart';
 import 'package:studenthub2/ui/calendar/controller/notification_controller.dart';
 import 'package:studenthub2/ui/home/view/home.dart';
 import 'package:studenthub2/ui/notification/view/notification.dart';
@@ -58,7 +59,9 @@ class _ParentState extends State<Parent> with SingleTickerProviderStateMixin {
               TabData(iconData: CustomIcons.settings, title: "Settings"),
             ],
             onTabChangedListener: (position) {
-              Parent.tabController.animateTo(position);
+              if(profileModel != null){
+                Parent.tabController.animateTo(position);
+              }
             },
           )),
     );

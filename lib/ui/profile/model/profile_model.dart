@@ -137,6 +137,7 @@ class InstitutionDetails {
   String programmeName;
   String instituteName;
   String matricId;
+  String image;
 
   InstitutionDetails({this.programmeName, this.instituteName, this.matricId});
 
@@ -144,6 +145,7 @@ class InstitutionDetails {
     programmeName = json['ProgrammeName'];
     instituteName = json['InstituteName'];
     matricId = json['MatricId'];
+    image = json['Image'];
   }
 
   Map<String, dynamic> toJson() {
@@ -151,6 +153,7 @@ class InstitutionDetails {
     data['ProgrammeName'] = this.programmeName;
     data['InstituteName'] = this.instituteName;
     data['MatricId'] = this.matricId;
+    data['Image'] = this.image;
     return data;
   }
 }

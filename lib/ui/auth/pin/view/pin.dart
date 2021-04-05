@@ -33,7 +33,7 @@ class _PinState extends State<Pin> {
 
   String otp = "";
 
-  ValueNotifier<int> valueNotifier = new ValueNotifier(60*2);
+  ValueNotifier<int> valueNotifier = new ValueNotifier(60 * 2);
 
   PinController pinController;
 
@@ -54,7 +54,7 @@ class _PinState extends State<Pin> {
       ..onTap = () async {
         if (valueNotifier.value == 0) {
           await pinController.resendCode();
-          valueNotifier.value = 60*2;
+          valueNotifier.value = 60 * 2;
           playTimer();
           setState(() {
             showMessage("Code send!\nCheck email!");

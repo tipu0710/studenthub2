@@ -7,12 +7,13 @@ import 'ui/profile/model/profile_model.dart';
 
 extension StringExtension on String {
   String capitalize() {
-    String string = '';
-    var s = this.split(' ');
+    String string = this.trim();
+    var s = string.split(' ');
+    string = '';
     s.forEach((element) {
       string += "${element[0].toUpperCase()}${element.substring(1)} ";
     });
-    return string.trim();
+    return string;
   }
 }
 

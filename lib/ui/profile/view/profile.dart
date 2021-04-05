@@ -1,5 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:studenthub2/global.dart';
+import 'package:studenthub2/service/api/api_service.dart';
+import 'package:studenthub2/ui/profile/controller/profile_controller.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class Profile extends StatelessWidget {
@@ -26,17 +30,62 @@ class Profile extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.only(top: 200),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      height: 158,
-                      width: 158,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: const Color(0xff1e5aa7),
-                        image: DecorationImage(
-                          image: const AssetImage('assets/images/test/pp.png'),
-                          fit: BoxFit.fill,
-                        ),
+                      height: 160,
+                      width: 160,
+                      child: Stack(
+                        children: [
+                          Center(
+                            child: Container(
+                              height: 158,
+                              width: 158,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: const Color(0xff1e5aa7),
+                                image: DecorationImage(
+                                  image:
+                                      profileModel.institutionDetails.image ==
+                                              null
+                                          ? AssetImage('assets/images/user.png')
+                                          : CachedNetworkImageProvider(
+                                              ApiService.baseUrl +
+                                                  profileModel
+                                                      .institutionDetails
+                                                      .image),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(50),
+                              onTap: () async {
+                                await ProfileController().getImage(ImageSource.camera);
+                              },
+                              child: Container(
+                                height: 31,
+                                width: 31,
+                                margin: EdgeInsets.only(top: 100 + 10.0, left: 120),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: const Color(0xffffffff),
+                                  border:
+                                  Border.all(width: 2.0, color: const Color(0xff28ABF7)),
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.add_a_photo_sharp,
+                                    size: 16,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                     Container(
@@ -52,7 +101,7 @@ class Profile extends StatelessWidget {
                         ),
                         textHeightBehavior:
                             TextHeightBehavior(applyHeightToFirstAscent: false),
-                        textAlign: TextAlign.left,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                     Container(
@@ -68,7 +117,7 @@ class Profile extends StatelessWidget {
                         ),
                         textHeightBehavior:
                             TextHeightBehavior(applyHeightToFirstAscent: false),
-                        textAlign: TextAlign.left,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                     Container(
@@ -84,11 +133,11 @@ class Profile extends StatelessWidget {
                         ),
                         textHeightBehavior:
                             TextHeightBehavior(applyHeightToFirstAscent: false),
-                        textAlign: TextAlign.left,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 114),
+                      margin: EdgeInsets.only(top: 50, bottom: 20),
                       child: Text.rich(
                         TextSpan(
                           style: TextStyle(

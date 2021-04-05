@@ -135,7 +135,7 @@ class _RegisterState extends State<Register> {
                       child: UiHelper()
                           .input(referralCode, "Referral Code", capsOn: true),
                     ),
-                    UiHelper().input(program, "Program", onChange: (value) {
+                    UiHelper().input(program, "Course", onChange: (value) {
                       registerController.updateProgramStream(value);
                     }),
                     UiHelper().searchItem<ProgrammeList>(_programStream,
@@ -228,11 +228,12 @@ class _RegisterState extends State<Register> {
                               fontFamily: 'Roboto',
                               fontSize: 16,
                               color: const Color(0xffacacac),
-                              height: 1.5625,
                             ),
                             textHeightBehavior: TextHeightBehavior(
                                 applyHeightToFirstAscent: false),
                             textAlign: TextAlign.left,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           contentPadding: EdgeInsets.zero,
                           activeColor: primaryColor,
@@ -253,11 +254,12 @@ class _RegisterState extends State<Register> {
                               fontFamily: 'Roboto',
                               fontSize: 16,
                               color: const Color(0xffacacac),
-                              height: 1.5625,
                             ),
                             textHeightBehavior: TextHeightBehavior(
                                 applyHeightToFirstAscent: false),
                             textAlign: TextAlign.left,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           contentPadding: EdgeInsets.zero,
                           activeColor: primaryColor,

@@ -174,11 +174,10 @@ class UiHelper {
                               fontSize: fontSize ?? 15,
                               color: const Color(0xffffffff),
                               fontWeight: FontWeight.w500,
-                              height: 0.8,
                             ),
                             textHeightBehavior: TextHeightBehavior(
                                 applyHeightToFirstAscent: false),
-                            textAlign: TextAlign.left,
+                            textAlign: TextAlign.center,
                           ),
                         )
                       : Container(),
@@ -216,11 +215,10 @@ class UiHelper {
                     fontSize: fontSize ?? 15,
                     color: const Color(0xffffffff),
                     fontWeight: FontWeight.w500,
-                    height: 0.8,
                   ),
                   textHeightBehavior:
                       TextHeightBehavior(applyHeightToFirstAscent: false),
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),

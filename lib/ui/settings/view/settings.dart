@@ -24,13 +24,18 @@ class Settings extends StatelessWidget {
                     height: 15,
                   ),
                   childCard("Uni Website", onTap: () {
-                    settingsController.launchUrl(institute?.webUrl);
+                    settingsController.launchUrl(
+                        institute?.webUrl, AppType.web);
                   }),
                   childCard("Uni Facebook", onTap: () {
-                    settingsController.launchUrl(institute?.facebookUrl);
+                    String url = institute?.facebookUrl;
+
+                    print(url);
+                    settingsController.launchUrl(url, AppType.fb);
                   }),
                   childCard("Uni Instagram", onTap: () {
-                    settingsController.launchUrl(institute?.instagramUrl);
+                    settingsController.launchUrl(
+                        institute?.instagramUrl, AppType.instagram);
                   }),
                   SizedBox(
                     height: 40,
@@ -40,7 +45,8 @@ class Settings extends StatelessWidget {
                     height: 15,
                   ),
                   childCard("Contact Us", onTap: () {
-                    settingsController.launchUrl(institute?.emailAddress);
+                    settingsController.launchUrl(
+                        institute?.emailAddress, AppType.email);
                   }),
                   // childCard("Uni Facebook", onTap: () {
                   //   settingsController.launchUrl(institute.webUrl);

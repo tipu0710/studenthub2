@@ -20,7 +20,6 @@ class ApiService {
       if (e.response != null) {
         print(e.response.data);
       } else {
-        print(e.request);
         print(e.message);
       }
       throw e;
@@ -52,7 +51,6 @@ class ApiService {
       if (e.response != null) {
         print(e.response.data);
       } else {
-        print(e.request);
         print(e.message);
       }
       throw e;

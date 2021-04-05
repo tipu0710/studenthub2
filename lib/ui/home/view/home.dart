@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/global.dart';
 import 'package:studenthub2/service/api/api_service.dart';
@@ -7,6 +8,7 @@ import 'package:studenthub2/ui/home/controller/home_controller.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
 import 'package:studenthub2/ui_helper/custom_icons.dart';
 import 'package:studenthub2/ui_helper/effect.dart';
+import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -109,46 +111,71 @@ class _HomeState extends State<Home> {
                 borderRadius: BorderRadius.circular(10.0),
                 color: miniCardColor,
               ),
+              child: Center(
+                child: Text(
+                  loading ? '' : title[0],
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
             ),
             SizedBox(
               width: 15,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 14,
-                    color: const Color(0xff252525),
-                    fontWeight: FontWeight.w500,
-                    height: 2.5714285714285716,
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 14,
+                      color: const Color(0xff252525),
+                      fontWeight: FontWeight.w500,
+                      height: 2.5714285714285716,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textHeightBehavior:
+                        TextHeightBehavior(applyHeightToFirstAscent: false),
+                    textAlign: TextAlign.left,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textHeightBehavior:
-                      TextHeightBehavior(applyHeightToFirstAscent: false),
-                  textAlign: TextAlign.left,
-                ),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 12,
-                    color: const Color(0xff727272),
-                    fontWeight: FontWeight.w500,
-                    height: 3,
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 12,
+                      color: const Color(0xff727272),
+                      fontWeight: FontWeight.w500,
+                      height: 3,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textHeightBehavior:
+                        TextHeightBehavior(applyHeightToFirstAscent: false),
+                    textAlign: TextAlign.center,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textHeightBehavior:
-                      TextHeightBehavior(applyHeightToFirstAscent: false),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            )
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            UiHelper().button(
+                context: context,
+                title: "JOIN",
+                onPressed: () {},
+                height: 30,
+                width: 56,
+                fontSize: 8,
+                topMargin: 0,
+                anim: true,
+                bottomMargin: 0,
+                color: miniCardColor),
+            SizedBox(
+              width: 10,
+            ),
           ],
         ),
       ),
@@ -165,33 +192,39 @@ class _HomeState extends State<Home> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                menuCard(
-                  cardColor: Color(0xfff9f9ff),
-                  title: "Merit",
-                  icon: CustomIcons.badge,
-                  iconColor: Color(0xff1E5AA7),
-                  onTap: () {
-                    print("Merit");
-                  },
-                  firstChild: true,
+                Flexible(
+                  child: menuCard(
+                    cardColor: Color(0xfff9f9ff),
+                    title: "Merit",
+                    icon: CustomIcons.badge,
+                    iconColor: Color(0xff1E5AA7),
+                    onTap: () {
+                      print("Merit");
+                    },
+                    firstChild: true,
+                  ),
                 ),
-                menuCard(
-                  cardColor: Color(0xffFEF6F4),
-                  title: "OneMall",
-                  icon: CustomIcons.shopping_bag,
-                  iconColor: Color(0xffFF8364),
-                  onTap: () {
-                    print("OneMall");
-                  },
+                Flexible(
+                  child: menuCard(
+                    cardColor: Color(0xffFEF6F4),
+                    title: "OneMall",
+                    icon: CustomIcons.shopping_bag,
+                    iconColor: Color(0xffFF8364),
+                    onTap: () {
+                      print("OneMall");
+                    },
+                  ),
                 ),
-                menuCard(
-                  cardColor: Color(0xffF2F8FC),
-                  title: "OneJob",
-                  icon: CustomIcons.businessman,
-                  iconColor: Color(0xff47D4F9),
-                  onTap: () {
-                    print("OneJob");
-                  },
+                Flexible(
+                  child: menuCard(
+                    cardColor: Color(0xffF2F8FC),
+                    title: "OneJob",
+                    icon: CustomIcons.businessman,
+                    iconColor: Color(0xff47D4F9),
+                    onTap: () {
+                      print("OneJob");
+                    },
+                  ),
                 ),
               ],
             ),
@@ -201,35 +234,41 @@ class _HomeState extends State<Home> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                menuCard(
-                  cardColor: Color(0xffFEF6F4),
-                  title: "ClubHouse",
-                  icon: CustomIcons.reading_book,
-                  iconColor: Color(0xffFF8364),
-                  onTap: () {
-                    print("ClubHouse");
-                  },
-                  firstChild: true,
+                Flexible(
+                  child: menuCard(
+                    cardColor: Color(0xffFEF6F4),
+                    title: "ClubHouse",
+                    icon: CustomIcons.reading_book,
+                    iconColor: Color(0xffFF8364),
+                    onTap: () {
+                      print("ClubHouse");
+                    },
+                    firstChild: true,
+                  ),
                 ),
-                menuCard(
-                  cardColor: Color(0xffF2F8FC),
-                  title: "MyCalender",
-                  icon: CustomIcons.calendar,
-                  iconColor: Color(0xff47D4F9),
-                  onTap: () {
-                    print("MyCalender");
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => Calendar()));
-                  },
+                Flexible(
+                  child: menuCard(
+                    cardColor: Color(0xffF2F8FC),
+                    title: "MyCalender",
+                    icon: CustomIcons.calendar,
+                    iconColor: Color(0xff47D4F9),
+                    onTap: () {
+                      print("MyCalender");
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => Calendar()));
+                    },
+                  ),
                 ),
-                menuCard(
-                  cardColor: Color(0xfff9f9ff),
-                  title: "Lost & Found",
-                  icon: CustomIcons.found,
-                  iconColor: Color(0xff1E5AA7),
-                  onTap: () {
-                    print("Lost & Found");
-                  },
+                Flexible(
+                  child: menuCard(
+                    cardColor: Color(0xfff9f9ff),
+                    title: "Lost & Found",
+                    icon: CustomIcons.found,
+                    iconColor: Color(0xff1E5AA7),
+                    onTap: () {
+                      print("Lost & Found");
+                    },
+                  ),
                 ),
               ],
             ),
@@ -542,7 +581,7 @@ class _HomeState extends State<Home> {
           homeController.launchUrl(link);
         },
         child: Container(
-          width: MediaQuery.of(context).size.width*.8,
+          width: MediaQuery.of(context).size.width * .8,
           margin: EdgeInsets.only(left: position == 0 ? 20 : 0, right: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18.0),
@@ -637,7 +676,11 @@ class _HomeState extends State<Home> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
                   image: DecorationImage(
-                    image: const AssetImage('assets/images/test/pp.png'),
+                    image:
+                        loading || profileModel.institutionDetails.image == null
+                            ? AssetImage('assets/images/user.png')
+                            : CachedNetworkImageProvider(ApiService.baseUrl +
+                                profileModel.institutionDetails.image),
                     fit: BoxFit.cover,
                   ),
                 ),

@@ -31,6 +31,7 @@ class _QrParentState extends State<QrParent>
         children: [
           TabBarView(
             controller: tabController,
+            physics: NeverScrollableScrollPhysics(),
             children: [QrScan(), QrCode()],
           ),
           Align(
@@ -65,43 +66,45 @@ class _QrParentState extends State<QrParent>
             child: Row(
               children: [
                 Expanded(
-                    child: Container(
-                  color: Colors.transparent,
-                  child: Center(
-                    child: Text(
-                      'SCAN',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 13,
-                        color: const Color(0xff252525),
-                        fontWeight: FontWeight.w500,
-                        height: 0.9230769230769231,
+                  child: Container(
+                    color: Colors.transparent,
+                    child: Center(
+                      child: Text(
+                        'SCAN',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 13,
+                          color: const Color(0xff252525),
+                          fontWeight: FontWeight.w500,
+                          height: 0.9230769230769231,
+                        ),
+                        textHeightBehavior:
+                            TextHeightBehavior(applyHeightToFirstAscent: false),
+                        textAlign: TextAlign.center,
                       ),
-                      textHeightBehavior:
-                          TextHeightBehavior(applyHeightToFirstAscent: false),
-                      textAlign: TextAlign.center,
                     ),
                   ),
-                )),
+                ),
                 Expanded(
-                    child: Container(
-                  color: Colors.transparent,
-                  child: Center(
-                    child: Text(
-                      'MY CODE',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 13,
-                        color: const Color(0xff252525),
-                        fontWeight: FontWeight.w500,
-                        height: 0.9230769230769231,
+                  child: Container(
+                    color: Colors.transparent,
+                    child: Center(
+                      child: Text(
+                        'MY CODE',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 13,
+                          color: const Color(0xff252525),
+                          fontWeight: FontWeight.w500,
+                          height: 0.9230769230769231,
+                        ),
+                        textHeightBehavior:
+                            TextHeightBehavior(applyHeightToFirstAscent: false),
+                        textAlign: TextAlign.center,
                       ),
-                      textHeightBehavior:
-                          TextHeightBehavior(applyHeightToFirstAscent: false),
-                      textAlign: TextAlign.center,
                     ),
                   ),
-                )),
+                ),
               ],
             ),
           ),

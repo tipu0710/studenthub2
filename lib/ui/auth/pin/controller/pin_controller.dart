@@ -100,8 +100,9 @@ class PinController {
       showMessage(dataModel.errors.first);
       return null;
     } else {
-      showMessage("OTP sent!");
       print(DataProcess.getDecryptedData(dataModel.data));
+      Map<String, dynamic> map = jsonDecode(DataProcess.getDecryptedData(dataModel.data));
+      studentRegModel.otp = map['Code'];
       return DataProcess.getDecryptedData(dataModel.data);
     }
   }

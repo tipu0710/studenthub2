@@ -109,7 +109,9 @@ class RegisterController {
       }
     }
 
+    print(registerModel.fullName);
     registerModel.fullName = registerModel.fullName.capitalize();
+    print(registerModel.fullName);
     String s = jsonEncode(registerModel.toJson());
     Response response = await ApiService.postMethod(
         "https://studenthub.smartcampus.com.my/api/Home/StudentMobileApi/Register?input=${DataProcess.getEncryptedData(s)}",

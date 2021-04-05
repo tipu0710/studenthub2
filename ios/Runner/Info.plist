@@ -41,5 +41,15 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>https</string>
+      <string>http</string>
+      <string>fb</string>
+    </array>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>We need your photo permission to select your picture</string>
+    <key>NSCameraUsageDescription</key>
+    <string>>We need your camera permission to take your picture</string>
 </dict>
 </plist>
