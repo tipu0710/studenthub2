@@ -1,12 +1,19 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:studenthub2/global.dart';
 import 'package:studenthub2/service/api/api_service.dart';
 import 'package:studenthub2/ui/profile/controller/profile_controller.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  File _image;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,15 +52,15 @@ class Profile extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 color: const Color(0xff1e5aa7),
                                 image: DecorationImage(
-                                  image:
-                                      profileModel.institutionDetails.image ==
+                                  image: _image == null
+                                      ? profileModel.institutionDetails.image ==
                                               null
                                           ? AssetImage('assets/images/user.png')
                                           : CachedNetworkImageProvider(
                                               ApiService.baseUrl +
                                                   profileModel
-                                                      .institutionDetails
-                                                      .image),
+                                                      .institutionDetails.image)
+                                      : FileImage(_image),
                                   fit: BoxFit.fill,
                                 ),
                               ),
@@ -64,17 +71,24 @@ class Profile extends StatelessWidget {
                             child: InkWell(
                               borderRadius: BorderRadius.circular(50),
                               onTap: () async {
-                                await ProfileController().getImage(ImageSource.camera);
+                                ProfileController profileController =
+                                    ProfileController(context);
+                                _image = await profileController.getImage();
+                                setState(() {
+                                  print("back");
+                                });
                               },
                               child: Container(
                                 height: 31,
                                 width: 31,
-                                margin: EdgeInsets.only(top: 100 + 10.0, left: 120),
+                                margin:
+                                    EdgeInsets.only(top: 100 + 10.0, left: 120),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(100),
                                   color: const Color(0xffffffff),
-                                  border:
-                                  Border.all(width: 2.0, color: const Color(0xff28ABF7)),
+                                  border: Border.all(
+                                      width: 2.0,
+                                      color: const Color(0xff28ABF7)),
                                 ),
                                 child: Center(
                                   child: Icon(

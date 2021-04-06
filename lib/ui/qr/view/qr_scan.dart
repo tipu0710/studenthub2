@@ -46,47 +46,47 @@ class _QrScanState extends State<QrScan> {
           //   ),
           // ),
           Center(child: _buildQrView(context)),
-          result == null || result.isEmpty
-              ? Container()
-              : Positioned(
-                  bottom: 80,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: UiHelper().button(
-                              context: context,
-                              title: "JOIN",
-                              anim: true,
-                              onPressed: () async{
-                                await qrController.joinEvent(result);
-                              },
-                              width: 100,
-                              height: 30,
-                              fontSize: 10),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        UiHelper().button(
-                            context: context,
-                            title: "SCAN AGAIN",
-                            onPressed: () {
-                              setState(() {
-                                result = "";
-                                controller.resumeCamera();
-                              });
-                            },
-                            width: 100,
-                            height: 30,
-                            fontSize: 10)
-                      ],
-                    ),
-                  ),
-                ),
+          // result == null || result.isEmpty
+          //     ? Container()
+          //     : Positioned(
+          //         bottom: 80,
+          //         child: Container(
+          //           width: MediaQuery.of(context).size.width,
+          //           child: Row(
+          //             crossAxisAlignment: CrossAxisAlignment.center,
+          //             mainAxisAlignment: MainAxisAlignment.center,
+          //             children: [
+          //               Center(
+          //                 child: UiHelper().button(
+          //                     context: context,
+          //                     title: "JOIN",
+          //                     anim: true,
+          //                     onPressed: () async{
+          //                       await qrController.joinEvent(result);
+          //                     },
+          //                     width: 100,
+          //                     height: 30,
+          //                     fontSize: 10),
+          //               ),
+          //               SizedBox(
+          //                 width: 10,
+          //               ),
+          //               UiHelper().button(
+          //                   context: context,
+          //                   title: "SCAN AGAIN",
+          //                   onPressed: () {
+          //                     setState(() {
+          //                       result = "";
+          //                       controller.resumeCamera();
+          //                     });
+          //                   },
+          //                   width: 100,
+          //                   height: 30,
+          //                   fontSize: 10)
+          //             ],
+          //           ),
+          //         ),
+          //       ),
           UiHelper().back(context, title: "Qr Code")
         ],
       ),
@@ -108,16 +108,22 @@ class _QrScanState extends State<QrScan> {
   }
 
   void _onQRViewCreated(QRViewController controller) {
-    print("================== CREATED ==================");
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((scanData) {
+    controller.scannedDataStream.listen((scanData) async{
       if (result == null || result.isEmpty) {
         setState(() {
           result = scanData.code;
           controller.pauseCamera();
         });
+        await qrController.joinEvent(result);
+        if(mounted){
+          setState(() {
+            result = null;
+            controller.resumeCamera();
+          });
+        }
       }
     });
   }

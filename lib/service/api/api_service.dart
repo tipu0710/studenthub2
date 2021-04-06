@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:studenthub2/global.dart';
 
@@ -46,6 +48,35 @@ class ApiService {
             : _fullUrl(endPoints));
       }
 
+      return response;
+    } on DioError catch (e) {
+      if (e.response != null) {
+        print(e.response.data);
+      } else {
+        print(e.message);
+      }
+      throw e;
+    }
+  }
+
+  static Future<Response> uploadPhoto(File image) async {
+    Dio dio = new Dio();
+    dio.options.headers['Authorization'] = 'Bearer ${loginInfo.token}';
+    dio.options.contentType = "multipart/form-data";
+    String name = image.path.split('/').last;
+    print(name);
+    try {
+      FormData formData = FormData.fromMap({
+        "image": await MultipartFile.fromFile(
+          image.path,
+          filename: name,
+        ),
+      });
+
+      Response response = await dio.post(
+          _fullUrl("/StudentProfileMobileApi/UploadPhoto"),
+          data: formData);
+      print(response.statusCode);
       return response;
     } on DioError catch (e) {
       if (e.response != null) {

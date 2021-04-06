@@ -130,6 +130,8 @@ class UiHelper {
       double topMargin = 40,
       double bottomMargin = 20,
       Color color,
+      Color borderColor,
+      Color textColor,
       double width,
       double height,
       double fontSize}) {
@@ -155,14 +157,12 @@ class UiHelper {
                   }
                   valueNotifier.value = AnimState.loadingEnd;
                 },
-                style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all<Color>(
-                    color ?? Color(0xff1e5aa7),
-                  ),
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                    color ?? Color(0xff1e5aa7),
-                  ),
-                ),
+                style: ElevatedButton.styleFrom(
+                    primary: color ?? Color(0xff1e5aa7),
+                    onPrimary: color ?? Color(0xff1e5aa7),
+                    side: BorderSide(
+                        color: borderColor ?? Colors.transparent,
+                        width: borderColor != null ? 1 : 0)),
                 child: ValueListenableBuilder(
                   valueListenable: valueNotifier,
                   builder: (_, value, __) => value != AnimState.loadingStart
@@ -172,7 +172,7 @@ class UiHelper {
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: fontSize ?? 15,
-                              color: const Color(0xffffffff),
+                              color: textColor ?? Color(0xffffffff),
                               fontWeight: FontWeight.w500,
                             ),
                             textHeightBehavior: TextHeightBehavior(
@@ -199,21 +199,19 @@ class UiHelper {
             ),
             child: ElevatedButton(
               onPressed: onPressed,
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(
-                  color ?? Color(0xff1e5aa7),
-                ),
-                backgroundColor: MaterialStateProperty.all<Color>(
-                  color ?? Color(0xff1e5aa7),
-                ),
-              ),
+              style: ElevatedButton.styleFrom(
+                  primary: color ?? Color(0xff1e5aa7),
+                  onPrimary: color ?? Color(0xff1e5aa7),
+                  side: BorderSide(
+                      color: borderColor ?? Colors.transparent,
+                      width: borderColor != null ? 1 : 0)),
               child: Center(
                 child: Text(
                   title,
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: fontSize ?? 15,
-                    color: const Color(0xffffffff),
+                    color: textColor ?? Color(0xffffffff),
                     fontWeight: FontWeight.w500,
                   ),
                   textHeightBehavior:
