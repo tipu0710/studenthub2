@@ -13,6 +13,10 @@ class HomeController {
   HomeModel homeModel;
 
   Future<bool> getDashboard() async {
+    if(homeModel!=null){
+      return true;
+    }
+    print("ggggggggg");
     await ProfileController.getProfile();
     Response response =
         await ApiService.getMethod("/DashboardMobileApi/GetDashBoardDataExtra");
@@ -43,8 +47,7 @@ class HomeController {
     return _colorList[position % _colorList.length];
   }
 
-  Future<AdminChannel> channelJoinLeave(
-      int id, bool status, int position) async {
+  Future<bool> channelJoinLeave(int id, bool status, int position) async {
     print(id);
     Response response;
     String encrypt = DataProcess.getEncryptedData(id.toString());
@@ -61,10 +64,8 @@ class HomeController {
       showMessage(dataModel.errors.first);
       return null;
     } else {
-      AdminChannel adminChannel = AdminChannel.fromJson(
-          jsonDecode(DataProcess.getDecryptedData(dataModel.data)));
       showMessage(status ? "Leaved!" : "Joined");
-      return adminChannel;
+      return !status;
     }
   }
 

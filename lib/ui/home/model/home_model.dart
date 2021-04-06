@@ -7,10 +7,10 @@ class HomeModel {
 
   HomeModel(
       {this.channelList,
-        this.eventList,
-        this.institute,
-        this.announcementList,
-        this.addList});
+      this.eventList,
+      this.institute,
+      this.announcementList,
+      this.addList});
 
   HomeModel.fromJson(Map<String, dynamic> json) {
     if (json['channelList'] != null) {
@@ -82,19 +82,19 @@ class Channel {
 
   Channel(
       {this.isAlreadyAdded,
-        this.id,
-        this.instituteId,
-        this.code,
-        this.name,
-        this.isActive,
-        this.createById,
-        this.createDate,
-        this.lastChangedById,
-        this.lastChanged,
-        this.isDeleted,
-        this.adminChannel,
-        this.generalInstitute,
-        this.isSelected});
+      this.id,
+      this.instituteId,
+      this.code,
+      this.name,
+      this.isActive,
+      this.createById,
+      this.createDate,
+      this.lastChangedById,
+      this.lastChanged,
+      this.isDeleted,
+      this.adminChannel,
+      this.generalInstitute,
+      this.isSelected});
 
   Channel.fromJson(Map<String, dynamic> json) {
     isAlreadyAdded = json['IsAlreadyAdded'];
@@ -176,36 +176,36 @@ class GeneralInstitute {
 
   GeneralInstitute(
       {this.isAlreadyAdded,
-        this.id,
-        this.code,
-        this.referralCode,
-        this.name,
-        this.shortName,
-        this.longName,
-        this.description,
-        this.address1,
-        this.address2,
-        this.postcode,
-        this.cityId,
-        this.stateId,
-        this.countryId,
-        this.officeNumber,
-        this.faxNumber,
-        this.emailAddress,
-        this.webUrl,
-        this.logo,
-        this.facebookUrl,
-        this.instagramUrl,
-        this.linkedInUrl,
-        this.contactDetails,
-        this.remarks,
-        this.isActive,
-        this.createDate,
-        this.createById,
-        this.lastChanged,
-        this.lastChangedById,
-        this.isDeleted,
-        this.isSelected});
+      this.id,
+      this.code,
+      this.referralCode,
+      this.name,
+      this.shortName,
+      this.longName,
+      this.description,
+      this.address1,
+      this.address2,
+      this.postcode,
+      this.cityId,
+      this.stateId,
+      this.countryId,
+      this.officeNumber,
+      this.faxNumber,
+      this.emailAddress,
+      this.webUrl,
+      this.logo,
+      this.facebookUrl,
+      this.instagramUrl,
+      this.linkedInUrl,
+      this.contactDetails,
+      this.remarks,
+      this.isActive,
+      this.createDate,
+      this.createById,
+      this.lastChanged,
+      this.lastChangedById,
+      this.isDeleted,
+      this.isSelected});
 
   GeneralInstitute.fromJson(Map<String, dynamic> json) {
     isAlreadyAdded = json['IsAlreadyAdded'];
@@ -294,17 +294,17 @@ class AdminChannel {
 
   AdminChannel(
       {this.isAlreadyAdded,
-        this.id,
-        this.instituteId,
-        this.code,
-        this.name,
-        this.isActive,
-        this.createById,
-        this.createDate,
-        this.lastChangedById,
-        this.lastChanged,
-        this.isDeleted,
-        this.isSelected});
+      this.id,
+      this.instituteId,
+      this.code,
+      this.name,
+      this.isActive,
+      this.createById,
+      this.createDate,
+      this.lastChangedById,
+      this.lastChanged,
+      this.isDeleted,
+      this.isSelected});
 
   AdminChannel.fromJson(Map<String, dynamic> json) {
     isAlreadyAdded = json['IsAlreadyAdded'];
@@ -363,25 +363,25 @@ class AdminEvent {
 
   AdminEvent(
       {this.isAlreadyAdded,
-        this.id,
-        this.instituteId,
-        this.code,
-        this.name,
-        this.channelId,
-        this.dateFrom,
-        this.dateTo,
-        this.description,
-        this.image,
-        this.isMeritPoint,
-        this.meritPoint,
-        this.qRCode,
-        this.isActive,
-        this.createById,
-        this.createDate,
-        this.lastChangedById,
-        this.lastChanged,
-        this.isDeleted,
-        this.isSelected});
+      this.id,
+      this.instituteId,
+      this.code,
+      this.name,
+      this.channelId,
+      this.dateFrom,
+      this.dateTo,
+      this.description,
+      this.image,
+      this.isMeritPoint,
+      this.meritPoint,
+      this.qRCode,
+      this.isActive,
+      this.createById,
+      this.createDate,
+      this.lastChangedById,
+      this.lastChanged,
+      this.isDeleted,
+      this.isSelected});
 
   AdminEvent.fromJson(Map<String, dynamic> json) {
     isAlreadyAdded = json['IsAlreadyAdded'];
@@ -456,25 +456,25 @@ class EventList {
 
   EventList(
       {this.isAlreadyAdded,
-        this.id,
-        this.instituteId,
-        this.code,
-        this.name,
-        this.channelId,
-        this.dateFrom,
-        this.dateTo,
-        this.description,
-        this.image,
-        this.isMeritPoint,
-        this.meritPoint,
-        this.qRCode,
-        this.isActive,
-        this.createById,
-        this.createDate,
-        this.lastChangedById,
-        this.lastChanged,
-        this.isDeleted,
-        this.isSelected});
+      this.id,
+      this.instituteId,
+      this.code,
+      this.name,
+      this.channelId,
+      this.dateFrom,
+      this.dateTo,
+      this.description,
+      this.image,
+      this.isMeritPoint,
+      this.meritPoint,
+      this.qRCode,
+      this.isActive,
+      this.createById,
+      this.createDate,
+      this.lastChangedById,
+      this.lastChanged,
+      this.isDeleted,
+      this.isSelected});
 
   EventList.fromJson(Map<String, dynamic> json) {
     isAlreadyAdded = json['IsAlreadyAdded'];
@@ -540,16 +540,16 @@ class AnnouncementList {
 
   AnnouncementList(
       {this.id,
-        this.instituteId,
-        this.title,
-        this.description,
-        this.image,
-        this.isActive,
-        this.createById,
-        this.createDate,
-        this.lastChangedById,
-        this.lastChanged,
-        this.isDeleted});
+      this.instituteId,
+      this.title,
+      this.description,
+      this.image,
+      this.isActive,
+      this.createById,
+      this.createDate,
+      this.lastChangedById,
+      this.lastChanged,
+      this.isDeleted});
 
   AnnouncementList.fromJson(Map<String, dynamic> json) {
     id = json['Id'];
@@ -599,18 +599,18 @@ class AddList {
 
   AddList(
       {this.isAlreadyAdded,
-        this.id,
-        this.name,
-        this.link,
-        this.image,
-        this.sortingOrder,
-        this.isActive,
-        this.createById,
-        this.createDate,
-        this.lastChangedById,
-        this.lastChanged,
-        this.isDeleted,
-        this.isSelected});
+      this.id,
+      this.name,
+      this.link,
+      this.image,
+      this.sortingOrder,
+      this.isActive,
+      this.createById,
+      this.createDate,
+      this.lastChangedById,
+      this.lastChanged,
+      this.isDeleted,
+      this.isSelected});
 
   AddList.fromJson(Map<String, dynamic> json) {
     isAlreadyAdded = json['IsAlreadyAdded'];

@@ -163,15 +163,14 @@ class _HomeState extends State<Home> {
                 onPressed: loading
                     ? null
                     : () async {
-                        AdminChannel adminChannel =
-                            await homeController.channelJoinLeave(
-                                channel.id,
-                                channel?.adminChannel?.isAlreadyAdded ?? false,
-                                position);
-                        if (adminChannel != null) {
+                        dynamic b = await homeController.channelJoinLeave(
+                            channel.id,
+                            channel?.adminChannel?.isAlreadyAdded ?? false,
+                            position);
+                        if (b != null) {
                           setState(() {
                             homeController.homeModel.channelList[position]
-                                .adminChannel = adminChannel;
+                                .adminChannel = AdminChannel(isAlreadyAdded: b);
                           });
                         }
                       },
