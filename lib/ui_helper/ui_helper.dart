@@ -134,11 +134,13 @@ class UiHelper {
       Color textColor,
       double width,
       double height,
+      double circleRadius = 30,
       double fontSize}) {
     ValueNotifier<AnimState> valueNotifier = ValueNotifier(AnimState.init);
     return anim
         ? LoadingButton(
             key: UniqueKey(),
+            width: width ?? 335,
             mainChild: Container(
               height: height ?? 55,
               width: width ?? 335,
@@ -185,10 +187,10 @@ class UiHelper {
               ),
             ),
             secondaryChild: Container(
-                margin: EdgeInsets.only(top: topMargin, bottom: 20),
-                height: 30,
-                width: 30,
-                child: CircularProgressIndicator()),
+                margin: EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+                height: circleRadius,
+                width: circleRadius,
+                child: Center(child: CircularProgressIndicator())),
             valueNotifier: valueNotifier)
         : Container(
             height: height ?? 55,

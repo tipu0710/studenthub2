@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/global.dart';
+import 'package:studenthub2/service/api/api_service.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class QrCode extends StatefulWidget {
@@ -21,7 +23,9 @@ class _QrCodeState extends State<QrCode> with AutomaticKeepAliveClientMixin {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 130,),
+                  SizedBox(
+                    height: 130,
+                  ),
                   profileImage(),
                   SizedBox(
                     height: 20,
@@ -55,13 +59,14 @@ class _QrCodeState extends State<QrCode> with AutomaticKeepAliveClientMixin {
                   qrCode(),
                   shareCode(),
                   saveCode(),
-                  SizedBox(height: 120,)
+                  SizedBox(
+                    height: 120,
+                  )
                 ],
               ),
             ),
           ),
           UiHelper().back(context, title: "Qr Code")
-
         ],
       ),
     );
@@ -74,11 +79,13 @@ class _QrCodeState extends State<QrCode> with AutomaticKeepAliveClientMixin {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         image: DecorationImage(
-          image: const AssetImage('assets/images/test/pp.png'),
+          image: profileModel.institutionDetails.image == null
+              ? AssetImage('assets/images/user.png')
+              : CachedNetworkImageProvider(
+                  ApiService.baseUrl + profileModel.institutionDetails.image),
           fit: BoxFit.cover,
         ),
-        border:
-        Border.all(width: 5.0, color: const Color(0xffffffff)),
+        border: Border.all(width: 5.0, color: const Color(0xffffffff)),
       ),
     );
   }
@@ -91,8 +98,7 @@ class _QrCodeState extends State<QrCode> with AutomaticKeepAliveClientMixin {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28.0),
         color: const Color(0xffffffff),
-        border:
-        Border.all(width: 1.0, color: const Color(0xffd6d6d6)),
+        border: Border.all(width: 1.0, color: const Color(0xffd6d6d6)),
       ),
       child: Center(
         child: Image.asset(
@@ -112,8 +118,7 @@ class _QrCodeState extends State<QrCode> with AutomaticKeepAliveClientMixin {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         color: const Color(0xfff9ffff),
-        border:
-        Border.all(width: 1.0, color: const Color(0xff1e5aa7)),
+        border: Border.all(width: 1.0, color: const Color(0xff1e5aa7)),
       ),
       child: Center(
         child: Row(
@@ -125,7 +130,9 @@ class _QrCodeState extends State<QrCode> with AutomaticKeepAliveClientMixin {
               color: Color(0xff1E5AA7),
               size: 11,
             ),
-            SizedBox(width: 5,),
+            SizedBox(
+              width: 5,
+            ),
             Text(
               'Share My Code',
               style: TextStyle(
@@ -135,7 +142,7 @@ class _QrCodeState extends State<QrCode> with AutomaticKeepAliveClientMixin {
                 fontWeight: FontWeight.w500,
               ),
               textHeightBehavior:
-              TextHeightBehavior(applyHeightToFirstAscent: false),
+                  TextHeightBehavior(applyHeightToFirstAscent: false),
               textAlign: TextAlign.left,
             ),
           ],
@@ -150,7 +157,11 @@ class _QrCodeState extends State<QrCode> with AutomaticKeepAliveClientMixin {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.save_alt, color: Color(0xffb4b4b4), size: 11,),
+          Icon(
+            Icons.save_alt,
+            color: Color(0xffb4b4b4),
+            size: 11,
+          ),
           Text(
             'Save to gallery',
             style: TextStyle(
@@ -158,7 +169,8 @@ class _QrCodeState extends State<QrCode> with AutomaticKeepAliveClientMixin {
               fontSize: 12,
               color: const Color(0xffb4b4b4),
             ),
-            textHeightBehavior: TextHeightBehavior(applyHeightToFirstAscent: false),
+            textHeightBehavior:
+                TextHeightBehavior(applyHeightToFirstAscent: false),
             textAlign: TextAlign.left,
           )
         ],

@@ -1,5 +1,5 @@
 class HomeModel {
-  List<ChannelList> channelList;
+  List<Channel> channelList;
   List<EventList> eventList;
   GeneralInstitute institute;
   List<AnnouncementList> announcementList;
@@ -14,9 +14,9 @@ class HomeModel {
 
   HomeModel.fromJson(Map<String, dynamic> json) {
     if (json['channelList'] != null) {
-      channelList = <ChannelList>[];
+      channelList = <Channel>[];
       json['channelList'].forEach((v) {
-        channelList.add(new ChannelList.fromJson(v));
+        channelList.add(new Channel.fromJson(v));
       });
     }
     if (json['eventList'] != null) {
@@ -64,7 +64,7 @@ class HomeModel {
   }
 }
 
-class ChannelList {
+class Channel {
   bool isAlreadyAdded;
   int id;
   int instituteId;
@@ -77,9 +77,10 @@ class ChannelList {
   String lastChanged;
   bool isDeleted;
   GeneralInstitute generalInstitute;
+  AdminChannel adminChannel;
   bool isSelected;
 
-  ChannelList(
+  Channel(
       {this.isAlreadyAdded,
         this.id,
         this.instituteId,
@@ -91,10 +92,11 @@ class ChannelList {
         this.lastChangedById,
         this.lastChanged,
         this.isDeleted,
+        this.adminChannel,
         this.generalInstitute,
         this.isSelected});
 
-  ChannelList.fromJson(Map<String, dynamic> json) {
+  Channel.fromJson(Map<String, dynamic> json) {
     isAlreadyAdded = json['IsAlreadyAdded'];
     id = json['Id'];
     instituteId = json['InstituteId'];
@@ -108,6 +110,9 @@ class ChannelList {
     isDeleted = json['IsDeleted'];
     generalInstitute = json['General_Institute'] != null
         ? new GeneralInstitute.fromJson(json['General_Institute'])
+        : null;
+    adminChannel = json['Admin_Channel'] != null
+        ? new AdminChannel.fromJson(json['Admin_Channel'])
         : null;
     isSelected = json['IsSelected'];
   }
@@ -127,6 +132,9 @@ class ChannelList {
     data['IsDeleted'] = this.isDeleted;
     if (this.generalInstitute != null) {
       data['General_Institute'] = this.generalInstitute.toJson();
+    }
+    if (this.adminChannel != null) {
+      data['Admin_Channel'] = this.adminChannel.toJson();
     }
     data['IsSelected'] = this.isSelected;
     return data;

@@ -5,6 +5,7 @@ import 'package:studenthub2/global.dart';
 import 'package:studenthub2/service/api/api_service.dart';
 import 'package:studenthub2/ui/calendar/view/calendar.dart';
 import 'package:studenthub2/ui/home/controller/home_controller.dart';
+import 'package:studenthub2/ui/home/model/home_model.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
 import 'package:studenthub2/ui_helper/custom_icons.dart';
 import 'package:studenthub2/ui_helper/effect.dart';
@@ -58,20 +59,7 @@ class _HomeState extends State<Home> {
                   step > 0
                       ? announcementTitle("Channel", loading)
                       : Container(),
-                  for (int i = 0; i < step; i++)
-                    orientationCard(
-                        cardColor: homeController.getColor(i).first,
-                        miniCardColor: homeController.getColor(i).last,
-                        title: loading
-                            ? ""
-                            : homeController?.homeModel?.channelList[i].name ??
-                                "",
-                        subtitle: loading
-                            ? ""
-                            : dateTimeFormatter(homeController
-                                    ?.homeModel?.channelList[i].lastChanged ??
-                                ""),
-                        loading: loading),
+                  step > 0 ? channelList() : Container(),
                   ad(loading),
                   SizedBox(
                     height: 30,
@@ -85,12 +73,12 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget orientationCard(
+  Widget channelCard(
       {@required Color cardColor,
       @required miniCardColor,
-      @required String title,
-      @required String subtitle,
-      @required loading}) {
+      @required Channel channel,
+      @required loading,
+      @required position}) {
     return ShimmerLoading(
       isLoading: loading,
       key: UniqueKey(),
@@ -113,7 +101,7 @@ class _HomeState extends State<Home> {
               ),
               child: Center(
                 child: Text(
-                  loading ? '' : title[0],
+                  loading ? '' : channel.name[0],
                   style: TextStyle(fontSize: 20),
                 ),
               ),
@@ -127,7 +115,7 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    channel?.name ?? '',
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 14,
@@ -142,7 +130,9 @@ class _HomeState extends State<Home> {
                     textAlign: TextAlign.left,
                   ),
                   Text(
-                    subtitle,
+                    loading
+                        ? ""
+                        : dateTimeFormatter(channel?.lastChanged ?? ""),
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 12,
@@ -164,8 +154,27 @@ class _HomeState extends State<Home> {
             ),
             UiHelper().button(
                 context: context,
-                title: "JOIN",
-                onPressed: () {},
+                circleRadius: 15,
+                title: loading
+                    ? ''
+                    : channel?.adminChannel?.isAlreadyAdded ?? false
+                        ? "LEAVE"
+                        : "JOIN",
+                onPressed: loading
+                    ? null
+                    : () async {
+                        AdminChannel adminChannel =
+                            await homeController.channelJoinLeave(
+                                channel.id,
+                                channel?.adminChannel?.isAlreadyAdded ?? false,
+                                position);
+                        if (adminChannel != null) {
+                          setState(() {
+                            homeController.homeModel.channelList[position]
+                                .adminChannel = adminChannel;
+                          });
+                        }
+                      },
                 height: 30,
                 width: 56,
                 fontSize: 8,
@@ -688,6 +697,22 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget channelList() {
+    return ListView.builder(
+      itemCount: loading ? 1 : homeController.homeModel.channelList.length,
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (_, i) => channelCard(
+        cardColor: homeController.getColor(i).first,
+        miniCardColor: homeController.getColor(i).last,
+        channel:
+            loading ? Channel() : homeController?.homeModel?.channelList[i],
+        loading: loading,
+        position: i,
       ),
     );
   }

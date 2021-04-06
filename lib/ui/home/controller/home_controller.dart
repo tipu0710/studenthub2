@@ -43,6 +43,31 @@ class HomeController {
     return _colorList[position % _colorList.length];
   }
 
+  Future<AdminChannel> channelJoinLeave(
+      int id, bool status, int position) async {
+    print(id);
+    Response response;
+    String encrypt = DataProcess.getEncryptedData(id.toString());
+    if (status) {
+      response = await ApiService.postMethod(
+          "/StudentProfileMobileApi/ChannelUnSubscribe?input=$encrypt");
+    } else {
+      response = await ApiService.postMethod(
+          "/StudentProfileMobileApi/ChannelSubscribe?input=$encrypt");
+    }
+    DataModel dataModel = DataModel.fromJson(response.data);
+    if (dataModel.hasError) {
+      print(dataModel.errors);
+      showMessage(dataModel.errors.first);
+      return null;
+    } else {
+      AdminChannel adminChannel = AdminChannel.fromJson(
+          jsonDecode(DataProcess.getDecryptedData(dataModel.data)));
+      showMessage(status ? "Leaved!" : "Joined");
+      return adminChannel;
+    }
+  }
+
   launchUrl(String url) async {
     if (url == null || url.isEmpty) {
       print("Not available!");
