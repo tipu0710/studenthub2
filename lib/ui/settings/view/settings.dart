@@ -37,6 +37,12 @@ class Settings extends StatelessWidget {
                     settingsController.launchUrl(
                         institute?.instagramUrl, AppType.instagram);
                   }),
+                  childCard("Uni Mail", onTap: () {
+                    settingsController.launchUrl(
+                      institute?.emailAddress,
+                      AppType.email,
+                    );
+                  }),
                   SizedBox(
                     height: 40,
                   ),
@@ -45,13 +51,8 @@ class Settings extends StatelessWidget {
                     height: 15,
                   ),
                   childCard("Contact Us", onTap: () {
-                    settingsController.launchUrl(
-                        institute?.emailAddress, AppType.email);
+                    settingsController.contactUs();
                   }),
-                  // childCard("Uni Facebook", onTap: () {
-                  //   settingsController.launchUrl(institute.webUrl);
-                  // }),
-                  // childCard("Uni Instagram"),
                   childCard("Logout", iconData: CupertinoIcons.power,
                       onTap: () {
                     settingsController.logout();

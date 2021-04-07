@@ -56,9 +56,9 @@ ProfileModel _profileModel;
 set setProfile(ProfileModel profileModel) => _profileModel = profileModel;
 ProfileModel get profileModel => _profileModel;
 
-GeneralInstitute _institute;
-set setInstitute(GeneralInstitute institute) => _institute = institute;
-GeneralInstitute get institute => _institute;
+Institute _institute;
+set setInstitute(Institute institute) => _institute = institute;
+Institute get institute => _institute;
 
 enum DateType { date, time, dateTime }
 

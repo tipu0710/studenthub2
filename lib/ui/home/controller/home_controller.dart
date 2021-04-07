@@ -47,10 +47,10 @@ class HomeController {
     return _colorList[position % _colorList.length];
   }
 
-  Future<bool> channelJoinLeave(int id, bool status, int position) async {
+  Future<bool> channelJoinLeave(String id, bool status, int position) async {
     print(id);
     Response response;
-    String encrypt = DataProcess.getEncryptedData(id.toString());
+    String encrypt = DataProcess.getEncryptedData(id);
     if (status) {
       response = await ApiService.postMethod(
           "/StudentProfileMobileApi/ChannelUnSubscribe?input=$encrypt");

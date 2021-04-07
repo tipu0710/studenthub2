@@ -132,7 +132,7 @@ class _HomeState extends State<Home> {
                   Text(
                     loading
                         ? ""
-                        : dateTimeFormatter(channel?.lastChanged ?? ""),
+                        : dateTimeFormatter(channel?.createDate ?? ""),
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 12,
@@ -157,7 +157,7 @@ class _HomeState extends State<Home> {
                 circleRadius: 15,
                 title: loading
                     ? ''
-                    : channel?.adminChannel?.isAlreadyAdded ?? false
+                    : channel?.isSubscribed ?? false
                         ? "LEAVE"
                         : "JOIN",
                 onPressed: loading
@@ -165,12 +165,12 @@ class _HomeState extends State<Home> {
                     : () async {
                         dynamic b = await homeController.channelJoinLeave(
                             channel.id,
-                            channel?.adminChannel?.isAlreadyAdded ?? false,
+                            channel?.isSubscribed ?? false,
                             position);
                         if (b != null) {
                           setState(() {
                             homeController.homeModel.channelList[position]
-                                .adminChannel = AdminChannel(isAlreadyAdded: b);
+                                .isSubscribed = b;
                           });
                         }
                       },
