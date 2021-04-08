@@ -248,30 +248,31 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                           ),
                         ),
                   UiHelper().button(
-                      context: context,
-                      anim: true,
-                      title: "SAVE",
-                      onPressed: () async {
-                        if (widget.fromHome) {
-                          Navigator.pop(
-                              context,
-                              DateTime(
-                                  selectedDate.year,
-                                  selectedDate.month,
-                                  selectedDate.day,
-                                  selectedTime.hour,
-                                  selectedTime.minute,
-                                  0));
-                          return;
-                        }
-                        EventModel event = await EventController().createEvent(
-                            selectedDate, selectedTime, detailsController.text);
-                        Navigator.pop(context, event);
-                      },
-                      height: 27,
-                      width: 78,
-                      fontSize: 12,
-                      topMargin: 20),
+                    context: context,
+                    anim: true,
+                    title: "SAVE",
+                    onPressed: () async {
+                      if (widget.fromHome) {
+                        Navigator.pop(
+                            context,
+                            DateTime(
+                                selectedDate.year,
+                                selectedDate.month,
+                                selectedDate.day,
+                                selectedTime.hour,
+                                selectedTime.minute,
+                                0));
+                        return;
+                      }
+                      EventModel event = await EventController().createEvent(
+                          selectedDate, selectedTime, detailsController.text);
+                      Navigator.pop(context, event);
+                    },
+                    height: 27,
+                    width: 78,
+                    fontSize: 12,
+                    topMargin: 20,
+                  ),
                 ],
               ),
             )),

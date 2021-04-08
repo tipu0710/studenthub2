@@ -106,6 +106,7 @@ class HomeController {
                       left: margin, right: margin, top: margin, bottom: margin),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
+                    color: Colors.white,
                     image: DecorationImage(
                       image: event.image == null
                           ? AssetImage("assets/images/test/an_1.png")
