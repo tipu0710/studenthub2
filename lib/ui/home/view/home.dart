@@ -9,7 +9,6 @@ import 'package:studenthub2/ui/home/model/home_model.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
 import 'package:studenthub2/ui_helper/custom_icons.dart';
 import 'package:studenthub2/ui_helper/effect.dart';
-import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -21,7 +20,7 @@ class _HomeState extends State<Home> {
   bool loading = true;
   @override
   void initState() {
-    homeController = HomeController();
+    homeController = HomeController(context);
     super.initState();
   }
 
@@ -130,9 +129,7 @@ class _HomeState extends State<Home> {
                     textAlign: TextAlign.left,
                   ),
                   Text(
-                    loading
-                        ? ""
-                        : dateTimeFormatter(channel?.createDate ?? ""),
+                    loading ? "" : dateTimeFormatter(channel?.createDate ?? ""),
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 12,
@@ -152,35 +149,50 @@ class _HomeState extends State<Home> {
             SizedBox(
               width: 15,
             ),
-            UiHelper().button(
-                context: context,
-                circleRadius: 15,
-                title: loading
-                    ? ''
-                    : channel?.isSubscribed ?? false
-                        ? "LEAVE"
-                        : "JOIN",
-                onPressed: loading
-                    ? null
-                    : () async {
-                        dynamic b = await homeController.channelJoinLeave(
-                            channel.id,
-                            channel?.isSubscribed ?? false,
-                            position);
-                        if (b != null) {
-                          setState(() {
-                            homeController.homeModel.channelList[position]
-                                .isSubscribed = b;
-                          });
-                        }
-                      },
-                height: 30,
-                width: 56,
-                fontSize: 8,
-                topMargin: 0,
-                anim: true,
-                bottomMargin: 0,
-                color: miniCardColor),
+            IconButton(
+                icon: Icon(Icons.info_outline),
+                onPressed: () async {
+                  bool b = await homeController.channelJoinLeave(
+                      channel.name,
+                      "Here should be the channel description.",
+                      channel.id,
+                      cardColor,
+                      channel.isSubscribed);
+                  if (b != null) {
+                    setState(() {
+                      homeController
+                          .homeModel.channelList[position].isSubscribed = b;
+                    });
+                  }
+                }),
+            // UiHelper().button(
+            //     context: context,
+            //     circleRadius: 15,
+            //     title: loading
+            //         ? ''
+            //         : channel?.isSubscribed ?? false
+            //             ? "LEAVE"
+            //             : "JOIN",
+            //     onPressed: loading
+            //         ? null
+            //         : () async {
+            //             dynamic b = await homeController.channelJoinLeave(
+            //                 channel.id,
+            //                 channel?.isSubscribed ?? false);
+            //             if (b != null) {
+            //               setState(() {
+            //                 homeController.homeModel.channelList[position]
+            //                     .isSubscribed = b;
+            //               });
+            //             }
+            //           },
+            //     height: 30,
+            //     width: 56,
+            //     fontSize: 8,
+            //     topMargin: 0,
+            //     anim: true,
+            //     bottomMargin: 0,
+            //     color: miniCardColor),
             SizedBox(
               width: 10,
             ),
@@ -295,10 +307,7 @@ class _HomeState extends State<Home> {
           itemCount: loading ? 1 : homeController.homeModel.eventList.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (_, position) => eventCard(
-              loading ? "" : homeController.homeModel.eventList[position].name,
-              loading
-                  ? null
-                  : homeController.homeModel.eventList[position].image,
+              loading ? null : homeController?.homeModel?.eventList[position],
               position,
               loading)),
     );
@@ -330,69 +339,75 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget eventCard(String title, String image, int position, bool loading) {
+  Widget eventCard(Event event, int position, bool loading) {
     return ShimmerLoading(
       isLoading: loading,
-      child: Container(
-        height: 195,
-        width: 270,
-        margin: EdgeInsets.only(right: 20, left: position == 0 ? 20 : 0),
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                height: 195,
-                width: 270,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(17.0),
-                  color: const Color(0xffffffff),
-                  border:
-                      Border.all(width: 1.0, color: const Color(0xffeeeeee)),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                height: 155,
-                width: 270,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: image == null
-                        ? AssetImage("assets/images/test/an_1.png")
-                        : CachedNetworkImageProvider(
-                            ApiService.baseUrl + image,
-                          ),
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.circular(17.0),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 8.0, bottom: 8, right: 10, left: 15),
+      child: GestureDetector(
+        onTap: () async {
+          if(loading)return;
+          await homeController.eventAction(event);
+        },
+        child: Container(
+          height: 195,
+          width: 270,
+          margin: EdgeInsets.only(right: 20, left: position == 0 ? 20 : 0),
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.topCenter,
                 child: Container(
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 14,
-                      color: const Color(0xff252525),
-                      fontWeight: FontWeight.w500,
-                      height: 2.5714285714285716,
-                    ),
-                    textHeightBehavior:
-                        TextHeightBehavior(applyHeightToFirstAscent: false),
-                    textAlign: TextAlign.left,
+                  height: 195,
+                  width: 270,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(17.0),
+                    color: const Color(0xffffffff),
+                    border:
+                        Border.all(width: 1.0, color: const Color(0xffeeeeee)),
                   ),
                 ),
               ),
-            ),
-          ],
+              Align(
+                alignment: Alignment.topCenter,
+                child: Container(
+                  height: 155,
+                  width: 270,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: event?.image == null
+                          ? AssetImage("assets/images/test/an_1.png")
+                          : CachedNetworkImageProvider(
+                              ApiService.baseUrl + event.image,
+                            ),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.circular(17.0),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 8.0, bottom: 8, right: 10, left: 15),
+                  child: Container(
+                    child: Text(
+                      event?.name ?? "",
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 14,
+                        color: const Color(0xff252525),
+                        fontWeight: FontWeight.w500,
+                        height: 2.5714285714285716,
+                      ),
+                      textHeightBehavior:
+                          TextHeightBehavior(applyHeightToFirstAscent: false),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
