@@ -7,8 +7,6 @@ import 'package:studenthub2/global.dart';
 import 'package:studenthub2/model/data_model.dart';
 import 'package:studenthub2/service/api/api_service.dart';
 import 'package:studenthub2/service/process/process.dart';
-import 'package:studenthub2/service/sp/sp.dart';
-import 'package:studenthub2/ui/calendar/controller/notification_controller.dart';
 import 'package:studenthub2/ui/calendar/view/event_create_dialog.dart';
 import 'package:studenthub2/ui/home/model/home_model.dart';
 import 'package:studenthub2/ui/profile/controller/profile_controller.dart';
@@ -178,34 +176,114 @@ class HomeController {
                           ),
                           UiHelper().button(
                               context: _context,
-                              title: "ADD TO CALENDER",
+                              title: "ADD TO CALENDAR",
                               height: 30,
                               width: 100,
                               topMargin: 20,
                               fontSize: 11,
                               onPressed: () async {
                                 Navigator.pop(_context);
-                                DateTime date = await showDialog(
+                                await showDialog(
                                     context: _context,
                                     builder: (context) => EventCreationDialog(
                                           selectedDate: DateTime.now(),
-                                      fromHome: true,
+                                          event: event,
                                         ));
-                                if (date == null) {
-                                  showMessage("Canceled");
-                                } else {
-                                  NotificationController.n.scheduleNotification(
-                                    title: event.name,
-                                    body: event.description,
-                                    id: SPData.spData.getNotificationId(),
-                                    payload: "payload",
-                                    dateTime: date,
-                                  );
-                                  showMessage("Event added!");
-                                }
                               }),
                         ],
                       )
+                    ]),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ) ??
+        false;
+  }
+
+  Future<bool> announcementAction(Announcement announcement) async {
+    var margin = 20.0;
+    return await showDialog<bool>(
+          context: _context,
+          barrierDismissible: false,
+          builder: (_) => Dialog(
+            backgroundColor: Colors.transparent,
+            child: Material(
+              color: Colors.transparent,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(_context).size.height * .8),
+                child: Container(
+                  width: 320.0,
+                  padding: EdgeInsets.only(
+                      left: margin, right: margin, top: margin, bottom: margin),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Colors.white,
+                    image: DecorationImage(
+                      image: announcement.image == null
+                          ? AssetImage("assets/images/test/an_1.png")
+                          : CachedNetworkImageProvider(
+                              ApiService.baseUrl + announcement.image,
+                            ),
+                      fit: BoxFit.cover,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0x29000000),
+                        offset: Offset(0, 3),
+                        blurRadius: 6,
+                      ),
+                    ],
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(children: [
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.white.withOpacity(0.6),
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(
+                                  top: 40, left: 20, right: 20, bottom: 20),
+                              child: Text(
+                                announcement.title,
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 20,
+                                  color: const Color(0xff252525),
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.8,
+                                ),
+                                textHeightBehavior: TextHeightBehavior(
+                                    applyHeightToFirstAscent: false),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Text(
+                              announcement.description,
+                              style: TextStyle(height: 1.5),
+                            ),
+                          ],
+                        ),
+                      ),
+                      UiHelper().button(
+                          context: _context,
+                          title: "BACK",
+                          height: 30,
+                          width: 70,
+                          topMargin: 20,
+                          fontSize: 11,
+                          color: Colors.white,
+                          textColor: Colors.black,
+                          borderColor: Colors.grey,
+                          onPressed: () {
+                            Navigator.pop(_context);
+                          }),
                     ]),
                   ),
                 ),
@@ -225,6 +303,7 @@ class HomeController {
           builder: (_) => Dialog(
             backgroundColor: Colors.transparent,
             child: Material(
+              color: Colors.transparent,
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                     maxHeight: MediaQuery.of(_context).size.height * .8),
@@ -292,6 +371,7 @@ class HomeController {
                               width: 70,
                               topMargin: 20,
                               fontSize: 11,
+                              anim: true,
                               onPressed: () async {
                                 bool b = await _channelJoinLeave(id, status);
                                 Navigator.pop(_context, b);

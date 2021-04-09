@@ -54,42 +54,45 @@ class SettingsController {
       builder: (_) => Dialog(
         backgroundColor: Colors.transparent,
         child: Material(
-          child: Container(
-            width: 320.0,
-            height: 270,
-            padding: EdgeInsets.only(
-                left: margin * 2,
-                right: margin * 2,
-                top: margin,
-                bottom: margin),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: const Color(0xffffffff),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0x29000000),
-                  offset: Offset(0, 3),
-                  blurRadius: 6,
-                ),
-              ],
-            ),
-            child: SingleChildScrollView(
-              child: Column(children: [
-                Text(
-                  institute.contactDetails,
-                  style: TextStyle(height: 1.5),
-                ),
-                UiHelper().button(
-                    context: _context,
-                    title: "OK",
-                    height: 30,
-                    width: 55,
-                    topMargin: 20,
-                    fontSize: 12,
-                    onPressed: () {
-                      Navigator.pop(_context);
-                    })
-              ]),
+          color: Colors.transparent,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: MediaQuery.of(_context).size.height*.8),
+            child: Container(
+              width: 320.0,
+              padding: EdgeInsets.only(
+                  left: margin * 2,
+                  right: margin * 2,
+                  top: margin,
+                  bottom: margin),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: const Color(0xffffffff),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0x29000000),
+                    offset: Offset(0, 3),
+                    blurRadius: 6,
+                  ),
+                ],
+              ),
+              child: SingleChildScrollView(
+                child: Column(children: [
+                  Text(
+                    institute.contactDetails,
+                    style: TextStyle(height: 1.5),
+                  ),
+                  UiHelper().button(
+                      context: _context,
+                      title: "OK",
+                      height: 30,
+                      width: 55,
+                      topMargin: 20,
+                      fontSize: 12,
+                      onPressed: () {
+                        Navigator.pop(_context);
+                      })
+                ]),
+              ),
             ),
           ),
         ),

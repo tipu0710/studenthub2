@@ -4,14 +4,14 @@ import 'package:intl/intl.dart';
 import 'package:studenthub2/global.dart';
 import 'package:studenthub2/ui/calendar/controller/calendar_controller.dart';
 import 'package:studenthub2/ui/calendar/model/event_model.dart';
+import 'package:studenthub2/ui/home/model/home_model.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class EventCreationDialog extends StatefulWidget {
   final DateTime selectedDate;
-  final bool fromHome;
+  final Event event;
 
-  const EventCreationDialog(
-      {Key key, @required this.selectedDate, this.fromHome = false})
+  const EventCreationDialog({Key key, @required this.selectedDate, this.event})
       : super(key: key);
   @override
   _EventCreationDialogState createState() => _EventCreationDialogState();
@@ -195,7 +195,7 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                       ),
                     ),
                   ),
-                  widget.fromHome
+                  widget.event != null
                       ? Container()
                       : Container(
                           margin: EdgeInsets.only(top: margin),
@@ -210,7 +210,7 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                             textAlign: TextAlign.left,
                           ),
                         ),
-                  widget.fromHome
+                  widget.event != null
                       ? Container()
                       : Container(
                           height: 120,
@@ -252,20 +252,13 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                     anim: true,
                     title: "SAVE",
                     onPressed: () async {
-                      if (widget.fromHome) {
-                        Navigator.pop(
-                            context,
-                            DateTime(
-                                selectedDate.year,
-                                selectedDate.month,
-                                selectedDate.day,
-                                selectedTime.hour,
-                                selectedTime.minute,
-                                0));
-                        return;
-                      }
                       EventModel event = await EventController().createEvent(
-                          selectedDate, selectedTime, detailsController.text);
+                          selectedDate,
+                          selectedTime,
+                          widget.event != null
+                              ? widget.event.description
+                              : detailsController.text,
+                          title: widget?.event?.name ?? null);
                       Navigator.pop(context, event);
                     },
                     height: 27,

@@ -124,53 +124,45 @@ class _CalendarState extends State<Calendar> {
       isLoading: loading,
       key: UniqueKey(),
       child: Container(
-        margin: EdgeInsets.only(left: 20, right: 20, top: 15),
-        padding: EdgeInsets.only(top: 10, bottom: 10),
+        margin: EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 15),
+        padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(17.0),
           color: primaryColor,
         ),
-        child: Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: 20,
+            Text(
+              title,
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 14,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                height: 2.5714285714285716,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textHeightBehavior:
+                  TextHeightBehavior(applyHeightToFirstAscent: false),
+              textAlign: TextAlign.left,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 14,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    height: 2.5714285714285716,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textHeightBehavior:
-                      TextHeightBehavior(applyHeightToFirstAscent: false),
-                  textAlign: TextAlign.left,
-                ),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 12,
-                    color: Colors.white70,
-                    fontWeight: FontWeight.w500,
-                    height: 3,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textHeightBehavior:
-                      TextHeightBehavior(applyHeightToFirstAscent: false),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            )
+            SizedBox(height: 15,),
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 12,
+                color: Colors.white70,
+                fontWeight: FontWeight.w500,
+                height: 2,
+              ),
+              textHeightBehavior:
+                  TextHeightBehavior(applyHeightToFirstAscent: false),
+              textAlign: TextAlign.left,
+            ),
           ],
         ),
       ),
@@ -183,13 +175,12 @@ class _CalendarState extends State<Calendar> {
         builder: (context) => EventCreationDialog(
               selectedDate: _controller.selectedDay,
             ));
-    if(mounted && eventModel != null){
+    if (mounted && eventModel != null) {
       setState(() {
         _events = Map<DateTime, List<dynamic>>.from(decodeMap(eventModel));
         _selectedEvents = _events[_controller.selectedDay];
       });
     }
-
   }
 
   void getData() async {

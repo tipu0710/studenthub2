@@ -228,7 +228,7 @@ class _LoginState extends State<Login> {
               FocusScope.of(context).requestFocus(passFocus);
             },
             decoration: InputDecoration(
-                labelText: "Email/Student ID",
+                labelText: "Email",
                 labelStyle: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 14,
