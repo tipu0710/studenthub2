@@ -8,7 +8,6 @@ import 'package:studenthub2/service/api/api_service.dart';
 import 'package:studenthub2/service/process/process.dart';
 import 'package:studenthub2/service/sp/sp.dart';
 import 'package:studenthub2/ui/calendar/model/event_model.dart';
-import 'package:studenthub2/ui/home/model/home_model.dart';
 
 import 'notification_controller.dart';
 
@@ -44,19 +43,19 @@ class EventController {
   }
 
   Future<EventModel> createEvent(
-      DateTime dateTime, TimeOfDay timeOfDay, String description, {String title}) async {
-    print(
-        "${_doubleString(
-          dateTime.year.toString(),
-        )}-${_doubleString(
-          dateTime.month.toString(),
-        )}-${_doubleString(
-          dateTime.day.toString(),
-        )}T${_doubleString(
-          timeOfDay.hour.toString(),
-        )}:${_doubleString(
-          timeOfDay.minute.toString(),
-        )}:00");
+      DateTime dateTime, TimeOfDay timeOfDay, String description,
+      {String title}) async {
+    print("${_doubleString(
+      dateTime.year.toString(),
+    )}-${_doubleString(
+      dateTime.month.toString(),
+    )}-${_doubleString(
+      dateTime.day.toString(),
+    )}T${_doubleString(
+      timeOfDay.hour.toString(),
+    )}:${_doubleString(
+      timeOfDay.minute.toString(),
+    )}:00");
     Map<String, dynamic> map = {
       "Date": "${_doubleString(
         dateTime.year.toString(),
@@ -69,7 +68,7 @@ class EventController {
       )}:${_doubleString(
         timeOfDay.minute.toString(),
       )}:00",
-      "Details": description??"No description"
+      "Details": description ?? "No description"
     };
     Response response = await ApiService.postMethod(
       ApiService.baseUrl +
@@ -93,7 +92,7 @@ class EventController {
       );
 
       NotificationController.n.scheduleNotification(
-        title: title?? "Attention!",
+        title: title ?? "Attention!",
         body: description,
         id: SPData.spData.getNotificationId(),
         payload: "payload",

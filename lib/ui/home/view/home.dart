@@ -5,22 +5,28 @@ import 'package:studenthub2/global.dart';
 import 'package:studenthub2/service/api/api_service.dart';
 import 'package:studenthub2/ui/calendar/view/calendar.dart';
 import 'package:studenthub2/ui/home/controller/home_controller.dart';
-import 'package:studenthub2/ui/home/model/home_model.dart';
+import 'package:studenthub2/ui/home/model/announcement.dart';
+import 'package:studenthub2/ui/home/model/channel.dart';
+import 'package:studenthub2/ui/home/model/event.dart';
+import 'package:studenthub2/ui/home/view/announcement_ui/announcement_ui.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
 import 'package:studenthub2/ui_helper/custom_icons.dart';
 import 'package:studenthub2/ui_helper/effect.dart';
+import 'package:studenthub2/ui_helper/hero_route.dart';
+
+import 'event_ui/event_ui.dart';
 
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   HomeController homeController;
   bool loading = true;
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-  new GlobalKey<RefreshIndicatorState>();
+      new GlobalKey<RefreshIndicatorState>();
 
   @override
   void initState() {
@@ -30,8 +36,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return RefreshIndicator(
-      onRefresh: () async{
+      onRefresh: () async {
         homeController.homeModel = null;
         bool b = await homeController.getDashboard();
         setState(() {
@@ -102,7 +109,7 @@ class _HomeState extends State<Home> {
             : () async {
                 bool b = await homeController.channelJoinLeave(
                     channel.name,
-                    "Here should be the channel description.",
+                    channel.description,
                     channel.id,
                     cardColor,
                     channel.isSubscribed);
@@ -370,11 +377,16 @@ class _HomeState extends State<Home> {
 
   Widget eventCard(Event event, int position, bool loading) {
     return ShimmerLoading(
+      key: Key(loading ? position.toString() : event.id.toString()),
       isLoading: loading,
       child: GestureDetector(
         onTap: () async {
           if (loading) return;
-          await homeController.eventAction(event);
+          Navigator.of(context).push(
+            HeroRoute(
+              builder: (_) => EventUi(event: event),
+            ),
+          );
         },
         child: Container(
           height: 195,
@@ -395,42 +407,51 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: Container(
-                  height: 155,
-                  width: 270,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: event?.image == null
-                          ? AssetImage("assets/images/test/an_1.png")
-                          : CachedNetworkImageProvider(
-                              ApiService.baseUrl + event.image,
-                            ),
-                      fit: BoxFit.cover,
+              Hero(
+                tag: loading ? position.toString() : event.id.toString(),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    height: 155,
+                    width: 270,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: event?.image == null
+                            ? AssetImage("assets/images/test/an_1.png")
+                            : CachedNetworkImageProvider(
+                                ApiService.baseUrl + event.image,
+                              ),
+                        fit: BoxFit.fitHeight,
+                      ),
+                      borderRadius: BorderRadius.circular(17.0),
                     ),
-                    borderRadius: BorderRadius.circular(17.0),
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 8.0, bottom: 8, right: 10, left: 15),
-                  child: Container(
-                    child: Text(
-                      event?.name ?? "",
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 14,
-                        color: const Color(0xff252525),
-                        fontWeight: FontWeight.w500,
-                        height: 2.5714285714285716,
+              Hero(
+                tag: "title" +
+                    "${loading ? position.toString() : event.id.toString()}",
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 8.0, bottom: 8, right: 10, left: 15),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Container(
+                        child: Text(
+                          event?.name ?? "",
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 14,
+                            color: const Color(0xff252525),
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textHeightBehavior: TextHeightBehavior(
+                              applyHeightToFirstAscent: false),
+                          textAlign: TextAlign.left,
+                        ),
                       ),
-                      textHeightBehavior:
-                          TextHeightBehavior(applyHeightToFirstAscent: false),
-                      textAlign: TextAlign.left,
                     ),
                   ),
                 ),
@@ -450,7 +471,11 @@ class _HomeState extends State<Home> {
         onTap: loading
             ? null
             : () async {
-                await homeController.announcementAction(announcement);
+                Navigator.of(context).push(
+                  HeroRoute(
+                    builder: (_) => AnnouncementUi(announcement: announcement),
+                  ),
+                );
               },
         child: Container(
           height: 195,
@@ -471,57 +496,51 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: Container(
-                  height: 155,
-                  width: 270,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: announcement?.image == null
-                          ? AssetImage("assets/images/test/an_1.png")
-                          : CachedNetworkImageProvider(
-                              ApiService.baseUrl + announcement.image,
-                            ),
-                      fit: BoxFit.cover,
+              Hero(
+                tag: loading ? position.toString() : announcement.id.toString(),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    height: 155,
+                    width: 270,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: announcement?.image == null
+                            ? AssetImage("assets/images/test/an_1.png")
+                            : CachedNetworkImageProvider(
+                                ApiService.baseUrl + announcement.image,
+                              ),
+                        fit: BoxFit.fitHeight,
+                      ),
+                      borderRadius: BorderRadius.circular(17.0),
                     ),
-                    borderRadius: BorderRadius.circular(17.0),
                   ),
-                  // child: Container(
-                  //   height: 155,
-                  //   width: 270,
-                  //   padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                  //   decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(17.0),
-                  //     color: Colors.black.withOpacity(0.5),
-                  //   ),
-                  //   child: Align(
-                  //       alignment: Alignment.bottomLeft,
-                  //       child: Text(
-                  //         announcement?.description??"",
-                  //         style: TextStyle(color: Colors.white),
-                  //       )),
-                  // ),
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 8.0, bottom: 8, right: 10, left: 15),
-                  child: Container(
-                    child: Text(
-                      announcement?.title ?? "",
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 14,
-                        color: const Color(0xff252525),
-                        fontWeight: FontWeight.w500,
-                        height: 2.5714285714285716,
+              Hero(
+                tag: "title" +
+                    "${loading ? position.toString() : announcement.id.toString()}",
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 8.0, bottom: 8, right: 10, left: 15),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Container(
+                        child: Text(
+                          announcement?.title ?? "",
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 14,
+                            color: const Color(0xff252525),
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textHeightBehavior: TextHeightBehavior(
+                              applyHeightToFirstAscent: false),
+                          textAlign: TextAlign.left,
+                        ),
                       ),
-                      textHeightBehavior:
-                          TextHeightBehavior(applyHeightToFirstAscent: false),
-                      textAlign: TextAlign.left,
                     ),
                   ),
                 ),
@@ -614,8 +633,7 @@ class _HomeState extends State<Home> {
 
   Widget ad(bool loading) {
     return Container(
-      height:
-          !loading && homeController.homeModel.addList.length > 0 ? 196 : 0,
+      height: !loading && homeController.homeModel.addList.length > 0 ? 196 : 0,
       margin: EdgeInsets.only(top: 40),
       child: ListView.builder(
           itemCount: loading ? 1 : homeController.homeModel.addList.length,
@@ -766,4 +784,7 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

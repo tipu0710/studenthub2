@@ -51,11 +51,13 @@ class ProfileController {
           barrierDismissible: false);
       if (response == null) {
         showMessage("Upload cancel!");
+        return null;
       } else {
         DataModel dataModel = DataModel.fromJson(response.data);
         if (dataModel.hasError) {
           print(dataModel.errors);
           showMessage(dataModel.errors.first);
+          return null;
         } else {
           print(dataModel.dataExtra);
           String url = dataModel.dataExtra['Image'];

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/global.dart';
@@ -53,7 +52,7 @@ class _ProfileState extends State<Profile> {
                                 color: const Color(0xff1e5aa7),
                                 image: DecorationImage(
                                   image: _image == null
-                                      ? profileModel.institutionDetails.image ==
+                                      ? profileModel?.institutionDetails?.image ==
                                               null
                                           ? AssetImage('assets/images/user.png')
                                           : CachedNetworkImageProvider(
@@ -105,7 +104,7 @@ class _ProfileState extends State<Profile> {
                     Container(
                       margin: EdgeInsets.only(top: 35),
                       child: Text(
-                        profileModel.fullName,
+                        profileModel?.fullName??"",
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 22,
@@ -121,7 +120,7 @@ class _ProfileState extends State<Profile> {
                     Container(
                       margin: EdgeInsets.only(top: 0),
                       child: Text(
-                        profileModel.institutionDetails.matricId,
+                        profileModel?.institutionDetails?.matricId??"",
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 15,
@@ -161,19 +160,6 @@ class _ProfileState extends State<Profile> {
                             height: 1.2,
                           ),
                           children: [
-                            TextSpan(
-                              text: 'University of',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            TextSpan(
-                              text: ' \n',
-                              style: TextStyle(
-                                color: const Color(0xff252525),
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
                             TextSpan(
                               text:
                                   profileModel.institutionDetails.instituteName,

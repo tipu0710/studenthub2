@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:studenthub2/ui/auth/login/model/login_model.dart';
-import 'package:studenthub2/ui/home/model/home_model.dart';
+import 'package:studenthub2/ui/home/model/institute.dart';
 
 import 'ui/profile/model/profile_model.dart';
 
