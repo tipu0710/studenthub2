@@ -148,94 +148,24 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                 width: 15,
               ),
               Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      channel?.name ?? '',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 14,
-                        color: const Color(0xff252525),
-                        fontWeight: FontWeight.w500,
-                        height: 2.5714285714285716,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textHeightBehavior:
-                          TextHeightBehavior(applyHeightToFirstAscent: false),
-                      textAlign: TextAlign.left,
-                    ),
-                    Text(
-                      loading
-                          ? ""
-                          : dateTimeFormatter(channel?.createDate ?? ""),
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 12,
-                        color: const Color(0xff727272),
-                        fontWeight: FontWeight.w500,
-                        height: 3,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textHeightBehavior:
-                          TextHeightBehavior(applyHeightToFirstAscent: false),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                child: Text(
+                  channel?.name ?? '',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 14,
+                    color: const Color(0xff252525),
+                    fontWeight: FontWeight.w500,
+                    height: 2.5714285714285716,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textHeightBehavior:
+                      TextHeightBehavior(applyHeightToFirstAscent: false),
+                  textAlign: TextAlign.left,
                 ),
               ),
               SizedBox(
                 width: 15,
-              ),
-              // IconButton(
-              //     icon: Icon(Icons.info_outline),
-              //     onPressed: () async {
-              //       bool b = await homeController.channelJoinLeave(
-              //           channel.name,
-              //           "Here should be the channel description.",
-              //           channel.id,
-              //           cardColor,
-              //           channel.isSubscribed);
-              //       if (b != null) {
-              //         setState(() {
-              //           homeController
-              //               .homeModel.channelList[position].isSubscribed = b;
-              //         });
-              //       }
-              //     }),
-              // UiHelper().button(
-              //     context: context,
-              //     circleRadius: 15,
-              //     title: loading
-              //         ? ''
-              //         : channel?.isSubscribed ?? false
-              //             ? "LEAVE"
-              //             : "JOIN",
-              //     onPressed: loading
-              //         ? null
-              //         : () async {
-              //             dynamic b = await homeController.channelJoinLeave(
-              //                 channel.id,
-              //                 channel?.isSubscribed ?? false);
-              //             if (b != null) {
-              //               setState(() {
-              //                 homeController.homeModel.channelList[position]
-              //                     .isSubscribed = b;
-              //               });
-              //             }
-              //           },
-              //     height: 30,
-              //     width: 56,
-              //     fontSize: 8,
-              //     topMargin: 0,
-              //     anim: true,
-              //     bottomMargin: 0,
-              //     color: miniCardColor),
-              SizedBox(
-                width: 10,
               ),
             ],
           ),
