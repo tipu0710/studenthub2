@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 class StudentRegModel {
-  String data;
-  bool verified;
-  String otp;
+  String? data;
+  bool? verified;
+  String? otp;
 
   StudentRegModel({this.data, this.verified, this.otp});
 

@@ -19,7 +19,7 @@ class CustomIcons {
   CustomIcons._();
 
   static const _kFontFam = 'Custom';
-  static const String _kFontPkg = null;
+  static const String? _kFontPkg = null;
 
   static const IconData badge = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData bell = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);

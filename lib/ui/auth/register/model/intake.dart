@@ -1,6 +1,6 @@
 class IntakeModel {
-  List<IntakeList> intakeList;
-  List<ProgrammeList> programmeList;
+  List<IntakeList>? intakeList;
+  List<ProgrammeList>? programmeList;
 
   IntakeModel({this.intakeList, this.programmeList});
 
@@ -8,13 +8,13 @@ class IntakeModel {
     if (json['intakeList'] != null) {
       intakeList = <IntakeList>[];
       json['intakeList'].forEach((v) {
-        intakeList.add(IntakeList.fromJson(v));
+        intakeList!.add(IntakeList.fromJson(v));
       });
     }
     if (json['programmeList'] != null) {
       programmeList = <ProgrammeList>[];
       json['programmeList'].forEach((v) {
-        programmeList.add(ProgrammeList.fromJson(v));
+        programmeList!.add(ProgrammeList.fromJson(v));
       });
     }
   }
@@ -22,11 +22,11 @@ class IntakeModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.intakeList != null) {
-      data['intakeList'] = this.intakeList.map((v) => v.toJson()).toList();
+      data['intakeList'] = this.intakeList!.map((v) => v.toJson()).toList();
     }
     if (this.programmeList != null) {
       data['programmeList'] =
-          this.programmeList.map((v) => v.toJson()).toList();
+          this.programmeList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -49,9 +49,9 @@ class IntakeList extends Intake {
 }
 
 abstract class Intake {
-  String id;
-  String code;
-  String name;
+  String? id;
+  String? code;
+  String? name;
 
   Intake({this.id, this.code, this.name});
 

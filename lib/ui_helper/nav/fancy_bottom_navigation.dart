@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:studenthub2/ui/parent/view/parent.dart';
 import 'package:studenthub2/ui_helper/nav/paint/half_clipper.dart';
@@ -14,8 +16,8 @@ const double BAR_HEIGHT = 60;
 
 class FancyBottomNavigation extends StatefulWidget {
   FancyBottomNavigation(
-      {@required this.tabs,
-      @required this.onTabChangedListener,
+      {required this.tabs,
+      required this.onTabChangedListener,
       this.key,
       this.initialSelection = 0,
       this.circleColor,
@@ -25,15 +27,15 @@ class FancyBottomNavigation extends StatefulWidget {
       this.barBackgroundColor});
 
   final Function(int position) onTabChangedListener;
-  final Color circleColor;
-  final Color activeIconColor;
-  final Color inactiveIconColor;
-  final Color textColor;
-  final Color barBackgroundColor;
+  final Color? circleColor;
+  final Color? activeIconColor;
+  final Color? inactiveIconColor;
+  final Color? textColor;
+  final Color? barBackgroundColor;
   final List<TabData> tabs;
   final int initialSelection;
 
-  final Key key;
+  final Key? key;
 
   @override
   FancyBottomNavigationState createState() => FancyBottomNavigationState();
@@ -48,11 +50,11 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
   double _circleAlignX = 0;
   double _circleIconAlpha = 1;
 
-  Color circleColor;
-  Color activeIconColor;
-  Color inactiveIconColor;
-  Color barBackgroundColor;
-  Color textColor;
+  Color? circleColor;
+  Color? activeIconColor;
+  Color? inactiveIconColor;
+  Color? barBackgroundColor;
+  Color? textColor;
 
   @override
   void didChangeDependencies() {
@@ -86,8 +88,8 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
 
   @override
   void initState() {
-    Parent.tabController.addListener(() {
-      int page = Parent.tabController.index;
+    Parent.tabController!.addListener(() {
+      int page = Parent.tabController!.index;
       if(page != currentSelected){
         widget.onTabChangedListener(page);
         _setSelected(widget.tabs[page].key);
@@ -156,7 +158,7 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
                   widthFactor: 1 / widget.tabs.length,
                   child: GestureDetector(
                     onTap:
-                        widget.tabs[currentSelected].onclick as void Function(),
+                        widget.tabs[currentSelected].onclick as void Function()?,
                     child: Stack(
                       alignment: Alignment.center,
                       children: <Widget>[
@@ -187,7 +189,7 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
                             height: ARC_HEIGHT,
                             width: ARC_WIDTH,
                             child: CustomPaint(
-                              painter: HalfPainter(barBackgroundColor),
+                              painter: HalfPainter(barBackgroundColor!),
                             )),
                         SizedBox(
                           height: CIRCLE_SIZE,
@@ -245,10 +247,10 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
 }
 
 class TabData {
-  TabData({@required this.iconData, @required this.title, this.onclick});
+  TabData({required this.iconData, required this.title, this.onclick});
 
   IconData iconData;
   String title;
-  Function onclick;
+  Function? onclick;
   final UniqueKey key = UniqueKey();
 }

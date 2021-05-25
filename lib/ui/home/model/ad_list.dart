@@ -1,17 +1,17 @@
 class AddList {
-  bool isAlreadyAdded;
-  int id;
-  String name;
-  String link;
-  String image;
-  int sortingOrder;
-  bool isActive;
-  int createById;
-  String createDate;
-  int lastChangedById;
-  String lastChanged;
-  bool isDeleted;
-  bool isSelected;
+  bool? isAlreadyAdded;
+  int? id;
+  String? name;
+  String? link;
+  String? image;
+  int? sortingOrder;
+  bool? isActive;
+  int? createById;
+  String? createDate;
+  int? lastChangedById;
+  String? lastChanged;
+  bool? isDeleted;
+  bool? isSelected;
 
   AddList(
       {this.isAlreadyAdded,

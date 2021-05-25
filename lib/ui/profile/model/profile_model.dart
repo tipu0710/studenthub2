@@ -1,35 +1,35 @@
 class ProfileModel {
-  String id;
-  String fullName;
-  String dateOfBirth;
-  String countryId;
-  int genderEnumId;
-  String gender;
-  int religionEnumId;
-  String religion;
-  int maritalStatusEnumId;
-  String maritalStatus;
-  int bloodGroupEnumId;
-  String bloodGroup;
-  String fatherName;
-  String motherName;
-  String race;
-  String nationality;
-  String nationalIdNumber;
-  int userTypeEnumId;
-  String userType;
-  int userStatusEnumId;
-  String userStatus;
-  String instituteId;
-  String remarks;
-  bool isActive;
-  String createDate;
-  String createById;
-  String lastChanged;
-  String lastChangedById;
-  bool isSelected;
-  bool isAlreadyAdded;
-  InstitutionDetails institutionDetails;
+  String? id;
+  String? fullName;
+  String? dateOfBirth;
+  String? countryId;
+  int? genderEnumId;
+  String? gender;
+  int? religionEnumId;
+  String? religion;
+  int? maritalStatusEnumId;
+  String? maritalStatus;
+  int? bloodGroupEnumId;
+  String? bloodGroup;
+  String? fatherName;
+  String? motherName;
+  String? race;
+  String? nationality;
+  String? nationalIdNumber;
+  int? userTypeEnumId;
+  String? userType;
+  int? userStatusEnumId;
+  String? userStatus;
+  String? instituteId;
+  String? remarks;
+  bool? isActive;
+  String? createDate;
+  String? createById;
+  String? lastChanged;
+  String? lastChangedById;
+  bool? isSelected;
+  bool? isAlreadyAdded;
+  InstitutionDetails? institutionDetails;
 
   ProfileModel(
       {this.id,
@@ -134,10 +134,10 @@ class ProfileModel {
 }
 
 class InstitutionDetails {
-  String programmeName;
-  String instituteName;
-  String matricId;
-  String image;
+  String? programmeName;
+  String? instituteName;
+  String? matricId;
+  String? image;
 
   InstitutionDetails({this.programmeName, this.instituteName, this.matricId});
 

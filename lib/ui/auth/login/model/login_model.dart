@@ -1,14 +1,14 @@
 class LoginModel {
-  String id;
-  String username;
-  String name;
-  int userTypeId;
-  String dateOfBirth;
-  String instituteId;
-  int departmentId;
-  String token;
-  bool hasError;
-  List<String> errors;
+  String? id;
+  String? username;
+  String? name;
+  int? userTypeId;
+  String? dateOfBirth;
+  String? instituteId;
+  int? departmentId;
+  String? token;
+  bool? hasError;
+  List<String>? errors;
 
   LoginModel(
       {this.id,

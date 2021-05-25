@@ -11,7 +11,7 @@ class QrParent extends StatefulWidget {
 
 class _QrParentState extends State<QrParent>
     with SingleTickerProviderStateMixin {
-  TabController tabController;
+  TabController? tabController;
   PositionOfButton positionOfButton = PositionOfButton.left;
   double opacity = 1;
   String buttonText = 'SCAN';
@@ -19,7 +19,7 @@ class _QrParentState extends State<QrParent>
   @override
   void initState() {
     tabController = TabController(length: 2, vsync: this, initialIndex: 0);
-    tabController.addListener(() {
+    tabController!.addListener(() {
       changeButton();
     });
     super.initState();
@@ -144,8 +144,8 @@ class _QrParentState extends State<QrParent>
               Expanded(
                   child: GestureDetector(
                       onTap: () async {
-                        if (tabController.index != 0) {
-                          tabController.animateTo(0);
+                        if (tabController!.index != 0) {
+                          tabController!.animateTo(0);
                           setState(() {
                             positionOfButton = PositionOfButton.left;
                             opacity = 0;
@@ -163,8 +163,8 @@ class _QrParentState extends State<QrParent>
               Expanded(
                   child: GestureDetector(
                       onTap: () async {
-                        if (tabController.index != 1) {
-                          tabController.animateTo(1);
+                        if (tabController!.index != 1) {
+                          tabController!.animateTo(1);
                           setState(() {
                             positionOfButton = PositionOfButton.right;
                             opacity = 0;
@@ -188,14 +188,14 @@ class _QrParentState extends State<QrParent>
 
   void changeButton() async {
     setState(() {
-      positionOfButton = tabController.index == 0
+      positionOfButton = tabController!.index == 0
           ? PositionOfButton.left
           : PositionOfButton.right;
       opacity = 0;
     });
     await Future.delayed(Duration(milliseconds: 250));
     setState(() {
-      buttonText = tabController.index == 0 ? "SCAN" : "MY CODE";
+      buttonText = tabController!.index == 0 ? "SCAN" : "MY CODE";
       opacity = 1;
     });
   }

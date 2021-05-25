@@ -16,18 +16,18 @@ class QrController {
 
     DataModel dataModel = DataModel.fromJson(response.data);
     print(response.data);
-    if (dataModel.hasError) {
+    if (dataModel.hasError!) {
       showMessage(
-          dataModel.errors.isEmpty
+          dataModel.errors!.isEmpty
               ? "Something went wrong!"
-              : dataModel.errors.first,
+              : dataModel.errors!.first,
           toastPosition: ToastPosition.center);
       print(dataModel.errors);
       return false;
     } else {
-      print(DataProcess.getDecryptedData(dataModel.data));
+      print(DataProcess.getDecryptedData(dataModel.data!));
       showMessage("JOINED");
-      Parent.tabController.animateTo(0);
+      Parent.tabController!.animateTo(0);
       return true;
     }
   }

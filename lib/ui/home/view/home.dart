@@ -22,7 +22,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
-  HomeController homeController;
+  HomeController? homeController;
   bool loading = true;
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
@@ -39,8 +39,8 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
     super.build(context);
     return RefreshIndicator(
       onRefresh: () async {
-        homeController.homeModel = null;
-        bool b = await homeController.getDashboard();
+        homeController!.homeModel = null;
+        bool b = await homeController!.getDashboard();
         setState(() {
           print("refresh");
           loading = b;
@@ -50,7 +50,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
       child: Scaffold(
         body: SingleChildScrollView(
           child: FutureBuilder<bool>(
-            future: homeController.getDashboard(),
+            future: homeController!.getDashboard(),
             builder: (_, snapshot) {
               int step = 1;
               if (snapshot.hasError) {
@@ -67,12 +67,12 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                   children: [
                     profile(loading),
                     menu(loading),
-                    !loading && homeController.homeModel.eventList.length > 0
+                    !loading && homeController!.homeModel!.eventList!.length > 0
                         ? announcementTitle('Latest Events', loading)
                         : Container(),
                     event(loading),
                     !loading &&
-                            homeController.homeModel.announcementList.length > 0
+                            homeController!.homeModel!.announcementList!.length > 0
                         ? announcementTitle('Latest Announcement', loading)
                         : Container(),
                     announcement(loading),
@@ -95,11 +95,11 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   }
 
   Widget channelCard(
-      {@required Color cardColor,
-      @required miniCardColor,
-      @required Channel channel,
-      @required loading,
-      @required position}) {
+      {required Color cardColor,
+      required miniCardColor,
+      required Channel channel,
+      required loading,
+      required position}) {
     return ShimmerLoading(
       isLoading: loading,
       key: UniqueKey(),
@@ -107,18 +107,16 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
         onTap: loading
             ? null
             : () async {
-                bool b = await homeController.channelJoinLeave(
+                bool b = await homeController!.channelJoinLeave(
                     channel.name,
                     channel.description,
                     channel.id,
                     cardColor,
                     channel.isSubscribed);
-                if (b != null) {
-                  setState(() {
-                    homeController
-                        .homeModel.channelList[position].isSubscribed = b;
-                  });
-                }
+                setState(() {
+                  homeController!
+                      .homeModel!.channelList![position].isSubscribed = b;
+                });
               },
         child: Container(
           margin: EdgeInsets.only(left: 20, right: 20, top: 15),
@@ -139,7 +137,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                 ),
                 child: Center(
                   child: Text(
-                    loading ? '' : channel.name[0],
+                    loading ? '' : channel.name![0],
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
@@ -149,7 +147,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
               ),
               Expanded(
                 child: Text(
-                  channel?.name ?? '',
+                  channel.name ?? '',
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 14,
@@ -274,13 +272,13 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   Widget event(bool loading) {
     return Container(
       height:
-          !loading && homeController.homeModel.eventList.length > 0 ? 196 : 0,
+          !loading && homeController!.homeModel!.eventList!.length > 0 ? 196 : 0,
       margin: EdgeInsets.only(top: 15),
       child: ListView.builder(
-          itemCount: loading ? 1 : homeController.homeModel.eventList.length,
+          itemCount: loading ? 1 : homeController!.homeModel!.eventList!.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (_, position) => eventCard(
-              loading ? null : homeController?.homeModel?.eventList[position],
+              loading ? null : homeController?.homeModel?.eventList![position],
               position,
               loading)),
     );
@@ -288,26 +286,26 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
 
   Widget announcement(bool loading) {
     return Container(
-      height: !loading && homeController.homeModel.announcementList.length > 0
+      height: !loading && homeController!.homeModel!.announcementList!.length > 0
           ? 196
           : 0,
       margin: EdgeInsets.only(top: 15),
       child: ListView.builder(
           itemCount:
-              loading ? 1 : homeController.homeModel.announcementList.length,
+              loading ? 1 : homeController!.homeModel!.announcementList!.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (_, position) => announcementCard(
               loading
                   ? null
-                  : homeController.homeModel.announcementList[position],
+                  : homeController!.homeModel!.announcementList![position],
               position,
               loading)),
     );
   }
 
-  Widget eventCard(Event event, int position, bool loading) {
+  Widget eventCard(Event? event, int position, bool loading) {
     return ShimmerLoading(
-      key: Key(loading ? position.toString() : event.id.toString()),
+      key: Key(loading ? position.toString() : event!.id.toString()),
       isLoading: loading,
       child: GestureDetector(
         onTap: () async {
@@ -338,7 +336,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                 ),
               ),
               Hero(
-                tag: loading ? position.toString() : event.id.toString(),
+                tag: loading ? position.toString() : event!.id.toString(),
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: Container(
@@ -346,11 +344,11 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                     width: 270,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: event?.image == null
+                        image: (event?.image == null
                             ? AssetImage("assets/images/test/an_1.png")
                             : CachedNetworkImageProvider(
-                                ApiService.baseUrl + event.image,
-                              ),
+                                ApiService.baseUrl + event!.image!,
+                              )) as ImageProvider<Object>,
                         fit: BoxFit.fitHeight,
                       ),
                       borderRadius: BorderRadius.circular(17.0),
@@ -360,7 +358,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
               ),
               Hero(
                 tag: "title" +
-                    "${loading ? position.toString() : event.id.toString()}",
+                    "${loading ? position.toString() : event!.id.toString()}",
                 child: Align(
                   alignment: Alignment.bottomLeft,
                   child: Padding(
@@ -394,7 +392,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   }
 
   Widget announcementCard(
-      Announcement announcement, int position, bool loading) {
+      Announcement? announcement, int position, bool loading) {
     return ShimmerLoading(
       isLoading: loading,
       child: GestureDetector(
@@ -427,7 +425,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                 ),
               ),
               Hero(
-                tag: loading ? position.toString() : announcement.id.toString(),
+                tag: loading ? position.toString() : announcement!.id.toString(),
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: Container(
@@ -435,11 +433,11 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                     width: 270,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: announcement?.image == null
+                        image: (announcement?.image == null
                             ? AssetImage("assets/images/test/an_1.png")
                             : CachedNetworkImageProvider(
-                                ApiService.baseUrl + announcement.image,
-                              ),
+                                ApiService.baseUrl + announcement!.image!,
+                              )) as ImageProvider<Object>,
                         fit: BoxFit.fitHeight,
                       ),
                       borderRadius: BorderRadius.circular(17.0),
@@ -449,7 +447,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
               ),
               Hero(
                 tag: "title" +
-                    "${loading ? position.toString() : announcement.id.toString()}",
+                    "${loading ? position.toString() : announcement!.id.toString()}",
                 child: Align(
                   alignment: Alignment.bottomLeft,
                   child: Padding(
@@ -508,11 +506,11 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   }
 
   Widget menuCard(
-      {@required Color cardColor,
-      @required String title,
-      @required IconData icon,
-      @required Color iconColor,
-      @required void Function() onTap,
+      {required Color cardColor,
+      required String title,
+      required IconData icon,
+      required Color iconColor,
+      required void Function() onTap,
       bool firstChild = false}) {
     return ConstrainedBox(
       constraints: BoxConstraints(
@@ -563,28 +561,28 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
 
   Widget ad(bool loading) {
     return Container(
-      height: !loading && homeController.homeModel.addList.length > 0 ? 196 : 0,
+      height: !loading && homeController!.homeModel!.addList!.length > 0 ? 196 : 0,
       margin: EdgeInsets.only(top: 40),
       child: ListView.builder(
-          itemCount: loading ? 1 : homeController.homeModel.addList.length,
+          itemCount: loading ? 1 : homeController!.homeModel!.addList!.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (_, position) => adCard(
               loading
                   ? null
                   : ApiService.baseUrl +
-                      homeController.homeModel.addList[position].image,
-              loading ? "" : homeController.homeModel.addList[position].link,
+                      homeController!.homeModel!.addList![position].image!,
+              loading ? "" : homeController!.homeModel!.addList![position].link,
               position,
               loading)),
     );
   }
 
-  Widget adCard(String image, String link, int position, bool loading) {
+  Widget adCard(String? image, String? link, int position, bool loading) {
     return ShimmerLoading(
       isLoading: loading,
       child: GestureDetector(
         onTap: () {
-          homeController.launchUrl(link);
+          homeController!.launchUrl(link);
         },
         child: Container(
           width: MediaQuery.of(context).size.width * .8,
@@ -592,9 +590,9 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18.0),
             image: DecorationImage(
-              image: loading
+              image: (loading
                   ? AssetImage("assets/images/test/test1.png")
-                  : CachedNetworkImageProvider(image),
+                  : CachedNetworkImageProvider(image!)) as ImageProvider<Object>,
               fit: BoxFit.fitWidth,
             ),
           ),
@@ -608,7 +606,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
       onTap: loading
           ? null
           : () {
-              Parent.tabController.animateTo(1);
+              Parent.tabController!.animateTo(1);
             },
       child: ShimmerLoading(
         isLoading: loading,
@@ -628,7 +626,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                           width: 50,
                           child: CachedNetworkImage(
                             imageUrl: ApiService.baseUrl +
-                                homeController.homeModel.institute.logo,
+                                homeController!.homeModel!.institute!.logo!,
                             height: 50,
                             width: 50,
                           ),
@@ -645,7 +643,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        loginInfo.name,
+                        loginInfo!.name!,
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 20,
@@ -684,10 +682,10 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                   borderRadius: BorderRadius.circular(15.0),
                   image: DecorationImage(
                     image:
-                        loading || profileModel.institutionDetails.image == null
+                        (loading || profileModel!.institutionDetails!.image == null
                             ? AssetImage('assets/images/user.png')
                             : CachedNetworkImageProvider(ApiService.baseUrl +
-                                profileModel.institutionDetails.image),
+                                profileModel!.institutionDetails!.image!)) as ImageProvider<Object>,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -701,14 +699,14 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
 
   Widget channelList() {
     return ListView.builder(
-      itemCount: loading ? 1 : homeController.homeModel.channelList.length,
+      itemCount: loading ? 1 : homeController!.homeModel!.channelList!.length,
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (_, i) => channelCard(
-        cardColor: homeController.getColor(i).first,
-        miniCardColor: homeController.getColor(i).last,
+        cardColor: homeController!.getColor(i).first,
+        miniCardColor: homeController!.getColor(i).last,
         channel:
-            loading ? Channel() : homeController?.homeModel?.channelList[i],
+            (loading ? Channel() : homeController?.homeModel?.channelList![i])!,
         loading: loading,
         position: i,
       ),

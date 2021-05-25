@@ -48,17 +48,17 @@ showMessage(String message,
   );
 }
 
-LoginModel _loginModel;
-set setLoginInfo(LoginModel loginModel) => _loginModel = loginModel;
-LoginModel get loginInfo => _loginModel;
+LoginModel? _loginModel;
+set setLoginInfo(LoginModel? loginModel) => _loginModel = loginModel;
+LoginModel? get loginInfo => _loginModel;
 
-ProfileModel _profileModel;
-set setProfile(ProfileModel profileModel) => _profileModel = profileModel;
-ProfileModel get profileModel => _profileModel;
+ProfileModel? _profileModel;
+set setProfile(ProfileModel? profileModel) => _profileModel = profileModel;
+ProfileModel? get profileModel => _profileModel;
 
-Institute _institute;
-set setInstitute(Institute institute) => _institute = institute;
-Institute get institute => _institute;
+Institute? _institute;
+set setInstitute(Institute? institute) => _institute = institute;
+Institute? get institute => _institute;
 
 enum DateType { date, time, dateTime }
 
@@ -97,16 +97,12 @@ String dateTimeFormatter(String date,
   switch (dateType) {
     case DateType.dateTime:
       return _formatDate(splitedDateTime.first) + ' ' + formattedTime;
-      break;
     case DateType.time:
       return formattedTime;
-      break;
     case DateType.date:
       return _formatDate(splitedDateTime.first);
-      break;
     default:
       return date;
-      break;
   }
 }
 

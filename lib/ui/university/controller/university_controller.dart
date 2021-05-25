@@ -11,7 +11,7 @@ import 'package:studenthub2/ui/university/model/university_mode.dart';
 
 class UniversityController {
   List<UniversityModel> _uniList = [];
-  StreamController<List<UniversityModel>> _streamController;
+  StreamController<List<UniversityModel>>? _streamController;
 
   UniversityController(
       StreamController<List<UniversityModel>> streamController) {
@@ -21,12 +21,12 @@ class UniversityController {
 
   updateController(String value) async {
     Iterable list = _uniList.where(
-        (element) => element.name.toLowerCase().contains(value.toLowerCase()));
+        (element) => element.name!.toLowerCase().contains(value.toLowerCase()));
     List<UniversityModel> finalList = [];
     list.forEach((element) {
       finalList.add(element);
     });
-    _streamController.add(finalList);
+    _streamController!.add(finalList);
   }
 
   void _getUniList() async {

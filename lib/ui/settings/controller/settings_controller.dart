@@ -9,7 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 enum AppType { web, fb, instagram, email }
 
 class SettingsController {
-  BuildContext _context;
+  BuildContext? _context;
   SettingsController(BuildContext context) {
     this._context = context;
   }
@@ -19,17 +19,17 @@ class SettingsController {
     setProfile = null;
     setLoginInfo = null;
     Navigator.pushAndRemoveUntil(
-        _context, MaterialPageRoute(builder: (_) => Login()), (route) => false);
+        _context!, MaterialPageRoute(builder: (_) => Login()), (route) => false);
   }
 
-  launchUrl(String url, AppType appType) async {
+  launchUrl(String? url, AppType appType) async {
     switch (appType) {
       case AppType.email:
         await launch('mailto:$url');
         break;
       case AppType.web:
       case AppType.instagram:
-        await launch(url,
+        await launch(url!,
             universalLinksOnly: true,
             forceSafariVC: false,
             forceWebView: false);
@@ -41,7 +41,7 @@ class SettingsController {
             forceWebView: false);
         print(b);
         if (!b) {
-          await launch(url);
+          await launch(url!);
         }
         break;
     }
@@ -50,13 +50,13 @@ class SettingsController {
   contactUs() async {
     var margin = 20.0;
     await showDialog(
-      context: _context,
+      context: _context!,
       builder: (_) => Dialog(
         backgroundColor: Colors.transparent,
         child: Material(
           color: Colors.transparent,
           child: ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: MediaQuery.of(_context).size.height*.8),
+            constraints: BoxConstraints(maxHeight: MediaQuery.of(_context!).size.height*.8),
             child: Container(
               width: 320.0,
               padding: EdgeInsets.only(
@@ -78,7 +78,7 @@ class SettingsController {
               child: SingleChildScrollView(
                 child: Column(children: [
                   Text(
-                    institute.contactDetails,
+                    institute!.contactDetails!,
                     style: TextStyle(height: 1.5),
                   ),
                   UiHelper().button(
@@ -89,7 +89,7 @@ class SettingsController {
                       topMargin: 20,
                       fontSize: 12,
                       onPressed: () {
-                        Navigator.pop(_context);
+                        Navigator.pop(_context!);
                       })
                 ]),
               ),

@@ -8,7 +8,7 @@ import 'package:studenthub2/ui_helper/ui_helper.dart';
 class ImageUploadDialog extends StatefulWidget {
   final File image;
 
-  const ImageUploadDialog({Key key, @required this.image}) : super(key: key);
+  const ImageUploadDialog({Key? key, required this.image}) : super(key: key);
   @override
   _ImageUploadDialogState createState() => _ImageUploadDialogState();
 }
@@ -68,7 +68,7 @@ class _ImageUploadDialogState extends State<ImageUploadDialog> {
         children: <Widget>[
           ValueListenableBuilder(
               valueListenable: valueNotifier,
-              builder: (_, value, __) => IgnorePointer(
+              builder: (_, dynamic value, __) => IgnorePointer(
                     ignoring: value,
                     child: UiHelper().button(
                         context: context,

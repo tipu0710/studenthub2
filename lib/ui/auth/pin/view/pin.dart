@@ -11,9 +11,9 @@ import '../../../../ui_helper/ui_helper.dart';
 class Pin extends StatefulWidget {
   /// [passResetModel] will provided only from reset password
 
-  final PassResetModel passResetModel;
+  final PassResetModel? passResetModel;
 
-  const Pin({Key key, this.passResetModel}) : super(key: key);
+  const Pin({Key? key, this.passResetModel}) : super(key: key);
   @override
   _PinState createState() => _PinState();
 }
@@ -23,7 +23,8 @@ class _PinState extends State<Pin> {
 
   TextEditingController textEditingController = TextEditingController();
 
-  StreamController<ErrorAnimationType> errorController;
+  // ignore: close_sinks
+  StreamController<ErrorAnimationType>? errorController;
 
   bool hasError = false;
 
@@ -35,19 +36,20 @@ class _PinState extends State<Pin> {
 
   ValueNotifier<int> valueNotifier = new ValueNotifier(60 * 2);
 
-  PinController pinController;
+  late PinController pinController;
 
-  Timer _timer;
+  Timer? _timer;
 
   @override
   void dispose() {
-    errorController.close();
+    errorController!.close();
     pinController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
+    errorController = StreamController<ErrorAnimationType>();
     pinController = PinController(context, errorController,
         passResetModel: widget.passResetModel);
     onTapRecognizer = TapGestureRecognizer()
@@ -61,18 +63,17 @@ class _PinState extends State<Pin> {
           });
         }
       };
-    errorController = StreamController<ErrorAnimationType>();
     playTimer();
     super.initState();
   }
 
   void playTimer() {
-    if (_timer != null && _timer.isActive) return;
+    if (_timer != null && _timer!.isActive) return;
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (valueNotifier.value > 0) {
         valueNotifier.value = valueNotifier.value - 1;
       } else {
-        _timer.cancel();
+        _timer!.cancel();
       }
     });
   }
@@ -211,8 +212,8 @@ class _PinState extends State<Pin> {
         backgroundColor: Colors.transparent,
         appContext: context,
         length: widget.passResetModel == null
-            ? pinController.studentRegModel.otp.length
-            : widget.passResetModel.code.length,
+            ? pinController.studentRegModel!.otp!.length
+            : widget.passResetModel!.code!.length,
         obscureText: false,
         animationType: AnimationType.fade,
         cursorHeight: 25,

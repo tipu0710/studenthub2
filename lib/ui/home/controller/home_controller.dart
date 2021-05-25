@@ -1,5 +1,5 @@
+import 'dart:async';
 import 'dart:convert';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,17 +7,14 @@ import 'package:studenthub2/global.dart';
 import 'package:studenthub2/model/data_model.dart';
 import 'package:studenthub2/service/api/api_service.dart';
 import 'package:studenthub2/service/process/process.dart';
-import 'package:studenthub2/ui/calendar/view/event_create_dialog.dart';
-import 'package:studenthub2/ui/home/model/announcement.dart';
-import 'package:studenthub2/ui/home/model/event.dart';
 import 'package:studenthub2/ui/home/model/home_model.dart';
 import 'package:studenthub2/ui/profile/controller/profile_controller.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeController {
-  HomeModel homeModel;
-  BuildContext _context;
+  HomeModel? homeModel;
+  BuildContext? _context;
   HomeController(BuildContext context) {
     this._context = context;
   }
@@ -30,14 +27,14 @@ class HomeController {
     Response response =
         await ApiService.getMethod("/DashboardMobileApi/GetDashBoardDataExtra");
     DataModel dataModel = DataModel.fromJson(response.data);
-    if (dataModel.hasError) {
-      showMessage(dataModel.errors.first);
+    if (dataModel.hasError!) {
+      showMessage(dataModel.errors!.first);
     } else {
       homeModel = HomeModel.fromJson(
           jsonDecode(DataProcess.getDecryptedData(dataModel.dataExtra)));
-      setInstitute = homeModel.institute;
+      setInstitute = homeModel!.institute;
     }
-    return !dataModel.hasError;
+    return !dataModel.hasError!;
   }
 
   List<List<Color>> _colorList = [
@@ -56,7 +53,7 @@ class HomeController {
     return _colorList[position % _colorList.length];
   }
 
-  Future<bool> _channelJoinLeave(String id, bool status) async {
+  Future<bool?> _channelJoinLeave(String id, bool status) async {
     print(id);
     Response response;
     String encrypt = DataProcess.getEncryptedData(id);
@@ -68,9 +65,9 @@ class HomeController {
           "/StudentProfileMobileApi/ChannelSubscribe?input=$encrypt");
     }
     DataModel dataModel = DataModel.fromJson(response.data);
-    if (dataModel.hasError) {
+    if (dataModel.hasError!) {
       print(dataModel.errors);
-      showMessage(dataModel.errors.first);
+      showMessage(dataModel.errors!.first);
       return null;
     } else {
       showMessage(status ? "Leaved!" : "Joined");
@@ -78,7 +75,7 @@ class HomeController {
     }
   }
 
-  launchUrl(String url) async {
+  launchUrl(String? url) async {
     if (url == null || url.isEmpty) {
       print("Not available!");
     } else if (await canLaunch(url)) {
@@ -89,11 +86,11 @@ class HomeController {
   }
 
 
-  Future<bool> channelJoinLeave(String title, String description, String id,
-      Color cardColor, bool status) async {
+  Future<bool> channelJoinLeave(String? title, String? description, String? id,
+      Color cardColor, bool? status) async {
     var margin = 20.0;
-    return await showDialog<bool>(
-          context: _context,
+    return await (showDialog<bool>(
+          context: _context!,
           barrierDismissible: false,
           builder: (_) => Dialog(
             backgroundColor: Colors.transparent,
@@ -101,7 +98,7 @@ class HomeController {
               color: Colors.transparent,
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(_context).size.height * .8),
+                    maxHeight: MediaQuery.of(_context!).size.height * .8),
                 child: Container(
                   width: 320.0,
                   padding: EdgeInsets.only(
@@ -123,7 +120,7 @@ class HomeController {
                         margin: EdgeInsets.only(
                             top: 40, left: 20, right: 20, bottom: 20),
                         child: Text(
-                          title,
+                          title!,
                           style: TextStyle(
                             fontFamily: 'Roboto',
                             fontSize: 20,
@@ -137,7 +134,7 @@ class HomeController {
                         ),
                       ),
                       Text(
-                        description,
+                        description!,
                         style: TextStyle(height: 1.5),
                       ),
                       Row(
@@ -154,22 +151,22 @@ class HomeController {
                               textColor: Colors.black,
                               borderColor: Colors.grey,
                               onPressed: () {
-                                Navigator.pop(_context);
+                                Navigator.pop(_context!);
                               }),
                           SizedBox(
                             width: 20,
                           ),
                           UiHelper().button(
                               context: _context,
-                              title: status ? "LEAVE" : "JOIN",
+                              title: status! ? "LEAVE" : "JOIN",
                               height: 30,
                               width: 70,
                               topMargin: 20,
                               fontSize: 11,
                               anim: true,
                               onPressed: () async {
-                                bool b = await _channelJoinLeave(id, status);
-                                Navigator.pop(_context, b);
+                                bool? b = await _channelJoinLeave(id!, status);
+                                Navigator.pop(_context!, b);
                               }),
                         ],
                       )
@@ -179,7 +176,7 @@ class HomeController {
               ),
             ),
           ),
-        ) ??
+        ) as FutureOr<bool>?) ??
         false;
   }
 }

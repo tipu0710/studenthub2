@@ -7,12 +7,12 @@ class ApiService {
   static String baseUrl = "https://studenthub.smartcampus.com.my";
 
   static Future<Response> postMethod(String endPoints,
-      {Map<String, dynamic> map,
+      {Map<String, dynamic>? map,
       bool allowToken = true,
       bool allowFullUrl = true}) async {
     Dio dio = new Dio();
     if (allowToken && loginInfo != null) {
-      dio.options.headers['Authorization'] = 'Bearer ${loginInfo.token}';
+      dio.options.headers['Authorization'] = 'Bearer ${loginInfo!.token}';
     }
     try {
       Response response =
@@ -20,7 +20,7 @@ class ApiService {
       return response;
     } on DioError catch (e) {
       if (e.response != null) {
-        print(e.response.data);
+        print(e.response!.data);
       } else {
         print(e.message);
       }
@@ -29,12 +29,12 @@ class ApiService {
   }
 
   static Future<Response> getMethod(String endPoints,
-      {Map<String, dynamic> map,
-      bool addBaseUrl,
+      {Map<String, dynamic>? map,
+      bool? addBaseUrl,
       bool allowToken = true}) async {
     Dio dio = new Dio();
     if (allowToken && loginInfo != null) {
-      dio.options.headers['Authorization'] = 'Bearer ${loginInfo.token}';
+      dio.options.headers['Authorization'] = 'Bearer ${loginInfo!.token}';
     }
     try {
       Response response;
@@ -51,7 +51,7 @@ class ApiService {
       return response;
     } on DioError catch (e) {
       if (e.response != null) {
-        print(e.response.data);
+        print(e.response!.data);
       } else {
         print(e.message);
       }
@@ -61,7 +61,7 @@ class ApiService {
 
   static Future<Response> uploadPhoto(File image) async {
     Dio dio = new Dio();
-    dio.options.headers['Authorization'] = 'Bearer ${loginInfo.token}';
+    dio.options.headers['Authorization'] = 'Bearer ${loginInfo!.token}';
     dio.options.contentType = "multipart/form-data";
     String name = image.path.split('/').last;
     print(name);
@@ -80,7 +80,7 @@ class ApiService {
       return response;
     } on DioError catch (e) {
       if (e.response != null) {
-        print(e.response.data);
+        print(e.response!.data);
       } else {
         print(e.message);
       }

@@ -28,7 +28,7 @@ class Settings extends StatelessWidget {
                         institute?.webUrl, AppType.web);
                   }),
                   childCard("Uni Facebook", onTap: () {
-                    String url = institute?.facebookUrl;
+                    String? url = institute?.facebookUrl;
 
                     print(url);
                     settingsController.launchUrl(url, AppType.fb);
@@ -77,7 +77,7 @@ class Settings extends StatelessWidget {
     );
   }
 
-  Widget childCard(String title, {IconData iconData, Function() onTap}) {
+  Widget childCard(String title, {IconData? iconData, Function()? onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(

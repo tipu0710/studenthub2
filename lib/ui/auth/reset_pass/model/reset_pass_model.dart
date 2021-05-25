@@ -1,7 +1,7 @@
 class PassResetModel {
-  String studentId;
-  String code;
-  String email;
+  String? studentId;
+  String? code;
+  String? email;
 
   PassResetModel({this.studentId, this.code, this.email});
 

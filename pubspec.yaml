@@ -6,7 +6,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -20,29 +20,30 @@ dependencies:
   #e
   encrypt: ^5.0.0
   #f
+  flutter_svg: ^0.22.0
   #i
   intl: ^0.17.0
-  image_picker: ^0.7.4
+  image_picker: ^0.7.5+2
   image_size_getter: ^1.0.0
   #l
-  flutter_local_notifications: ^5.0.0
+  flutter_local_notifications: ^6.0.0
   #m
   #o
   oktoast: ^3.0.0
   #p
-  pin_code_fields: ^6.1.0
-  permission_handler: ^6.1.1
+  pin_code_fields: ^7.1.0
+  permission_handler: ^8.0.0+1
   #q
-  qr_code_scanner: ^0.3.5
+  qr_code_scanner: ^0.4.0
   #s
   shared_preferences: ^2.0.5
-  simple_animations: ^3.0.3
+  simple_animations: ^3.1.1
   supercharged: ^2.0.0
   share: ^2.0.1
   #t
-  table_calendar: ^2.2.1
+  table_calendar: ^3.0.0
   #u
-  url_launcher: ^6.0.3
+  url_launcher: ^6.0.4
 
 
 dev_dependencies:
@@ -56,6 +57,7 @@ flutter:
   assets:
      - assets/images/
      - assets/images/test/
+     - assets/svg/
 
   fonts:
      - family:  Custom

@@ -12,7 +12,7 @@ import 'package:studenthub2/ui/profile/model/profile_model.dart';
 import 'package:studenthub2/ui/profile/view/upload_dialog.dart';
 
 class ProfileController {
-  BuildContext _context;
+  late BuildContext _context;
   ProfileController(BuildContext context) {
     this._context = context;
   }
@@ -20,11 +20,11 @@ class ProfileController {
     Response response = await ApiService.getMethod(
         "/StudentProfileMobileApi/GetStudentProfile");
     DataModel dataModel = DataModel.fromJson(response.data);
-    if (dataModel.hasError) {
-      showMessage(dataModel.errors.first);
+    if (dataModel.hasError!) {
+      showMessage(dataModel.errors!.first);
     } else {
       ProfileModel profileModel = ProfileModel.fromJson(
-          jsonDecode(DataProcess.getDecryptedData(dataModel.data)));
+          jsonDecode(DataProcess.getDecryptedData(dataModel.data!)));
       InstitutionDetails institutionDetails =
           InstitutionDetails.fromJson(dataModel.dataExtra);
       profileModel.institutionDetails = institutionDetails;
@@ -32,8 +32,8 @@ class ProfileController {
     }
   }
 
-  Future<File> getImage() async {
-    ImageSource imageSource = await _showPicker();
+  Future<File?> getImage() async {
+    ImageSource? imageSource = await _showPicker();
     if (imageSource == null) {
       showMessage("No image selected!");
       return null;
@@ -43,7 +43,7 @@ class ProfileController {
     final pickedFile = await picker.getImage(source: imageSource);
     if (pickedFile != null) {
       image = File(pickedFile.path);
-      Response response = await showDialog(
+      Response? response = await showDialog(
           context: _context,
           builder: (BuildContext context) => ImageUploadDialog(
                 image: image,
@@ -54,15 +54,15 @@ class ProfileController {
         return null;
       } else {
         DataModel dataModel = DataModel.fromJson(response.data);
-        if (dataModel.hasError) {
+        if (dataModel.hasError!) {
           print(dataModel.errors);
-          showMessage(dataModel.errors.first);
+          showMessage(dataModel.errors!.first);
           return null;
         } else {
           print(dataModel.dataExtra);
           String url = dataModel.dataExtra['Image'];
           await CachedNetworkImage.evictFromCache(ApiService.baseUrl+url);
-          profileModel.institutionDetails.image = url;
+          profileModel!.institutionDetails!.image = url;
           return image;
         }
       }
@@ -72,7 +72,7 @@ class ProfileController {
     }
   }
 
-  Future<ImageSource> _showPicker() async {
+  Future<ImageSource?> _showPicker() async {
     return await showModalBottomSheet(
         context: _context,
         builder: (BuildContext bc) {

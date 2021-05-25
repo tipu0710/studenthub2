@@ -11,9 +11,9 @@ class QrScan extends StatefulWidget {
 }
 
 class _QrScanState extends State<QrScan> {
-  String result;
-  QRViewController controller;
-  QrController qrController;
+  String? result;
+  QRViewController? controller;
+  late QrController qrController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   @override
@@ -112,12 +112,12 @@ class _QrScanState extends State<QrScan> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) async{
-      if (result == null || result.isEmpty) {
+      if (result == null || result!.isEmpty) {
         setState(() {
           result = scanData.code;
           controller.pauseCamera();
         });
-        await qrController.joinEvent(result);
+        await qrController.joinEvent(result!);
         if(mounted){
           setState(() {
             result = null;

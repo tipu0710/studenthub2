@@ -14,18 +14,18 @@ import 'package:studenthub2/ui/auth/register/model/register_model.dart';
 import 'package:studenthub2/ui/auth/reset_pass/model/reset_pass_model.dart';
 
 class PasswordController {
-  BuildContext _context;
-  PassResetModel _passResetModel;
+  late BuildContext _context;
+  PassResetModel? _passResetModel;
 
-  PasswordController(BuildContext context, {PassResetModel passResetModel}) {
+  PasswordController(BuildContext context, {PassResetModel? passResetModel}) {
     this._context = context;
     this._passResetModel = passResetModel;
   }
 
   setInitPassword(String password) async {
-    StudentRegModel studentRegModel = SPData.spData.getStudentRegInfo();
+    StudentRegModel studentRegModel = SPData.spData.getStudentRegInfo()!;
     RegisterModel registerModel = RegisterModel.fromJson(
-        jsonDecode(DataProcess.getDecryptedData(studentRegModel.data)));
+        jsonDecode(DataProcess.getDecryptedData(studentRegModel.data!)));
     Map<String, dynamic> map = {
       "StudentId": registerModel.studentId,
       "Password": password
@@ -33,8 +33,8 @@ class PasswordController {
     Response response = await ApiService.postMethod(
         "/StudentMobileApi/SetUpdatePassword?input=${DataProcess.getEncryptedData(jsonEncode(map))}");
     DataModel dataModel = DataModel.fromJson(response.data);
-    if (dataModel.hasError) {
-      showMessage(dataModel.errors.first);
+    if (dataModel.hasError!) {
+      showMessage(dataModel.errors!.first);
     } else {
       showMessage("Setup complete");
       Navigator.pushAndRemoveUntil(_context,
@@ -44,9 +44,9 @@ class PasswordController {
 
   resetPassword(String password) async {
     Map<String, dynamic> map = {
-      "StudentId": _passResetModel.studentId,
+      "StudentId": _passResetModel!.studentId,
       "password": password,
-      "OTP": _passResetModel.code
+      "OTP": _passResetModel!.code
     };
     Response response = await ApiService.postMethod(
         ApiService.baseUrl +
@@ -56,8 +56,8 @@ class PasswordController {
 
     DataModel dataModel = DataModel.fromJson(response.data);
 
-    if (dataModel.hasError) {
-      showMessage(dataModel.errors.first);
+    if (dataModel.hasError!) {
+      showMessage(dataModel.errors!.first);
     } else {
       showMessage("Setup complete");
       Navigator.pushAndRemoveUntil(_context,

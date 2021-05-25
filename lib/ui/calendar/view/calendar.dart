@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/global.dart';
 import 'package:studenthub2/ui/calendar/controller/calendar_controller.dart';
@@ -6,30 +7,41 @@ import 'package:studenthub2/ui_helper/effect.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import 'event_create_dialog.dart';
-
 class Calendar extends StatefulWidget {
   @override
   _CalendarState createState() => _CalendarState();
 }
 
 class _CalendarState extends State<Calendar> {
-  CalendarController _controller;
-  Map<DateTime, List<dynamic>> _events;
-  List<dynamic> _selectedEvents;
-  EventController eventController;
-
+  late EventController eventController;
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
   bool loading = true;
 
   @override
   void initState() {
-    super.initState();
     eventController = EventController();
-    _controller = CalendarController();
-    _events = {};
-    _selectedEvents = [];
+    super.initState();
+    _selectedDay = _focusedDay;
     getData();
   }
+
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    if (!isSameDay(_selectedDay, selectedDay)) {
+      setState(() {
+        _selectedDay = selectedDay;
+        _focusedDay = focusedDay;
+      });
+      eventController
+      .selectedEvents.value = eventController.getEventsForDay(selectedDay);
+    }
+  }
+
+  final kFirstDay = DateTime(
+      DateTime.now().year, DateTime.now().month - 3, DateTime.now().day);
+  final kLastDay = DateTime(
+      DateTime.now().year, DateTime.now().month + 3, DateTime.now().day);
 
   @override
   Widget build(BuildContext context) {
@@ -45,64 +57,39 @@ class _CalendarState extends State<Calendar> {
                   SizedBox(
                     height: 80,
                   ),
-                  TableCalendar(
-                    events: _events,
-                    initialCalendarFormat: CalendarFormat.month,
-                    calendarStyle: CalendarStyle(
-                        canEventMarkersOverflow: true,
-                        todayColor: Colors.orange,
-                        selectedColor: Theme.of(context).primaryColor,
-                        todayStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0,
-                            color: Colors.white)),
-                    headerStyle: HeaderStyle(
-                      centerHeaderTitle: true,
-                      formatButtonDecoration: BoxDecoration(
-                        color: Colors.orange,
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      formatButtonTextStyle: TextStyle(color: Colors.white),
-                      formatButtonShowsNext: false,
-                    ),
-                    startingDayOfWeek: StartingDayOfWeek.monday,
-                    onDaySelected: (DateTime date, events, holidays) {
-                      if (!loading && mounted) {
-                        setState(() {
-                          _selectedEvents = events;
-                        });
-                      }
+                  TableCalendar<EventModel>(
+                    firstDay: kFirstDay,
+                    lastDay: kLastDay,
+                    focusedDay: _focusedDay,
+                    selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                    calendarFormat: _calendarFormat,
+                    availableCalendarFormats: {
+                      CalendarFormat.month: 'Month',
                     },
-                    builders: CalendarBuilders(
-                      selectedDayBuilder: (context, date, events) => Container(
-                          margin: const EdgeInsets.all(4.0),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: Text(
-                            date.day.toString(),
-                            style: TextStyle(color: Colors.white),
-                          )),
-                      todayDayBuilder: (context, date, events) => Container(
-                          margin: const EdgeInsets.all(4.0),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: Colors.orange,
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: Text(
-                            date.day.toString(),
-                            style: TextStyle(color: Colors.white),
-                          )),
+                    eventLoader: eventController.getEventsForDay,
+                    startingDayOfWeek: StartingDayOfWeek.monday,
+                    calendarStyle: CalendarStyle(
+                      outsideDaysVisible: false,
                     ),
-                    calendarController: _controller,
+                    onDaySelected: _onDaySelected,
+                    onPageChanged: (focusedDay) {
+                      _focusedDay = focusedDay;
+                    },
                   ),
-                  ..._selectedEvents?.map((event) => ListTile(
-                            title: eventCard(
-                                title: event.date.split('T')[0],
-                                subtitle: event.details),
-                          )) ??
-                      [],
+                  ValueListenableBuilder<List<EventModel>>(
+                    valueListenable: eventController.selectedEvents,
+                    builder: (context, value, _) {
+                      return ListView.builder(
+                        itemCount: value.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return eventCard(
+                              title: value[index].createDate!,
+                              subtitle: value[index].details!);
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -114,12 +101,12 @@ class _CalendarState extends State<Calendar> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: _showAddDialog,
+        onPressed: eventController.showAddDialog(context, _selectedDay!),
       ),
     );
   }
 
-  Widget eventCard({@required String title, @required String subtitle}) {
+  Widget eventCard({required String title, required String subtitle}) {
     return ShimmerLoading(
       isLoading: loading,
       key: UniqueKey(),
@@ -149,7 +136,9 @@ class _CalendarState extends State<Calendar> {
                   TextHeightBehavior(applyHeightToFirstAscent: false),
               textAlign: TextAlign.left,
             ),
-            SizedBox(height: 15,),
+            SizedBox(
+              height: 15,
+            ),
             Text(
               subtitle,
               style: TextStyle(
@@ -169,39 +158,14 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  _showAddDialog() async {
-    EventModel eventModel = await showDialog(
-        context: context,
-        builder: (context) => EventCreationDialog(
-              selectedDate: _controller.selectedDay,
-            ));
-    if (mounted && eventModel != null) {
-      setState(() {
-        _events = Map<DateTime, List<dynamic>>.from(decodeMap(eventModel));
-        _selectedEvents = _events[_controller.selectedDay];
-      });
-    }
-  }
-
-  void getData() async {
-    List<EventModel> eventList = await eventController.getEvents();
-    eventList.forEach((element) {
-      _events = Map<DateTime, List<dynamic>>.from(decodeMap(element));
-    });
+  void getData() async{
+    var b = await eventController.getEvents();
     setState(() {
-      loading = false;
+      loading = b;
     });
   }
 
-  Map<DateTime, dynamic> decodeMap(EventModel eventModel) {
-    String s = eventModel.date.split('T').first;
-    var splited = s.split('-');
-    DateTime dateTime = DateTime(int.parse(splited.first),
-        int.parse(splited[1]), int.parse(splited.last));
-    List<dynamic> list = _events[dateTime] ?? [];
-    list.add(eventModel);
-    Map<DateTime, dynamic> newMap = {};
-    newMap[dateTime] = list;
-    return newMap;
-  }
+
+
+
 }

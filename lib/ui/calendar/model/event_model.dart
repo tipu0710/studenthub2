@@ -1,16 +1,16 @@
 class EventModel {
-  String id;
-  String studentId;
-  String date;
-  String details;
-  bool isActive;
-  String createDate;
-  String createById;
-  String lastChanged;
-  String lastChangedById;
-  bool isDeleted;
-  bool isSelected;
-  bool isAlreadyAdded;
+  String? id;
+  String? studentId;
+  String? date;
+  String? details;
+  bool? isActive;
+  String? createDate;
+  String? createById;
+  String? lastChanged;
+  String? lastChangedById;
+  bool? isDeleted;
+  bool? isSelected;
+  bool? isAlreadyAdded;
 
   EventModel(
       {this.id,

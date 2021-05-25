@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class ShimmerLoading extends StatefulWidget {
   const ShimmerLoading({
-    Key key,
-    @required this.isLoading,
-    @required this.child,
+    Key? key,
+    required this.isLoading,
+    required this.child,
   }) : super(key: key);
 
   final bool isLoading;

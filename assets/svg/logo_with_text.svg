@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="425.814" height="188.726" viewBox="0 0 425.814 188.726">
+  <g id="Group_2" data-name="Group 2" transform="translate(-137.592 119.272)">
+    <g id="Group_1" data-name="Group 1">
+      <g id="Layer_2" data-name="Layer 2" transform="translate(57.362 -225.264)">
+        <rect id="Rectangle_2" data-name="Rectangle 2" width="109.35" height="109.35" transform="translate(169.596 107.406) rotate(45)" fill="none" stroke="#1a1818" stroke-miterlimit="10" stroke-width="2"/>
+        <rect id="Rectangle_3" data-name="Rectangle 3" width="109.35" height="109.35" transform="translate(159.615 107.612) rotate(45)" fill="none" stroke="#1a1818" stroke-miterlimit="10" stroke-width="2"/>
+        <rect id="Rectangle_4" data-name="Rectangle 4" width="109.35" height="109.35" transform="translate(159.273 138.401) rotate(45)" fill="none" stroke="#1a1818" stroke-miterlimit="10" stroke-width="2"/>
+        <rect id="Rectangle_5" data-name="Rectangle 5" width="109.35" height="109.35" transform="translate(158.966 123.391) rotate(45)" fill="none" stroke="#1a1818" stroke-miterlimit="10" stroke-width="2"/>
+        <rect id="Rectangle_6" data-name="Rectangle 6" width="109.35" height="109.35" transform="translate(168.575 138.659) rotate(45)" fill="none" stroke="#1a1818" stroke-miterlimit="10" stroke-width="2"/>
+        <rect id="Rectangle_7" data-name="Rectangle 7" width="109.35" height="109.35" transform="translate(169.268 122.859) rotate(45)" fill="none" stroke="#1a1818" stroke-miterlimit="10" stroke-width="2"/>
+      </g>
+      <g id="Layer_3" data-name="Layer 3" transform="translate(57.362 -225.264)">
+        <path id="Path_1" data-name="Path 1" d="M209.83,252.34H119.777v-5.6s4.648-22.847,18.874-38.373h8.064s5.916-2.178,7.994-6.091c0,0-7.4-5.522-8.8-18.46h1.409V168.956l-18.664-4.05,25.022-19.778,46.3,15.571L179.5,171.1v10.319h3.7v1.641a11.811,11.811,0,0,1-6.444,9.972v7.1l16.786,15.452H197.9A68.933,68.933,0,0,1,209.83,252.34Z" fill="#1a1818" stroke="#1a1818" stroke-miterlimit="10" stroke-width="0.75"/>
+        <path id="Path_2" data-name="Path 2" d="M135.632,165.131V198.82l3.986,1.362,2.945-1.447-4.408-33.215Z" fill="#1a1818" stroke="#1a1818" stroke-miterlimit="10" stroke-width="0.75"/>
+      </g>
+    </g>
+    <g id="Layer_4" data-name="Layer 4" transform="translate(57.362 -225.264)">
+      <text id="STUDENT_HUB." data-name="STUDENT
+HUB." transform="translate(252.043 188.488)" fill="#1a1818" font-size="53" font-family="SegoeUI-Bold, Segoe UI" font-weight="700" letter-spacing="0.045em"><tspan x="0" y="0">STUDENT</tspan><tspan x="0" y="61">HUB.</tspan></text>
+    </g>
+    <g id="Layer_5" data-name="Layer 5" transform="translate(57.362 -225.264)">
+      <text id="by" transform="translate(253.938 276.181)" fill="#1a1818" font-size="19.486" font-family="SegoeUI, Segoe UI" letter-spacing="0.045em"><tspan x="0" y="0">by</tspan></text>
+      <text id="UTURE" transform="translate(294.915 277.713)" fill="#1a1818" font-size="20" font-family="SegoeUI, Segoe UI" letter-spacing="0.045em"><tspan x="0" y="0">UTURE</tspan></text>
+      <text id="F" transform="translate(281.994 277.712)" fill="#1a1818" font-size="23.863" font-family="SegoeUI, Segoe UI" letter-spacing="0.045em"><tspan x="0" y="0">F</tspan></text>
+      <text id="X" transform="translate(370.24 277.712)" fill="#1a1818" font-size="23.863" font-family="SegoeUI, Segoe UI" letter-spacing="0.045em"><tspan x="0" y="0">X</tspan></text>
+    </g>
+  </g>
+</svg>

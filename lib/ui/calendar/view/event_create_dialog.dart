@@ -9,9 +9,9 @@ import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class EventCreationDialog extends StatefulWidget {
   final DateTime selectedDate;
-  final Event event;
+  final Event? event;
 
-  const EventCreationDialog({Key key, @required this.selectedDate, this.event})
+  const EventCreationDialog({Key? key, required this.selectedDate, this.event})
       : super(key: key);
   @override
   _EventCreationDialogState createState() => _EventCreationDialogState();
@@ -20,12 +20,12 @@ class EventCreationDialog extends StatefulWidget {
 class _EventCreationDialogState extends State<EventCreationDialog> {
   TextEditingController detailsController = new TextEditingController();
   //TextEditingController titleController = new TextEditingController();
-  TextEditingController startDateController;
+  TextEditingController? startDateController;
   //TextEditingController endDateController;
-  TextEditingController timeController;
+  TextEditingController? timeController;
 
   double margin = 20;
-  DateTime selectedDate;
+  DateTime? selectedDate;
   TimeOfDay selectedTime = TimeOfDay.now();
 
   var rememberValue = true;
@@ -34,7 +34,7 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
   void initState() {
     selectedDate = widget.selectedDate;
     startDateController = TextEditingController(
-        text: DateFormat("yyyy-MM-dd").format(selectedDate));
+        text: DateFormat("yyyy-MM-dd").format(selectedDate!));
     // endDateController = TextEditingController(
     //   text: DateFormat("yyyy-MM-dd").format(
     //     DateTime(selectedDate.year, selectedDate.month, selectedDate.day + 1),
@@ -354,14 +354,14 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                         anim: true,
                         title: "SAVE",
                         onPressed: () async {
-                          EventModel event = await EventController()
+                          EventModel? event = await EventController()
                               .createEvent(
-                                  selectedDate,
+                                  selectedDate!,
                                   selectedTime,
                                   widget.event != null
-                                      ? widget.event.description
+                                      ? widget.event!.description
                                       : detailsController.text,
-                                  title: widget?.event?.name ?? null);
+                                  title: widget.event?.name ?? null);
                           Navigator.pop(context, event);
                         },
                         height: 27,
@@ -450,9 +450,9 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
   }
 
   Future _selectDate() async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate, // Refer step 1
+      initialDate: selectedDate!, // Refer step 1
       lastDate: DateTime(DateTime.now().year + 1),
       firstDate: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day),
@@ -461,14 +461,14 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        startDateController.text =
-            DateFormat("yyyy-MM-dd").format(selectedDate);
+        startDateController!.text =
+            DateFormat("yyyy-MM-dd").format(selectedDate!);
       });
     }
   }
 
   Future<Null> _selectTime() async {
-    final TimeOfDay picked = await showTimePicker(
+    final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: selectedTime,
     );
@@ -477,7 +477,7 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
       print('Time selected: ${selectedTime.toString()}');
       setState(() {
         selectedTime = picked;
-        timeController.text = dateTimeFormatter(
+        timeController!.text = dateTimeFormatter(
             "${selectedTime.hour}:${selectedTime.minute}:00",
             dateType: DateType.time);
       });

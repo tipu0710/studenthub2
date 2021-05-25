@@ -24,7 +24,7 @@ class _LoginState extends State<Login> {
 
   final _formKey = GlobalKey<FormState>();
 
-  LoginController loginController;
+  late LoginController loginController;
 
   @override
   void initState() {
@@ -99,7 +99,7 @@ class _LoginState extends State<Login> {
                         bottomMargin: 5,
                         anim: true,
                         onPressed: () async {
-                          if (_formKey.currentState.validate()) {
+                          if (_formKey.currentState!.validate()) {
                             await loginController.login(
                                 emailController.text, passwordController.text);
                           }
@@ -246,7 +246,7 @@ class _LoginState extends State<Login> {
                 ),
                 errorStyle: TextStyle(color: Colors.red, fontSize: 10)),
             validator: (value) {
-              if (value.isEmpty) return "Email is required";
+              if (value!.isEmpty) return "Email is required";
               RegExp regExp = new RegExp(
                 r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$",
                 caseSensitive: false,
@@ -300,7 +300,7 @@ class _LoginState extends State<Login> {
               ),
               errorStyle: TextStyle(color: Colors.red, fontSize: 10)),
           validator: (value) {
-            if (value.isEmpty) return "Password is required";
+            if (value!.isEmpty) return "Password is required";
             return null;
           }),
     );

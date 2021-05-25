@@ -1,17 +1,17 @@
 class Announcement {
-  bool isAlreadyAdded;
-  int id;
-  int instituteId;
-  String title;
-  String description;
-  String image;
-  bool isActive;
-  int createById;
-  String createDate;
-  int lastChangedById;
-  String lastChanged;
-  bool isDeleted;
-  bool isSelected;
+  bool? isAlreadyAdded;
+  int? id;
+  int? instituteId;
+  String? title;
+  String? description;
+  String? image;
+  bool? isActive;
+  int? createById;
+  String? createDate;
+  int? lastChangedById;
+  String? lastChanged;
+  bool? isDeleted;
+  bool? isSelected;
 
   Announcement(
       {this.isAlreadyAdded,

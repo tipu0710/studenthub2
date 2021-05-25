@@ -10,13 +10,13 @@ class LoadingButton extends StatelessWidget {
   final Widget mainChild, secondaryChild;
   final ValueNotifier<AnimState> valueNotifier;
   final int animTimeInMillisecond;
-  final double width;
+  final double? width;
 
   LoadingButton({
-    @required Key key,
-    @required this.mainChild,
-    @required this.secondaryChild,
-    @required this.valueNotifier,
+    required Key key,
+    required this.mainChild,
+    required this.secondaryChild,
+    required this.valueNotifier,
     this.animTimeInMillisecond = 500,
     this.width,
   }) : super(key: key);
@@ -57,10 +57,9 @@ class LoadingButton extends StatelessWidget {
               },
               tween: _tween,
             );
-            break;
           case AnimState.loadingEnd:
             return PlayAnimation(
-                builder: (context, child, value) {
+                builder: (context, child, dynamic value) {
                   return Center(
                     child: Container(
                       child: mainChild,
@@ -68,12 +67,10 @@ class LoadingButton extends StatelessWidget {
                   );
                 },
                 tween: 0.0.tweenTo(width ?? 100.0));
-            break;
           default:
             return Center(
               child: mainChild,
             );
-            break;
         }
       },
     );

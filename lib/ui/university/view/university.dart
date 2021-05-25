@@ -15,9 +15,9 @@ class _UniversityState extends State<University> {
   final StreamController<List<UniversityModel>> _streamController =
       StreamController<List<UniversityModel>>.broadcast();
 
-  UniversityController _universityController;
+  late UniversityController _universityController;
 
-  UniversityModel _universityModel;
+  UniversityModel? _universityModel;
 
   @override
   void initState() {
@@ -59,9 +59,9 @@ class _UniversityState extends State<University> {
                 _universityController.updateController(data);
               }),
             ),
-            UiHelper().searchItem(_streamController, titleGetFunction: (uni) {
+            UiHelper().searchItem(_streamController, titleGetFunction: (dynamic uni) {
               return uni.name;
-            }, onTap: (uni) {
+            }, onTap: (dynamic uni) {
               _textEditingController.text = uni.name;
               _universityModel = uni;
               _streamController.add([]);
@@ -74,7 +74,7 @@ class _UniversityState extends State<University> {
                 title: "SET",
                 onPressed: () {
                   if (_universityModel != null) {
-                    _universityController.addToSP(context, _universityModel);
+                    _universityController.addToSP(context, _universityModel!);
                   }
                 }),
           ],

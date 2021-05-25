@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
   }
 
   Widget getHome() {
-    LoginModel loginModel = SPData.spData.getLoginInfo();
+    LoginModel? loginModel = SPData.spData.getLoginInfo();
     if(loginModel!=null){
       setLoginInfo = loginModel;
     }
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
 
 class MyHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext context) {
+  HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;

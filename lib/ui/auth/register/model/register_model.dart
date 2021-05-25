@@ -1,14 +1,14 @@
 class RegisterModel {
-  String identityNumber;
-  String fullName;
-  String studentId;
-  String sex;
-  String emailAddress;
-  String countryId;
-  String contactNumber;
-  String instituteId;
-  String intakeId;
-  String programmeId;
+  String? identityNumber;
+  String? fullName;
+  String? studentId;
+  String? sex;
+  String? emailAddress;
+  String? countryId;
+  String? contactNumber;
+  String? instituteId;
+  String? intakeId;
+  String? programmeId;
 
   RegisterModel(
       {this.identityNumber,

@@ -9,11 +9,11 @@ class UiHelper {
   Widget input(TextEditingController controller, String label,
       {TextInputAction textInputAction = TextInputAction.next,
       TextInputType textInputType = TextInputType.text,
-      String Function(String) validator,
-      Widget suffixIcon,
-      bool obscureText,
+      String? Function(String?)? validator,
+      Widget? suffixIcon,
+      bool? obscureText,
       bool capsOn = false,
-      Function(String) onChange}) {
+      Function(String)? onChange}) {
     if (obscureText == null) {
       obscureText = textInputType == TextInputType.visiblePassword;
     }
@@ -62,7 +62,7 @@ class UiHelper {
             errorStyle: TextStyle(color: Colors.red, fontSize: 10),
           ),
           validator: (value) {
-            if (value.isEmpty) return "$label is required";
+            if (value!.isEmpty) return "$label is required";
             if (validator != null) {
               return validator(value);
             }
@@ -73,7 +73,7 @@ class UiHelper {
     );
   }
 
-  Widget back(BuildContext context, {String title, Function() onTap}) {
+  Widget back(BuildContext context, {String? title, Function()? onTap}) {
     return Align(
       alignment: Alignment.topLeft,
       child: Padding(
@@ -84,7 +84,7 @@ class UiHelper {
             GestureDetector(
               onTap: onTap ??
                   () {
-                    Parent.tabController.animateTo(0);
+                    Parent.tabController!.animateTo(0);
                   },
               child: Container(
                 height: 40,
@@ -123,19 +123,19 @@ class UiHelper {
   }
 
   Widget button(
-      {@required BuildContext context,
-      @required String title,
-      @required Function() onPressed,
+      {required BuildContext? context,
+      required String title,
+      required Function() onPressed,
       bool anim = false,
       double topMargin = 40,
       double bottomMargin = 20,
-      Color color,
-      Color borderColor,
-      Color textColor,
-      double width,
-      double height,
+      Color? color,
+      Color? borderColor,
+      Color? textColor,
+      double? width,
+      double? height,
       double circleRadius = 30,
-      double fontSize}) {
+      double? fontSize}) {
     ValueNotifier<AnimState> valueNotifier = ValueNotifier(AnimState.init);
     return anim
         ? LoadingButton(
@@ -167,7 +167,7 @@ class UiHelper {
                         width: borderColor != null ? 1 : 0)),
                 child: ValueListenableBuilder(
                   valueListenable: valueNotifier,
-                  builder: (_, value, __) => value != AnimState.loadingStart
+                  builder: (_, dynamic value, __) => value != AnimState.loadingStart
                       ? Center(
                           child: Text(
                             title,
@@ -226,12 +226,9 @@ class UiHelper {
   }
 
   Widget _searchListCard<T>(
-      {@required List<T> data,
-      @required String Function(T) titleGetFunction,
-      @required Function(T) onTap}) {
-    assert(data != null);
-    assert(titleGetFunction != null);
-    assert(onTap != null);
+      {required List<T> data,
+      required String? Function(T) titleGetFunction,
+      required Function(T) onTap}) {
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: 300, minHeight: 30),
       child: Container(
@@ -242,7 +239,7 @@ class UiHelper {
               children: [
                 for (int i = 0; i < data.length; i++)
                   ListTile(
-                    title: Text(titleGetFunction(data[i])),
+                    title: Text(titleGetFunction(data[i])!),
                     onTap: () {
                       onTap(data[i]);
                     },
@@ -256,17 +253,15 @@ class UiHelper {
   }
 
   Widget searchItem<T>(StreamController streamController,
-      {@required String Function(T) titleGetFunction,
-      @required Function(T) onTap}) {
-    assert(titleGetFunction != null);
-    assert(onTap != null);
+      {required String? Function(T) titleGetFunction,
+      required Function(T) onTap}) {
     return StreamBuilder<List<T>>(
-        stream: streamController.stream,
+        stream: streamController.stream as Stream<List<T>>?,
         builder: (_, snapshot) {
           if (snapshot.hasData) {
-            if (snapshot.data.length > 0) {
+            if (snapshot.data!.length > 0) {
               return _searchListCard<T>(
-                data: snapshot.data,
+                data: snapshot.data!,
                 titleGetFunction: titleGetFunction,
                 onTap: onTap,
               );
@@ -282,7 +277,7 @@ class UpperCaseTextFormatter extends TextInputFormatter {
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     return TextEditingValue(
-      text: newValue.text?.toUpperCase(),
+      text: newValue.text.toUpperCase(),
       selection: newValue.selection,
     );
   }

@@ -1,7 +1,7 @@
 class UniversityModel {
-  String id;
-  String code;
-  String name;
+  String? id;
+  String? code;
+  String? name;
 
   UniversityModel({this.id, this.code, this.name});
 

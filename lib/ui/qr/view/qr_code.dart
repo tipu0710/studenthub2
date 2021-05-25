@@ -31,7 +31,7 @@ class _QrCodeState extends State<QrCode> with AutomaticKeepAliveClientMixin {
                     height: 20,
                   ),
                   Text(
-                    profileModel.fullName,
+                    profileModel!.fullName!,
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 22,
@@ -45,7 +45,7 @@ class _QrCodeState extends State<QrCode> with AutomaticKeepAliveClientMixin {
                   ),
                   SizedBox(height: 3),
                   Text(
-                    profileModel.institutionDetails.programmeName,
+                    profileModel!.institutionDetails!.programmeName!,
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 15,
@@ -79,10 +79,10 @@ class _QrCodeState extends State<QrCode> with AutomaticKeepAliveClientMixin {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         image: DecorationImage(
-          image: profileModel.institutionDetails.image == null
+          image: (profileModel!.institutionDetails!.image == null
               ? AssetImage('assets/images/user.png')
               : CachedNetworkImageProvider(
-                  ApiService.baseUrl + profileModel.institutionDetails.image),
+                  ApiService.baseUrl + profileModel!.institutionDetails!.image!)) as ImageProvider<Object>,
           fit: BoxFit.cover,
         ),
         border: Border.all(width: 5.0, color: const Color(0xffffffff)),

@@ -1,8 +1,8 @@
 class DataModel {
-  String data;
-  bool hasError;
+  String? data;
+  bool? hasError;
   dynamic dataExtra;
-  List<String> errors;
+  List<String>? errors;
 
   DataModel({this.data, this.hasError, this.dataExtra, this.errors});
 

@@ -11,7 +11,7 @@ import 'package:studenthub2/ui_helper/custom_icons.dart';
 import 'package:studenthub2/ui_helper/nav/fancy_bottom_navigation.dart';
 
 class Parent extends StatefulWidget {
-  static TabController tabController;
+  static TabController? tabController;
   @override
   _ParentState createState() => _ParentState();
 }
@@ -32,8 +32,8 @@ class _ParentState extends State<Parent> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (Parent.tabController.index != 0) {
-          Parent.tabController.animateTo(0);
+        if (Parent.tabController!.index != 0) {
+          Parent.tabController!.animateTo(0);
           return false;
         } else {
           return true;
@@ -60,7 +60,7 @@ class _ParentState extends State<Parent> with SingleTickerProviderStateMixin {
             ],
             onTabChangedListener: (position) {
               if(profileModel != null){
-                Parent.tabController.animateTo(position);
+                Parent.tabController!.animateTo(position);
               }
             },
           )),

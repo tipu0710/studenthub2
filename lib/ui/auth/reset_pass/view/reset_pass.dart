@@ -11,7 +11,7 @@ class ResetPassword extends StatefulWidget {
 class _ResetPasswordState extends State<ResetPassword> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
-  ResetPassController resetPassController;
+  late ResetPassController resetPassController;
 
   @override
   void initState() {
@@ -128,7 +128,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                 ),
                 errorStyle: TextStyle(color: Colors.red, fontSize: 10)),
             validator: (value) {
-              if (value.isEmpty) return "Email is required";
+              if (value!.isEmpty) return "Email is required";
               RegExp regExp = new RegExp(
                 r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$",
                 caseSensitive: false,

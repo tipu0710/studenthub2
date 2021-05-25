@@ -6,9 +6,9 @@ import 'package:studenthub2/ui/home/model/event.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class EventUi extends StatefulWidget {
-  final Event event;
+  final Event? event;
 
-  const EventUi({Key key, @required this.event}) : super(key: key);
+  const EventUi({Key? key, required this.event}) : super(key: key);
 
   @override
   _EventUiState createState() => _EventUiState();
@@ -29,17 +29,17 @@ class _EventUiState extends State<EventUi> {
             child: Column(
               children: [
                 Hero(
-                  tag: widget.event.id.toString(),
+                  tag: widget.event!.id.toString(),
                   child: Container(
                     width: double.infinity,
                     child: CachedNetworkImage(
-                      imageUrl: ApiService.baseUrl + widget.event.image,
+                      imageUrl: ApiService.baseUrl + widget.event!.image!,
                       fit: BoxFit.fitHeight,
                     ),
                   ),
                 ),
                 Hero(
-                  tag: "title" + widget.event.id.toString(),
+                  tag: "title" + widget.event!.id.toString(),
                   child: Align(
                     alignment: Alignment.center,
                     child: Padding(
@@ -69,7 +69,7 @@ class _EventUiState extends State<EventUi> {
                   margin:
                       EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 20),
                   child: Text(
-                    widget.event.description,
+                    widget.event!.description!,
                     style: TextStyle(height: 1.5),
                     textAlign: TextAlign.center,
                   ),

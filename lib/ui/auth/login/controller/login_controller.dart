@@ -15,7 +15,7 @@ import 'package:studenthub2/ui/profile/controller/profile_controller.dart';
 import 'package:studenthub2/ui/university/model/university_mode.dart';
 
 class LoginController {
-  BuildContext _context;
+  late BuildContext _context;
   LoginController(BuildContext context) {
     this._context = context;
   }
@@ -34,11 +34,11 @@ class LoginController {
 
     DataModel dataModel = DataModel.fromJson(response.data);
 
-    if (dataModel.hasError) {
-      showMessage(dataModel.errors.first);
+    if (dataModel.hasError!) {
+      showMessage(dataModel.errors!.first);
     } else {
       LoginModel loginModel = LoginModel.fromJson(
-          jsonDecode(DataProcess.getDecryptedData(dataModel.data)));
+          jsonDecode(DataProcess.getDecryptedData(dataModel.data!)));
 
       SPData.spData.saveLoginInfo(loginModel);
 
@@ -46,9 +46,9 @@ class LoginController {
 
       await ProfileController.getProfile();
 
-      UniversityModel universityModel = SPData.spData.getUniversity();
+      UniversityModel universityModel = SPData.spData.getUniversity()!;
 
-      if (profileModel.institutionDetails.instituteName ==
+      if (profileModel!.institutionDetails!.instituteName ==
           universityModel.name) {
         Navigator.pushAndRemoveUntil(_context,
             MaterialPageRoute(builder: (_) => Parent()), (route) => false);

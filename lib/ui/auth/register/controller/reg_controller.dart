@@ -15,19 +15,19 @@ import 'package:studenthub2/ui/auth/register/model/intake.dart';
 import 'package:studenthub2/ui/auth/register/model/register_model.dart';
 
 class RegisterController {
-  StreamController<List<CountryModel>> _streamCountry;
+  late StreamController<List<CountryModel>> _streamCountry;
 
-  StreamController<List<ProgrammeList>> _programStream;
+  late StreamController<List<ProgrammeList>> _programStream;
 
-  StreamController<List<IntakeList>> _intakeStream;
+  late StreamController<List<IntakeList>> _intakeStream;
 
   List<CountryModel> _countryList = <CountryModel>[];
 
-  List<IntakeList> _intakeList = <IntakeList>[];
+  List<IntakeList>? _intakeList = <IntakeList>[];
 
-  List<ProgrammeList> _programList = <ProgrammeList>[];
+  List<ProgrammeList>? _programList = <ProgrammeList>[];
 
-  BuildContext _context;
+  late BuildContext _context;
 
   RegisterController(
       BuildContext context,
@@ -44,7 +44,7 @@ class RegisterController {
   updateCountryStream(String data) {
     if (data.length < 1) return;
     Iterable list = _countryList.where(
-        (element) => element.name.toLowerCase().contains(data.toLowerCase()));
+        (element) => element.name!.toLowerCase().contains(data.toLowerCase()));
     List<CountryModel> finalList = [];
     list.forEach((element) {
       finalList.add(element);
@@ -54,8 +54,8 @@ class RegisterController {
 
   updateProgramStream(String data) {
     if (data.length < 1) return;
-    Iterable list = _programList.where(
-        (element) => element.name.toLowerCase().contains(data.toLowerCase()));
+    Iterable list = _programList!.where(
+        (element) => element.name!.toLowerCase().contains(data.toLowerCase()));
     List<ProgrammeList> finalList = [];
     list.forEach((element) {
       finalList.add(element);
@@ -65,8 +65,8 @@ class RegisterController {
 
   updateIntakeStream(String data) {
     if (data.length < 1) return;
-    Iterable list = _intakeList.where(
-        (element) => element.name.toLowerCase().contains(data.toLowerCase()));
+    Iterable list = _intakeList!.where(
+        (element) => element.name!.toLowerCase().contains(data.toLowerCase()));
     List<IntakeList> finalList = [];
     list.forEach((element) {
       finalList.add(element);
@@ -97,20 +97,20 @@ class RegisterController {
   }
 
   register(RegisterModel registerModel) async {
-    StudentRegModel studentRegModel = SPData.spData.getStudentRegInfo();
+    StudentRegModel? studentRegModel = SPData.spData.getStudentRegInfo();
     if (studentRegModel != null) {
       print(studentRegModel.otp);
       RegisterModel reg = RegisterModel.fromJson(
-          jsonDecode(DataProcess.getDecryptedData(studentRegModel.data)));
+          jsonDecode(DataProcess.getDecryptedData(studentRegModel.data!)));
       if (reg.emailAddress == registerModel.emailAddress &&
-          !studentRegModel.verified) {
+          !studentRegModel.verified!) {
         Navigator.push(_context, MaterialPageRoute(builder: (_) => Pin()));
         return;
       }
     }
 
     print(registerModel.fullName);
-    registerModel.fullName = registerModel.fullName.capitalize();
+    registerModel.fullName = registerModel.fullName!.capitalize();
     print(registerModel.fullName);
     String s = jsonEncode(registerModel.toJson());
     Response response = await ApiService.postMethod(
@@ -118,9 +118,9 @@ class RegisterController {
         allowToken: false,
         allowFullUrl: false);
     DataModel dataModel = DataModel.fromJson(response.data);
-    if (dataModel.hasError) {
+    if (dataModel.hasError!) {
       print(dataModel.errors);
-      showMessage(dataModel.errors.first);
+      showMessage(dataModel.errors!.first);
       return;
     }
     if (dataModel.dataExtra != null) {
@@ -132,7 +132,7 @@ class RegisterController {
     print(otp);
     await SPData.spData.setStudentRegInfo(
         StudentRegModel(data: dataModel.data, verified: false, otp: otp));
-    print(DataProcess.getDecryptedData(dataModel.data));
+    print(DataProcess.getDecryptedData(dataModel.data!));
     print(DataProcess.getDecryptedData(dataModel.dataExtra));
     Navigator.push(_context, MaterialPageRoute(builder: (_) => Pin()));
   }

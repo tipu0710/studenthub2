@@ -8,7 +8,7 @@ import 'package:timezone/timezone.dart' as tz;
 class NotificationController {
   NotificationController._();
   static NotificationController n = NotificationController._();
-  static BuildContext context;
+  static late BuildContext context;
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -52,26 +52,26 @@ class NotificationController {
     await flutterLocalNotificationsPlugin.cancelAll();
   }
 
-  Future<NotificationAppLaunchDetails> notificationDetails() async {
+  Future<NotificationAppLaunchDetails?> notificationDetails() async {
     return await flutterLocalNotificationsPlugin
         .getNotificationAppLaunchDetails();
   }
 
   showNotification(
-      {@required String title,
-      @required String body,
-      @required int id,
-      @required payload}) async {
+      {required String title,
+      required String body,
+      required int id,
+      required payload}) async {
     await flutterLocalNotificationsPlugin
         .show(id, title, body, platformChannelSpecifics, payload: payload);
   }
 
   scheduleNotification(
-      {@required String title,
-      @required String body,
-      @required int id,
-      @required payload,
-      @required DateTime dateTime}) async {
+      {required String title,
+      required String? body,
+      required int id,
+      required payload,
+      required DateTime dateTime}) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       title,
@@ -89,14 +89,14 @@ class NotificationController {
     return await flutterLocalNotificationsPlugin.pendingNotificationRequests();
   }
 
-  Future<List<ActiveNotification>> getAndroidActiveNotifications() async {
+  Future<List<ActiveNotification>?> getAndroidActiveNotifications() async {
     return await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.getActiveNotifications();
   }
 
-  Future<bool> iosNotificationPermission() async {
+  Future<bool?> iosNotificationPermission() async {
     return await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             IOSFlutterLocalNotificationsPlugin>()
@@ -108,13 +108,13 @@ class NotificationController {
   }
 
   Future onDidReceiveLocalNotification(
-      int id, String title, String body, String payload) async {
+      int id, String? title, String? body, String? payload) async {
     // display a dialog with the notification details, tap ok to go to another page
     showDialog(
       context: context,
       builder: (BuildContext context) => CupertinoAlertDialog(
-        title: Text(title),
-        content: Text(body),
+        title: Text(title!),
+        content: Text(body!),
         actions: [
           CupertinoDialogAction(
             isDefaultAction: true,
@@ -134,7 +134,7 @@ class NotificationController {
     );
   }
 
-  Future selectNotification(String payload) async {
+  Future selectNotification(String? payload) async {
     if (payload != null) {
       debugPrint('notification payload: $payload');
     }

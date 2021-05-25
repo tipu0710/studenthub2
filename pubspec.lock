@@ -28,7 +28,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.0"
+    version: "2.6.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -145,14 +145,14 @@ packages:
       name: flutter_local_notifications
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0+1"
+    version: "6.0.0"
   flutter_local_notifications_platform_interface:
     dependency: transitive
     description:
       name: flutter_local_notifications_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0"
+    version: "4.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -160,6 +160,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  flutter_svg:
+    dependency: "direct main"
+    description:
+      name: flutter_svg
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.22.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -204,7 +211,7 @@ packages:
       name: image_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.4"
+    version: "0.7.5+2"
   image_picker_for_web:
     dependency: transitive
     description:
@@ -282,6 +289,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
+  path_drawing:
+    dependency: transitive
+    description:
+      name: path_drawing
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.1"
+  path_parsing:
+    dependency: transitive
+    description:
+      name: path_parsing
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1"
   path_provider:
     dependency: transitive
     description:
@@ -330,14 +351,14 @@ packages:
       name: permission_handler
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.1.3"
+    version: "8.0.0+1"
   permission_handler_platform_interface:
     dependency: transitive
     description:
       name: permission_handler_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.2.0"
+    version: "3.5.0"
   petitparser:
     dependency: transitive
     description:
@@ -351,7 +372,7 @@ packages:
       name: pin_code_fields
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.1.0"
+    version: "7.1.0"
   platform:
     dependency: transitive
     description:
@@ -386,7 +407,7 @@ packages:
       name: qr_code_scanner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.5"
+    version: "0.4.0"
   rxdart:
     dependency: transitive
     description:
@@ -449,14 +470,14 @@ packages:
       name: simple_animations
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.3"
+    version: "3.1.1"
   simple_gesture_detector:
     dependency: transitive
     description:
       name: simple_gesture_detector
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.6"
+    version: "0.2.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -468,7 +489,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.0"
+    version: "1.8.1"
   sqflite:
     dependency: transitive
     description:
@@ -531,7 +552,7 @@ packages:
       name: table_calendar
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.3"
+    version: "3.0.0"
   term_glyph:
     dependency: transitive
     description:
@@ -545,7 +566,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.19"
+    version: "0.3.0"
   timezone:
     dependency: transitive
     description:
@@ -566,7 +587,7 @@ packages:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.3"
+    version: "6.0.4"
   url_launcher_linux:
     dependency: transitive
     description:
@@ -639,4 +660,4 @@ packages:
     version: "5.1.0"
 sdks:
   dart: ">=2.12.0 <3.0.0"
-  flutter: ">=1.24.0-10.2.pre"
+  flutter: ">=2.2.0"

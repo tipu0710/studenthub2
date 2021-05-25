@@ -1,24 +1,24 @@
 class Event {
-  bool isAlreadyAdded;
-  int id;
-  int instituteId;
-  String code;
-  String name;
-  int channelId;
-  String dateFrom;
-  String dateTo;
-  String description;
-  String image;
-  bool isMeritPoint;
-  double meritPoint;
-  String qRCode;
-  bool isActive;
-  int createById;
-  String createDate;
-  int lastChangedById;
-  String lastChanged;
-  bool isDeleted;
-  bool isSelected;
+  bool? isAlreadyAdded;
+  int? id;
+  int? instituteId;
+  String? code;
+  String? name;
+  int? channelId;
+  String? dateFrom;
+  String? dateTo;
+  String? description;
+  String? image;
+  bool? isMeritPoint;
+  double? meritPoint;
+  String? qRCode;
+  bool? isActive;
+  int? createById;
+  String? createDate;
+  int? lastChangedById;
+  String? lastChanged;
+  bool? isDeleted;
+  bool? isSelected;
 
   Event(
       {this.isAlreadyAdded,

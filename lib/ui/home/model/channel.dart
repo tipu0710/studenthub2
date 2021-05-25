@@ -1,11 +1,11 @@
 class Channel {
-  String id;
-  String instituteId;
-  String code;
-  String name;
-  String createDate;
-  String description;
-  bool isSubscribed;
+  String? id;
+  String? instituteId;
+  String? code;
+  String? name;
+  String? createDate;
+  String? description;
+  bool? isSubscribed;
 
   Channel(
       {this.id,

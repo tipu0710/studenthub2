@@ -15,15 +15,15 @@ import 'package:studenthub2/ui/auth/register/model/register_model.dart';
 import 'package:studenthub2/ui/auth/reset_pass/model/reset_pass_model.dart';
 
 class PinController {
-  StreamController<ErrorAnimationType> _streamController;
-  BuildContext _context;
-  RegisterModel registerModel;
-  StudentRegModel studentRegModel;
-  PassResetModel _passResetModel;
+  StreamController<ErrorAnimationType>? _streamController;
+  late BuildContext _context;
+  late RegisterModel registerModel;
+  StudentRegModel? studentRegModel;
+  PassResetModel? _passResetModel;
 
   PinController(BuildContext context,
-      StreamController<ErrorAnimationType> streamController,
-      {PassResetModel passResetModel}) {
+      StreamController<ErrorAnimationType>? streamController,
+      {PassResetModel? passResetModel}) {
     this._streamController = streamController;
     this._context = context;
     this._passResetModel = passResetModel;
@@ -31,7 +31,7 @@ class PinController {
     if (_passResetModel == null) {
       studentRegModel = SPData.spData.getStudentRegInfo();
       registerModel = RegisterModel.fromJson(
-          jsonDecode(DataProcess.getDecryptedData(studentRegModel.data)));
+          jsonDecode(DataProcess.getDecryptedData(studentRegModel!.data!)));
       print(registerModel.toJson());
     }
   }
@@ -44,10 +44,10 @@ class PinController {
   }
 
   _pinForReset(String pin) async {
-    if (pin.length != _passResetModel.code.length) {
-      _streamController.add(ErrorAnimationType.shake);
+    if (pin.length != _passResetModel!.code!.length) {
+      _streamController!.add(ErrorAnimationType.shake);
     } else {
-      if (pin == _passResetModel.code) {
+      if (pin == _passResetModel!.code) {
         Navigator.push(
             _context,
             MaterialPageRoute(
@@ -56,14 +56,14 @@ class PinController {
               ),
             ));
       } else {
-        _streamController.add(ErrorAnimationType.shake);
+        _streamController!.add(ErrorAnimationType.shake);
       }
     }
   }
 
   _pinForNew(String pin) async {
-    if (pin.length != studentRegModel.otp.length) {
-      _streamController.add(ErrorAnimationType.shake);
+    if (pin.length != studentRegModel!.otp!.length) {
+      _streamController!.add(ErrorAnimationType.shake);
     } else {
       print({"StudentId ": registerModel.studentId, "Code": pin});
       String data = DataProcess.getEncryptedData(
@@ -73,14 +73,14 @@ class PinController {
           "https://studenthub.smartcampus.com.my/api/Home/StudentMobileApi/VerifyOTP?input=$data",
           allowFullUrl: false);
       DataModel dataModel = DataModel.fromJson(response.data);
-      if (dataModel.hasError) {
-        _streamController.add(ErrorAnimationType.shake);
-        showMessage(dataModel.errors.first);
+      if (dataModel.hasError!) {
+        _streamController!.add(ErrorAnimationType.shake);
+        showMessage(dataModel.errors!.first);
         return;
       } else {
-        print(DataProcess.getDecryptedData(dataModel.data));
-        studentRegModel.verified = true;
-        SPData.spData.setStudentRegInfo(studentRegModel);
+        print(DataProcess.getDecryptedData(dataModel.data!));
+        studentRegModel!.verified = true;
+        SPData.spData.setStudentRegInfo(studentRegModel!);
         Navigator.push(
             _context,
             MaterialPageRoute(
@@ -90,20 +90,20 @@ class PinController {
     }
   }
 
-  Future<String> resendCode() async {
-    String s = DataProcess.getEncryptedData(registerModel.emailAddress);
+  Future<String?> resendCode() async {
+    String s = DataProcess.getEncryptedData(registerModel.emailAddress!);
     Response response = await ApiService.postMethod(
         "https://studenthub.smartcampus.com.my/api/Home/StudentMobileApi/ResendOTP?input=$s",
         allowFullUrl: false);
     DataModel dataModel = DataModel.fromJson(response.data);
-    if (dataModel.hasError) {
-      showMessage(dataModel.errors.first);
+    if (dataModel.hasError!) {
+      showMessage(dataModel.errors!.first);
       return null;
     } else {
-      print(DataProcess.getDecryptedData(dataModel.data));
-      Map<String, dynamic> map = jsonDecode(DataProcess.getDecryptedData(dataModel.data));
-      studentRegModel.otp = map['Code'];
-      return DataProcess.getDecryptedData(dataModel.data);
+      print(DataProcess.getDecryptedData(dataModel.data!));
+      Map<String, dynamic> map = jsonDecode(DataProcess.getDecryptedData(dataModel.data!));
+      studentRegModel!.otp = map['Code'];
+      return DataProcess.getDecryptedData(dataModel.data!);
     }
   }
 

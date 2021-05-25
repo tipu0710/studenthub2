@@ -12,7 +12,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  File _image;
+  File? _image;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,14 +52,14 @@ class _ProfileState extends State<Profile> {
                                 color: const Color(0xff1e5aa7),
                                 image: DecorationImage(
                                   image: _image == null
-                                      ? profileModel?.institutionDetails?.image ==
+                                      ? (profileModel?.institutionDetails?.image ==
                                               null
                                           ? AssetImage('assets/images/user.png')
                                           : CachedNetworkImageProvider(
                                               ApiService.baseUrl +
-                                                  profileModel
-                                                      .institutionDetails.image)
-                                      : FileImage(_image),
+                                                  profileModel!
+                                                      .institutionDetails!.image!)) as ImageProvider<Object>
+                                      : FileImage(_image!),
                                   fit: BoxFit.fill,
                                 ),
                               ),
@@ -136,7 +136,7 @@ class _ProfileState extends State<Profile> {
                     Container(
                       margin: EdgeInsets.only(top: 5),
                       child: Text(
-                        profileModel.institutionDetails.programmeName,
+                        profileModel!.institutionDetails!.programmeName!,
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 18,
@@ -162,7 +162,7 @@ class _ProfileState extends State<Profile> {
                           children: [
                             TextSpan(
                               text:
-                                  profileModel.institutionDetails.instituteName,
+                                  profileModel!.institutionDetails!.instituteName,
                               style: TextStyle(
                                 fontSize: 25,
                                 color: const Color(0xff252525),

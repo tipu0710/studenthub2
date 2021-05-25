@@ -10,9 +10,9 @@ class Password extends StatelessWidget {
   final TextEditingController rePassController = TextEditingController();
   final ValueNotifier<bool> passVisible = ValueNotifier(false);
 
-  final PassResetModel passResetModel;
+  final PassResetModel? passResetModel;
 
-  Password({Key key, this.passResetModel}) : super(key: key);
+  Password({Key? key, this.passResetModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class Password extends StatelessWidget {
                 RegExp regExp =
                     RegExp(r"^(?=.*[a-z])(?=.*[A-Z])[\w! @#$%^&*()+-/.]{8,}$")
                       ..isCaseSensitive;
-                bool matches = regExp.hasMatch(value);
+                bool matches = regExp.hasMatch(value!);
                 if (matches) {
                   return null;
                 } else {
@@ -83,7 +83,7 @@ class Password extends StatelessWidget {
               }),
               ValueListenableBuilder(
                   valueListenable: passVisible,
-                  builder: (_, visible, __) => UiHelper().input(
+                  builder: (_, dynamic visible, __) => UiHelper().input(
                           rePassController, "Confirm Password",
                           obscureText: !visible,
                           textInputAction: TextInputAction.done,
@@ -118,7 +118,7 @@ class Password extends StatelessWidget {
                   anim: true,
                   color: Colors.green,
                   onPressed: () async {
-                    if (_formKey.currentState.validate()) {
+                    if (_formKey.currentState!.validate()) {
                       PasswordController pass = PasswordController(context,
                           passResetModel: passResetModel);
                       if (passResetModel != null) {

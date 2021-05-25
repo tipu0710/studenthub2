@@ -45,13 +45,13 @@ class _RegisterState extends State<Register> {
   final StreamController<List<IntakeList>> _intakeStream =
       StreamController<List<IntakeList>>.broadcast();
 
-  CountryModel countryModel;
-  IntakeList intakeList;
-  ProgrammeList programmeList;
+  late CountryModel countryModel;
+  late IntakeList intakeList;
+  late ProgrammeList programmeList;
 
-  RegisterController registerController;
+  late RegisterController registerController;
 
-  int gender = 0;
+  int? gender = 0;
 
   @override
   void initState() {
@@ -102,7 +102,7 @@ class _RegisterState extends State<Register> {
                     UiHelper().input(email, "Email",
                         textInputType: TextInputType.emailAddress,
                         validator: (value) {
-                      if (value.isEmpty) return "Email is required";
+                      if (value!.isEmpty) return "Email is required";
                       RegExp regExp = new RegExp(
                         r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$",
                         caseSensitive: false,
@@ -122,7 +122,7 @@ class _RegisterState extends State<Register> {
                         titleGetFunction: (country) {
                       return country.name;
                     }, onTap: (c) {
-                      country.text = c.name;
+                      country.text = c.name!;
                       countryModel = c;
                       _countryStream.add([]);
                     }),
@@ -142,7 +142,7 @@ class _RegisterState extends State<Register> {
                         titleGetFunction: (program) {
                       return program.name;
                     }, onTap: (c) {
-                      program.text = c.name;
+                      program.text = c.name!;
                       programmeList = c;
                       _programStream.add([]);
                     }),
@@ -153,7 +153,7 @@ class _RegisterState extends State<Register> {
                         titleGetFunction: (country) {
                       return country.name;
                     }, onTap: (c) {
-                      intake.text = c.name;
+                      intake.text = c.name!;
                       intakeList = c;
                       _intakeStream.add([]);
                     }),
@@ -177,8 +177,8 @@ class _RegisterState extends State<Register> {
   }
 
   validate() async {
-    if (_formKey.currentState.validate()) {
-      UniversityModel uni = SPData.spData.getUniversity();
+    if (_formKey.currentState!.validate()) {
+      UniversityModel uni = SPData.spData.getUniversity()!;
       RegisterModel registerModel = RegisterModel(
           contactNumber: phoneNumber.text,
           countryId: countryModel.id,
@@ -195,10 +195,10 @@ class _RegisterState extends State<Register> {
   }
 
   Widget genderField() {
-    ValueNotifier<int> valueNotifier = ValueNotifier(gender);
+    ValueNotifier<int?> valueNotifier = ValueNotifier(gender);
     return ValueListenableBuilder(
         valueListenable: valueNotifier,
-        builder: (_, value, __) {
+        builder: (_, dynamic value, __) {
           return Container(
             margin: EdgeInsets.only(top: 15),
             child: Row(
@@ -239,7 +239,7 @@ class _RegisterState extends State<Register> {
                           activeColor: primaryColor,
                           value: 0,
                           groupValue: gender,
-                          onChanged: (int value) {
+                          onChanged: (int? value) {
                             gender = value;
                             valueNotifier.value = value;
                           },
@@ -265,7 +265,7 @@ class _RegisterState extends State<Register> {
                           activeColor: primaryColor,
                           value: 1,
                           groupValue: gender,
-                          onChanged: (int value) {
+                          onChanged: (int? value) {
                             gender = value;
                             valueNotifier.value = value;
                           },
