@@ -13,13 +13,15 @@ import 'package:studenthub2/ui/auth/model/country_model.dart';
 import 'package:studenthub2/ui/auth/pin/view/pin.dart';
 import 'package:studenthub2/ui/auth/register/model/intake.dart';
 import 'package:studenthub2/ui/auth/register/model/register_model.dart';
+import 'package:studenthub2/ui/university/view/university.dart';
+import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class RegisterController {
-  late StreamController<List<CountryModel>> _streamCountry;
+  late StreamController<List<CountryModel>> streamCountry;
 
-  late StreamController<List<ProgrammeList>> _programStream;
+  late StreamController<List<ProgrammeList>> programStream;
 
-  late StreamController<List<IntakeList>> _intakeStream;
+  late StreamController<List<IntakeList>> intakeStream;
 
   List<CountryModel> _countryList = <CountryModel>[];
 
@@ -27,17 +29,15 @@ class RegisterController {
 
   List<ProgrammeList>? _programList = <ProgrammeList>[];
 
+  Declaration? declaration;
+
   late BuildContext _context;
 
-  RegisterController(
-      BuildContext context,
-      StreamController<List<CountryModel>> streamCountry,
-      StreamController<List<ProgrammeList>> programStream,
-      StreamController<List<IntakeList>> intakeStream) {
+  RegisterController(BuildContext context) {
     this._context = context;
-    this._streamCountry = streamCountry;
-    this._programStream = programStream;
-    this._intakeStream = intakeStream;
+    this.streamCountry = StreamController<List<CountryModel>>.broadcast();
+    this.programStream = StreamController<List<ProgrammeList>>.broadcast();
+    this.intakeStream = StreamController<List<IntakeList>>.broadcast();
     _getCountries();
   }
 
@@ -49,7 +49,7 @@ class RegisterController {
     list.forEach((element) {
       finalList.add(element);
     });
-    _streamCountry.add(finalList);
+    streamCountry.add(finalList);
   }
 
   updateProgramStream(String data) {
@@ -60,7 +60,7 @@ class RegisterController {
     list.forEach((element) {
       finalList.add(element);
     });
-    _programStream.add(finalList);
+    programStream.add(finalList);
   }
 
   updateIntakeStream(String data) {
@@ -71,7 +71,7 @@ class RegisterController {
     list.forEach((element) {
       finalList.add(element);
     });
-    _intakeStream.add(finalList);
+    intakeStream.add(finalList);
   }
 
   void _getCountries() async {
@@ -93,6 +93,18 @@ class RegisterController {
     IntakeModel intakeModel = IntakeModel.fromJson(jsonDecode(s));
     _intakeList = intakeModel.intakeList;
     _programList = intakeModel.programmeList;
+    declaration = intakeModel.declaration;
+    if (declaration!.instituteId.toString() !=
+        SPData.spData.getUniversity()!.id) {
+      UiHelper.showSnackMessage(
+          context: _context,
+          message: "Institute doesn't match!",
+          snackBarActionTitle: "Change",
+          onePressed: () {
+            Navigator.push(
+                _context, MaterialPageRoute(builder: (_) => University()));
+          });
+    }
     return true;
   }
 
@@ -138,8 +150,8 @@ class RegisterController {
   }
 
   void dispose() {
-    _intakeStream.close();
-    _programStream.close();
-    _streamCountry.close();
+    intakeStream.close();
+    programStream.close();
+    streamCountry.close();
   }
 }

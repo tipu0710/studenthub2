@@ -34,62 +34,8 @@ class _QrScanState extends State<QrScan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // GestureDetector(
-          //   child: Center(
-          //     child: Image.asset(
-          //       "assets/images/test/qr.png",
-          //       height: 291,
-          //       width: 291,
-          //     ),
-          //   ),
-          // ),
-          Center(child: _buildQrView(context)),
-          // result == null || result.isEmpty
-          //     ? Container()
-          //     : Positioned(
-          //         bottom: 80,
-          //         child: Container(
-          //           width: MediaQuery.of(context).size.width,
-          //           child: Row(
-          //             crossAxisAlignment: CrossAxisAlignment.center,
-          //             mainAxisAlignment: MainAxisAlignment.center,
-          //             children: [
-          //               Center(
-          //                 child: UiHelper().button(
-          //                     context: context,
-          //                     title: "JOIN",
-          //                     anim: true,
-          //                     onPressed: () async{
-          //                       await qrController.joinEvent(result);
-          //                     },
-          //                     width: 100,
-          //                     height: 30,
-          //                     fontSize: 10),
-          //               ),
-          //               SizedBox(
-          //                 width: 10,
-          //               ),
-          //               UiHelper().button(
-          //                   context: context,
-          //                   title: "SCAN AGAIN",
-          //                   onPressed: () {
-          //                     setState(() {
-          //                       result = "";
-          //                       controller.resumeCamera();
-          //                     });
-          //                   },
-          //                   width: 100,
-          //                   height: 30,
-          //                   fontSize: 10)
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          UiHelper().back(context, title: "Qr Code")
-        ],
-      ),
+      appBar: UiHelper.appBar(context, title: "Qr Code"),
+      body: Center(child: _buildQrView(context)),
     );
   }
 

@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:studenthub2/ui/university/controller/university_controller.dart';
 import 'package:studenthub2/ui/university/model/university_mode.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class University extends StatefulWidget {
+  final bool fromReg;
+
+  const University({Key? key, this.fromReg = false}) : super(key: key);
   @override
   _UniversityState createState() => _UniversityState();
 }
@@ -42,11 +46,12 @@ class _UniversityState extends State<University> {
               height: 60,
             ),
             Center(
-                child: Image.asset(
-              "assets/images/sh.png",
-              height: 70,
-              width: 70,
-            )),
+              child: SvgPicture.asset(
+                "assets/svg/single_logo.svg",
+                height: 70,
+                width: 70,
+              ),
+            ),
             SizedBox(
               height: 30,
             ),
@@ -59,7 +64,8 @@ class _UniversityState extends State<University> {
                 _universityController.updateController(data);
               }),
             ),
-            UiHelper().searchItem(_streamController, titleGetFunction: (dynamic uni) {
+            UiHelper().searchItem(_streamController,
+                titleGetFunction: (dynamic uni) {
               return uni.name;
             }, onTap: (dynamic uni) {
               _textEditingController.text = uni.name;
@@ -74,7 +80,7 @@ class _UniversityState extends State<University> {
                 title: "SET",
                 onPressed: () {
                   if (_universityModel != null) {
-                    _universityController.addToSP(context, _universityModel!);
+                    _universityController.addToSP(context, _universityModel!, widget.fromReg);
                   }
                 }),
           ],

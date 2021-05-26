@@ -22,6 +22,9 @@ class _ResetPasswordState extends State<ResetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: UiHelper.appBar(context, onTap: () {
+        Navigator.pop(context);
+      }),
       body: Stack(
         children: [
           Positioned(
@@ -34,65 +37,61 @@ class _ResetPasswordState extends State<ResetPassword> {
             ),
           ),
           body(),
-          UiHelper().back(context, onTap: () {
-            Navigator.pop(context);
-          })
         ],
       ),
     );
   }
 
   Widget body() {
-    return SingleChildScrollView(
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.only(top: 171, left: 20, right: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              child: Text(
-                'Reset password',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 20,
-                  color: const Color(0xff252525),
-                  fontWeight: FontWeight.w500,
-                  height: 1.8,
-                ),
-                textHeightBehavior:
-                    TextHeightBehavior(applyHeightToFirstAscent: false),
-                textAlign: TextAlign.center,
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            child: Text(
+              'Reset password',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 20,
+                color: const Color(0xff252525),
+                fontWeight: FontWeight.w500,
+                height: 1.8,
               ),
+              textHeightBehavior:
+                  TextHeightBehavior(applyHeightToFirstAscent: false),
+              textAlign: TextAlign.center,
             ),
-            Container(
-              margin: EdgeInsets.only(top: 40),
-              child: Text(
-                'Enter your registered Email/Student ID',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 15,
-                  color: const Color(0xff727272),
-                  height: 2.4,
-                ),
-                textHeightBehavior:
-                    TextHeightBehavior(applyHeightToFirstAscent: false),
-                textAlign: TextAlign.left,
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 40),
+            child: Text(
+              'Enter your registered Email/Student ID',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 15,
+                color: const Color(0xff727272),
+                height: 2.4,
               ),
+              textHeightBehavior:
+                  TextHeightBehavior(applyHeightToFirstAscent: false),
+              textAlign: TextAlign.left,
             ),
-            SizedBox(height: 30,),
-            Form(key: _formKey, child: email()),
-            SizedBox(height: 30,),
-            UiHelper().button(
-                context: context,
-                title: "SEND OTP",
-                anim: true,
-                onPressed: () async {
-                  await resetPassController.sendOtp(_formKey, emailController);
-                },
-                topMargin: 10),
-          ],
-        ),
+          ),
+          SizedBox(height: 30,),
+          Form(key: _formKey, child: email()),
+          SizedBox(height: 30,),
+          UiHelper().button(
+              context: context,
+              title: "SEND OTP",
+              anim: true,
+              onPressed: () async {
+                await resetPassController.sendOtp(_formKey, emailController);
+              },
+              topMargin: 10),
+        ],
       ),
     );
   }

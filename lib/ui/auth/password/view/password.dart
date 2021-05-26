@@ -17,6 +17,10 @@ class Password extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: UiHelper.appBar(context, onTap: () {
+        int count = 0;
+        Navigator.of(context).popUntil((_) => count++ >= 2);
+      }),
       body: Stack(
         children: [
           Positioned(
@@ -29,10 +33,6 @@ class Password extends StatelessWidget {
             ),
           ),
           body(context),
-          UiHelper().back(context, onTap: () {
-            int count = 0;
-            Navigator.of(context).popUntil((_) => count++ >= 2);
-          })
         ],
       ),
     );

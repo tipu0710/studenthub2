@@ -1,21 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/service/api/api_service.dart';
-import 'package:studenthub2/ui/home/model/announcement.dart';
+import 'package:studenthub2/ui/home/model/scholarship_model.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class AnnouncementUi extends StatefulWidget {
-  final Announcement? announcement;
+class SingleScholarship extends StatelessWidget {
+  final ScholarshipModel? scholarshipModel;
   final int position;
-  const AnnouncementUi(
-      {Key? key, required this.announcement, required this.position})
+  const SingleScholarship(
+      {Key? key, required this.scholarshipModel, required this.position})
       : super(key: key);
-
-  @override
-  _AnnouncementUiState createState() => _AnnouncementUiState();
-}
-
-class _AnnouncementUiState extends State<AnnouncementUi> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -31,20 +26,17 @@ class _AnnouncementUiState extends State<AnnouncementUi> {
             child: Column(
               children: [
                 Hero(
-                  tag:
-                      "${widget.announcement?.id ?? "null"}i${widget.position}",
+                  tag: "${scholarshipModel?.id ?? "null"}i$position",
                   child: Container(
                     width: double.infinity,
                     child: CachedNetworkImage(
-                      imageUrl:
-                          ApiService.baseUrl + widget.announcement!.image!,
+                      imageUrl: ApiService.baseUrl + scholarshipModel!.image!,
                       fit: BoxFit.fitHeight,
                     ),
                   ),
                 ),
                 Hero(
-                  tag: "title" +
-                      "${widget.announcement?.id ?? "null"}t${widget.position}",
+                  tag: "title" + "${scholarshipModel?.id ?? "null"}t$position",
                   child: Align(
                     alignment: Alignment.center,
                     child: Padding(
@@ -54,7 +46,7 @@ class _AnnouncementUiState extends State<AnnouncementUi> {
                         color: Colors.transparent,
                         child: Container(
                           child: Text(
-                            widget.announcement?.title ?? "",
+                            scholarshipModel?.name ?? "",
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize: 20,
@@ -74,22 +66,26 @@ class _AnnouncementUiState extends State<AnnouncementUi> {
                   margin:
                       EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 20),
                   child: Text(
-                    widget.announcement!.description!,
+                    scholarshipModel!.description!,
                     style: TextStyle(height: 1.5),
                     textAlign: TextAlign.center,
                   ),
                 ),
                 UiHelper().button(
                     context: context,
-                    title: "BACK",
+                    title: "Details",
                     height: 30,
                     width: 70,
                     topMargin: 20,
                     fontSize: 11,
-                    color: Colors.white,
-                    textColor: Colors.black,
                     onPressed: () {
-                      Navigator.pop(context);
+                      try {
+                        launch(scholarshipModel?.uRL ?? "");
+                      } catch (e) {
+                        print(scholarshipModel?.uRL);
+                        UiHelper.showSnackMessage(
+                            context: context, message: "Details not found!");
+                      }
                     }),
               ],
             ),

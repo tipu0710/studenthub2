@@ -81,6 +81,9 @@ class _PinState extends State<Pin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: UiHelper.appBar(context, onTap: () {
+        Navigator.pop(context);
+      }),
       body: Stack(
         children: [
           Positioned(
@@ -93,9 +96,6 @@ class _PinState extends State<Pin> {
             ),
           ),
           body(),
-          UiHelper().back(context, onTap: () {
-            Navigator.pop(context);
-          })
         ],
       ),
     );

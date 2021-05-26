@@ -6,7 +6,6 @@ import 'package:studenthub2/global.dart';
 import 'package:studenthub2/model/data_model.dart';
 import 'package:studenthub2/service/api/api_service.dart';
 import 'package:studenthub2/service/process/process.dart';
-import 'package:studenthub2/service/sp/sp.dart';
 import 'package:studenthub2/ui/calendar/model/event_model.dart';
 import 'package:studenthub2/ui/calendar/view/event_create_dialog.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -14,11 +13,10 @@ import 'notification_controller.dart';
 
 class EventController {
   late LinkedHashMap<DateTime, List<EventModel>> _kEvents;
-  Map<DateTime, List<EventModel>> _events = {};
   late final ValueNotifier<List<EventModel>> selectedEvents;
   List<EventModel> _list = [];
 
-  void _init(){
+  void _init() {
     _kEvents = LinkedHashMap<DateTime, List<EventModel>>(
       equals: isSameDay,
       hashCode: _getHashCode,
@@ -48,13 +46,36 @@ class EventController {
       Iterable iterable =
           jsonDecode(DataProcess.getDecryptedData(dataModel.data!));
       iterable.forEach((element) {
-        _list.add(EventModel.fromJson(element));
+        EventModel eventModel = EventModel.fromJson(element);
+        int diff = eventModel.endDateTime!
+            .difference(eventModel.startDateTime!)
+            .inDays;
+        print(diff);
+        if (diff > 0) {
+          for (int i = 0; i <= diff; i++) {
+            EventModel childModel = EventModel.fromJson(eventModel.toJson());
+            childModel.id = (int.parse(childModel.id!) + i).toString();
+            childModel.startDateTime =
+                childModel.startDateTime!.add(Duration(days: i));
+            print(
+                "M= ${childModel.startDateTime!.month} D = ${childModel.startDateTime!.day}");
+            _list.add(childModel);
+          }
+        } else {
+          eventModel.id = eventModel.id! + "0";
+          _list.add(eventModel);
+        }
+      });
+      print("----------------------------------------");
+      _list.forEach((element) {
+        print(
+            "M= ${element.startDateTime!.month} D = ${element.startDateTime!.day}");
       });
       return await _getData();
     }
   }
 
-  showAddDialog(
+  Future<void> showAddDialog(
     BuildContext context,
     DateTime selectedDay,
   ) async {
@@ -64,29 +85,52 @@ class EventController {
               selectedDate: selectedDay,
             ));
     if (eventModel != null) {
-      _list.add(eventModel);
+      int diff =
+          eventModel.endDateTime!.difference(eventModel.startDateTime!).inDays;
+      if (diff > 0) {
+        for (int i = 0; i <= diff; i++) {
+          EventModel childModel = EventModel.fromJson(eventModel.toJson());
+          childModel.id = (int.parse(childModel.id!) + i).toString();
+          childModel.startDateTime =
+              childModel.startDateTime!.add(Duration(days: i));
+          _list.add(childModel);
+        }
+      } else {
+        _list.add(eventModel);
+      }
+      await _getData();
       selectedEvents.value = _kEvents[selectedDay] ?? [];
     }
   }
 
   Future<bool> _getData() async {
-    _list.forEach((element) {
-      _events = Map<DateTime, List<EventModel>>.from(_decodeMap(element));
-    });
-    _kEvents.addAll(_events);
-    return false;
-  }
+    _kEvents.clear();
 
-  Map<DateTime, List<EventModel>> _decodeMap(EventModel eventModel) {
-    String s = eventModel.date!.split('T').first;
-    var splited = s.split('-');
-    DateTime dateTime = DateTime(int.parse(splited.first),
-        int.parse(splited[1]), int.parse(splited.last));
-    List<EventModel> list = _events[dateTime] ?? [];
-    list.add(eventModel);
-    Map<DateTime, List<EventModel>> newMap = {};
-    newMap[dateTime] = list;
-    return newMap;
+    final _kEventSource = Map<DateTime, List<EventModel>>.fromIterable(_list,
+        key: (item) => DateTime(item.startDateTime.year,
+            item.startDateTime.month, item.startDateTime.day),
+        value: (item) {
+          Iterable<EventModel> iterable = _list.where((element) {
+            if (element.startDateTime!.isAfter(item.startDateTime)) {
+              return element.startDateTime!
+                      .difference(item.startDateTime)
+                      .inDays ==
+                  0;
+            } else {
+              return item.startDateTime!
+                      .difference(element.startDateTime)
+                      .inDays ==
+                  0;
+            }
+          });
+          List<EventModel> models = <EventModel>[];
+          iterable.forEach((element) {
+            models.add(element);
+          });
+          return models;
+        });
+    _kEvents.addAll(_kEventSource);
+    return false;
   }
 
   int _getHashCode(DateTime key) {
@@ -97,33 +141,33 @@ class EventController {
     return _kEvents[day] ?? [];
   }
 
-  Future<EventModel?> createEvent(
-      DateTime dateTime, TimeOfDay timeOfDay, String? description,
-      {String? title}) async {
-    print("${_doubleString(
-      dateTime.year.toString(),
-    )}-${_doubleString(
-      dateTime.month.toString(),
-    )}-${_doubleString(
-      dateTime.day.toString(),
-    )}T${_doubleString(
-      timeOfDay.hour.toString(),
-    )}:${_doubleString(
-      timeOfDay.minute.toString(),
-    )}:00");
+  Future<EventModel?> createEvent(DateTime startDateTime, DateTime endDateTime,
+      TimeOfDay timeOfDay, String description, String title) async {
     Map<String, dynamic> map = {
-      "Date": "${_doubleString(
-        dateTime.year.toString(),
+      "StartDateTime": "${_doubleString(
+        startDateTime.year.toString(),
       )}-${_doubleString(
-        dateTime.month.toString(),
+        startDateTime.month.toString(),
       )}-${_doubleString(
-        dateTime.day.toString(),
+        startDateTime.day.toString(),
       )}T${_doubleString(
         timeOfDay.hour.toString(),
       )}:${_doubleString(
         timeOfDay.minute.toString(),
       )}:00",
-      "Details": description ?? "No description"
+      "EndDateTime": "${_doubleString(
+        endDateTime.year.toString(),
+      )}-${_doubleString(
+        endDateTime.month.toString(),
+      )}-${_doubleString(
+        endDateTime.day.toString(),
+      )}T${_doubleString(
+        timeOfDay.hour.toString(),
+      )}:${_doubleString(
+        timeOfDay.minute.toString(),
+      )}:00",
+      "Details": description,
+      "Title": title
     };
     Response response = await ApiService.postMethod(
       ApiService.baseUrl +
@@ -132,28 +176,41 @@ class EventController {
           DataProcess.getEncryptedData(jsonEncode(map)),
       allowFullUrl: false,
     );
-
     DataModel dataModel = DataModel.fromJson(response.data);
     if (dataModel.hasError!) {
+      print(dataModel.errors!.first);
       showMessage(dataModel.errors!.first);
       return null;
     } else {
-      print(DataProcess.getDecryptedData(dataModel.data!));
-
       EventModel eventModel = EventModel.fromJson(
         jsonDecode(
           DataProcess.getDecryptedData(dataModel.data!),
         ),
       );
 
-      NotificationController.n.scheduleNotification(
-        title: title ?? "Attention!",
-        body: description,
-        id: SPData.spData.getNotificationId(),
-        payload: "payload",
-        dateTime: DateTime(dateTime.year, dateTime.month, dateTime.day,
-            timeOfDay.hour, timeOfDay.minute, 0),
-      );
+      int days = endDateTime.difference(startDateTime).inDays;
+      int id = int.parse(eventModel.id!.substring(8, eventModel.id!.length));
+      if (days > 0) {
+        for (int i = 0; i <= days; i++) {
+          NotificationController.n.scheduleNotification(
+            title: title,
+            body: description,
+            id: id + i,
+            payload: "payload",
+            dateTime: DateTime(startDateTime.year, startDateTime.month,
+                startDateTime.day + i, timeOfDay.hour, timeOfDay.minute, 0),
+          );
+        }
+      } else {
+        NotificationController.n.scheduleNotification(
+          title: title,
+          body: description,
+          id: id,
+          payload: "payload",
+          dateTime: DateTime(startDateTime.year, startDateTime.month,
+              startDateTime.day, timeOfDay.hour, timeOfDay.minute, 0),
+        );
+      }
       showMessage("Event added!");
       return eventModel;
     }

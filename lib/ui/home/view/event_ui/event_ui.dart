@@ -7,8 +7,10 @@ import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class EventUi extends StatefulWidget {
   final Event? event;
+  final int position;
 
-  const EventUi({Key? key, required this.event}) : super(key: key);
+  const EventUi({Key? key, required this.event, required this.position})
+      : super(key: key);
 
   @override
   _EventUiState createState() => _EventUiState();
@@ -23,13 +25,14 @@ class _EventUiState extends State<EventUi> {
         return false;
       },
       child: Scaffold(
-          body: Stack(
-        children: [
-          SingleChildScrollView(
+          appBar: UiHelper.appBar(context, onTap: () {
+            Navigator.pop(context);
+          }),
+          body: SingleChildScrollView(
             child: Column(
               children: [
                 Hero(
-                  tag: widget.event!.id.toString(),
+                  tag: "${widget.event?.id ?? "null"}i${widget.position}",
                   child: Container(
                     width: double.infinity,
                     child: CachedNetworkImage(
@@ -39,7 +42,8 @@ class _EventUiState extends State<EventUi> {
                   ),
                 ),
                 Hero(
-                  tag: "title" + widget.event!.id.toString(),
+                  tag: "title" +
+                      "${widget.event?.id ?? "null"}p${widget.position}",
                   child: Align(
                     alignment: Alignment.center,
                     child: Padding(
@@ -112,12 +116,7 @@ class _EventUiState extends State<EventUi> {
                 )
               ],
             ),
-          ),
-          UiHelper().back(context, onTap: () {
-            Navigator.pop(context);
-          }),
-        ],
-      )),
+          )),
     );
   }
 }

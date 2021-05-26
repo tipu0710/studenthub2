@@ -85,98 +85,96 @@ class HomeController {
     }
   }
 
-
-  Future<bool> channelJoinLeave(String? title, String? description, String? id,
+  Future<bool?> channelJoinLeave(String? title, String? description, String? id,
       Color cardColor, bool? status) async {
     var margin = 20.0;
     return await (showDialog<bool>(
-          context: _context!,
-          barrierDismissible: false,
-          builder: (_) => Dialog(
-            backgroundColor: Colors.transparent,
-            child: Material(
-              color: Colors.transparent,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(_context!).size.height * .8),
-                child: Container(
-                  width: 320.0,
-                  padding: EdgeInsets.only(
-                      left: margin, right: margin, top: margin, bottom: margin),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: cardColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0x29000000),
-                        offset: Offset(0, 3),
-                        blurRadius: 6,
+      context: _context!,
+      barrierDismissible: false,
+      builder: (_) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Material(
+          color: Colors.transparent,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(_context!).size.height * .8),
+            child: Container(
+              width: 320.0,
+              padding: EdgeInsets.only(
+                  left: margin, right: margin, top: margin, bottom: margin),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: cardColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0x29000000),
+                    offset: Offset(0, 3),
+                    blurRadius: 6,
+                  ),
+                ],
+              ),
+              child: SingleChildScrollView(
+                child: Column(children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                        top: 40, left: 20, right: 20, bottom: 20),
+                    child: Text(
+                      title!,
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 20,
+                        color: const Color(0xff252525),
+                        fontWeight: FontWeight.w500,
+                        height: 1.8,
                       ),
+                      textHeightBehavior:
+                          TextHeightBehavior(applyHeightToFirstAscent: false),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Text(
+                    description!,
+                    style: TextStyle(height: 1.5),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      UiHelper().button(
+                          context: _context,
+                          title: "BACK",
+                          height: 30,
+                          width: 70,
+                          topMargin: 20,
+                          fontSize: 11,
+                          color: Colors.white,
+                          textColor: Colors.black,
+                          borderColor: Colors.grey,
+                          onPressed: () {
+                            Navigator.pop(_context!);
+                          }),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      UiHelper().button(
+                          context: _context,
+                          title: status! ? "LEAVE" : "JOIN",
+                          height: 30,
+                          width: 70,
+                          topMargin: 20,
+                          fontSize: 11,
+                          anim: true,
+                          onPressed: () async {
+                            bool? b = await _channelJoinLeave(id!, status);
+                            Navigator.pop(_context!, b);
+                          }),
                     ],
-                  ),
-                  child: SingleChildScrollView(
-                    child: Column(children: [
-                      Container(
-                        margin: EdgeInsets.only(
-                            top: 40, left: 20, right: 20, bottom: 20),
-                        child: Text(
-                          title!,
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 20,
-                            color: const Color(0xff252525),
-                            fontWeight: FontWeight.w500,
-                            height: 1.8,
-                          ),
-                          textHeightBehavior: TextHeightBehavior(
-                              applyHeightToFirstAscent: false),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Text(
-                        description!,
-                        style: TextStyle(height: 1.5),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          UiHelper().button(
-                              context: _context,
-                              title: "BACK",
-                              height: 30,
-                              width: 70,
-                              topMargin: 20,
-                              fontSize: 11,
-                              color: Colors.white,
-                              textColor: Colors.black,
-                              borderColor: Colors.grey,
-                              onPressed: () {
-                                Navigator.pop(_context!);
-                              }),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          UiHelper().button(
-                              context: _context,
-                              title: status! ? "LEAVE" : "JOIN",
-                              height: 30,
-                              width: 70,
-                              topMargin: 20,
-                              fontSize: 11,
-                              anim: true,
-                              onPressed: () async {
-                                bool? b = await _channelJoinLeave(id!, status);
-                                Navigator.pop(_context!, b);
-                              }),
-                        ],
-                      )
-                    ]),
-                  ),
-                ),
+                  )
+                ]),
               ),
             ),
           ),
-        ) as FutureOr<bool>?) ??
-        false;
+        ),
+      ),
+    ));
   }
 }

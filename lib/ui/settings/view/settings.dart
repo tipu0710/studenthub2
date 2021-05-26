@@ -9,70 +9,56 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     SettingsController settingsController = SettingsController(context);
     return Scaffold(
-      body: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 164,
-                  ),
-                  title('Quick Link'),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  childCard("Uni Website", onTap: () {
-                    settingsController.launchUrl(
-                        institute?.webUrl, AppType.web);
-                  }),
-                  childCard("Uni Facebook", onTap: () {
-                    String? url = institute?.facebookUrl;
+      appBar: UiHelper.appBar(context, title: "Settings"),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            title('Quick Link'),
+            SizedBox(
+              height: 15,
+            ),
+            childCard("Uni Website", onTap: () {
+              settingsController.launchUrl(
+                  institute?.webUrl, AppType.web);
+            }),
+            childCard("Uni Facebook", onTap: () {
+              String? url = institute?.facebookUrl;
 
-                    print(url);
-                    settingsController.launchUrl(url, AppType.fb);
-                  }),
-                  childCard("Uni Instagram", onTap: () {
-                    settingsController.launchUrl(
-                        institute?.instagramUrl, AppType.instagram);
-                  }),
-                  childCard("Uni Mail", onTap: () {
-                    settingsController.launchUrl(
-                      institute?.emailAddress,
-                      AppType.email,
-                    );
-                  }),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  title('Help & Support'),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  childCard("Contact Us", onTap: () {
-                    settingsController.contactUs();
-                  }),
-                  childCard("Logout", iconData: CupertinoIcons.power,
-                      onTap: () {
-                    settingsController.logout();
-                  }),
-                  SizedBox(
-                    height: 40,
-                  ),
-                ],
-              ),
+              print(url);
+              settingsController.launchUrl(url, AppType.fb);
+            }),
+            childCard("Uni Instagram", onTap: () {
+              settingsController.launchUrl(
+                  institute?.instagramUrl, AppType.instagram);
+            }),
+            childCard("Uni Mail", onTap: () {
+              settingsController.launchUrl(
+                institute?.emailAddress,
+                AppType.email,
+              );
+            }),
+            SizedBox(
+              height: 40,
             ),
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              height: 30,
-              color: Color(0xfffcfcfc),
+            title('Help & Support'),
+            SizedBox(
+              height: 15,
             ),
-          ),
-          UiHelper().back(context, title: "Settings"),
-        ],
+            childCard("Contact Us", onTap: () {
+              settingsController.contactUs();
+            }),
+            childCard("Logout", iconData: CupertinoIcons.power,
+                onTap: () {
+              settingsController.logout();
+            }),
+            SizedBox(
+              height: 40,
+            ),
+          ],
+        ),
       ),
     );
   }

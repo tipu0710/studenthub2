@@ -5,25 +5,17 @@ class Notifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Container(
-              margin: EdgeInsets.only(top: 96),
-              width: MediaQuery.of(context).size.width,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: 5,
-                  itemBuilder: (_, position) => notificationCard()),
-            ),
-          ),
-          Container(
-            color: Color(0xfffcfcfc),
-            height: 95,
-          ),
-          UiHelper().back(context, title: "Notifications"),
-        ],
+      appBar: UiHelper.appBar(context, title: "Notifications"),
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.only(top: 20),
+          width: MediaQuery.of(context).size.width,
+          child: ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 5,
+              itemBuilder: (_, position) => notificationCard()),
+        ),
       ),
     );
   }

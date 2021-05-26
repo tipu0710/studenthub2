@@ -16,13 +16,14 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: UiHelper.appBar(context, title: 'Profile'),
       body: Stack(
         children: [
           Align(
             alignment: Alignment.topCenter,
             child: Container(
               height: 258,
-              margin: EdgeInsets.only(top: 107),
+              margin: EdgeInsets.only(top: 20),
               child: Image.asset(
                 "assets/images/pp_back.png",
                 fit: BoxFit.cover,
@@ -34,7 +35,7 @@ class _ProfileState extends State<Profile> {
             child: SingleChildScrollView(
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(top: 200),
+                margin: EdgeInsets.only(top: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -184,7 +185,6 @@ class _ProfileState extends State<Profile> {
               ),
             ),
           ),
-          UiHelper().back(context, title: 'Profile'),
         ],
       ),
     );

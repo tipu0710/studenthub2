@@ -73,52 +73,46 @@ class UiHelper {
     );
   }
 
-  Widget back(BuildContext context, {String? title, Function()? onTap}) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 20.0, top: 35),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: onTap ??
-                  () {
-                    Parent.tabController!.animateTo(0);
-                  },
-              child: Container(
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color(0xffecebef),
-                ),
-                child: Center(
-                  child: Icon(
-                    Icons.arrow_back_ios_sharp,
-                    size: 18,
-                  ),
-                ),
-              ),
+  static AppBar appBar (BuildContext context,{String? title,
+    Function()? onTap}){
+    return AppBar(
+      backgroundColor: Color(0xfffcfcfc),
+      foregroundColor: Color(0xfffcfcfc),
+      leading: GestureDetector(
+        onTap: onTap ??
+                () {
+              Parent.tabController!.animateTo(0);
+            },
+        child: Container(
+          height: 40,
+          width: 40,
+          margin: EdgeInsets.only(left: 20),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: const Color(0xffecebef),
+          ),
+          child: Center(
+            child: Icon(
+              Icons.arrow_back_ios_sharp,
+              size: 18,
             ),
-            SizedBox(
-              width: title == null ? 0 : 20,
-            ),
-            Text(
-              title ?? '',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 20,
-                color: const Color(0xff252525),
-                fontWeight: FontWeight.w500,
-              ),
-              textHeightBehavior:
-                  TextHeightBehavior(applyHeightToFirstAscent: false),
-              textAlign: TextAlign.left,
-            )
-          ],
+          ),
         ),
       ),
+      title: Text(
+        title ?? '',
+        style: TextStyle(
+          fontFamily: 'Roboto',
+          fontSize: 20,
+          color: const Color(0xff252525),
+          fontWeight: FontWeight.w500,
+        ),
+        textHeightBehavior:
+        TextHeightBehavior(applyHeightToFirstAscent: false),
+        textAlign: TextAlign.left,
+      ),
+      centerTitle: false,
+      elevation: 0,
     );
   }
 
@@ -167,22 +161,23 @@ class UiHelper {
                         width: borderColor != null ? 1 : 0)),
                 child: ValueListenableBuilder(
                   valueListenable: valueNotifier,
-                  builder: (_, dynamic value, __) => value != AnimState.loadingStart
-                      ? Center(
-                          child: Text(
-                            title,
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: fontSize ?? 15,
-                              color: textColor ?? Color(0xffffffff),
-                              fontWeight: FontWeight.w500,
-                            ),
-                            textHeightBehavior: TextHeightBehavior(
-                                applyHeightToFirstAscent: false),
-                            textAlign: TextAlign.center,
-                          ),
-                        )
-                      : Container(),
+                  builder: (_, dynamic value, __) =>
+                      value != AnimState.loadingStart
+                          ? Center(
+                              child: Text(
+                                title,
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: fontSize ?? 15,
+                                  color: textColor ?? Color(0xffffffff),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                textHeightBehavior: TextHeightBehavior(
+                                    applyHeightToFirstAscent: false),
+                                textAlign: TextAlign.center,
+                              ),
+                            )
+                          : Container(),
                 ),
               ),
             ),
@@ -269,6 +264,23 @@ class UiHelper {
           }
           return Container();
         });
+  }
+
+  static showSnackMessage(
+      {required BuildContext context,
+      required String message,
+      String? snackBarActionTitle,
+      void Function()? onePressed}) {
+    assert((snackBarActionTitle == null && onePressed == null) ||
+        (snackBarActionTitle != null && onePressed != null));
+    final snackBar = SnackBar(
+      content: Text(message),
+      action: SnackBarAction(
+        label: snackBarActionTitle ?? "",
+        onPressed: onePressed ?? () {},
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
 

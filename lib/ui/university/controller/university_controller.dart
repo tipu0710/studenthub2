@@ -41,16 +41,21 @@ class UniversityController {
     });
   }
 
-  addToSP(BuildContext context, UniversityModel universityModel) {
+  addToSP(BuildContext context, UniversityModel universityModel, bool fromReg) {
     SPData.spData.setUniversity(universityModel);
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (_) => Login(),
-        ),
-        (route) => false);
+    if (!fromReg) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (_) => Login(),
+          ),
+          (route) => false);
+    } else {
+      Navigator.pop(context);
+    }
   }
-  dispose(){
+
+  dispose() {
     _streamController?.close();
   }
 }

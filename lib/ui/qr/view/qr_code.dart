@@ -15,59 +15,55 @@ class _QrCodeState extends State<QrCode> with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Container(
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 130,
-                  ),
-                  profileImage(),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    profileModel!.fullName!,
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 22,
-                      color: const Color(0xff252525),
-                      fontWeight: FontWeight.w500,
-                      height: 1.6363636363636365,
-                    ),
-                    textHeightBehavior:
-                        TextHeightBehavior(applyHeightToFirstAscent: false),
-                    textAlign: TextAlign.left,
-                  ),
-                  SizedBox(height: 3),
-                  Text(
-                    profileModel!.institutionDetails!.programmeName!,
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 15,
-                      color: const Color(0xffc6c6c6),
-                      height: 2.4,
-                    ),
-                    textHeightBehavior:
-                        TextHeightBehavior(applyHeightToFirstAscent: false),
-                    textAlign: TextAlign.left,
-                  ),
-                  qrCode(),
-                  shareCode(),
-                  saveCode(),
-                  SizedBox(
-                    height: 120,
-                  )
-                ],
+      appBar: UiHelper.appBar(context, title: "Qr Code"),
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 20,
               ),
-            ),
+              profileImage(),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                profileModel!.fullName!,
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 22,
+                  color: const Color(0xff252525),
+                  fontWeight: FontWeight.w500,
+                  height: 1.6363636363636365,
+                ),
+                textHeightBehavior:
+                    TextHeightBehavior(applyHeightToFirstAscent: false),
+                textAlign: TextAlign.left,
+              ),
+              SizedBox(height: 3),
+              Text(
+                profileModel!.institutionDetails!.programmeName!,
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 15,
+                  color: const Color(0xffc6c6c6),
+                  height: 2.4,
+                ),
+                textHeightBehavior:
+                    TextHeightBehavior(applyHeightToFirstAscent: false),
+                textAlign: TextAlign.left,
+              ),
+              qrCode(),
+              shareCode(),
+              saveCode(),
+              SizedBox(
+                height: 120,
+              )
+            ],
           ),
-          UiHelper().back(context, title: "Qr Code")
-        ],
+        ),
       ),
     );
   }

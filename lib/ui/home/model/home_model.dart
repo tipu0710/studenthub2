@@ -3,6 +3,8 @@ import 'package:studenthub2/ui/home/model/event.dart';
 import 'package:studenthub2/ui/home/model/institute.dart';
 import 'ad_list.dart';
 import 'announcement.dart';
+import 'merit_model.dart';
+import 'scholarship_model.dart';
 
 class HomeModel {
   List<Channel>? channelList;
@@ -10,13 +12,16 @@ class HomeModel {
   Institute? institute;
   List<Announcement>? announcementList;
   List<AddList>? addList;
+  List<ScholarshipModel>? scholarshipList;
+  List<MeritPointModel>? meritPointList;
 
   HomeModel(
       {this.channelList,
       this.eventList,
       this.institute,
       this.announcementList,
-      this.addList});
+      this.addList,
+      this.meritPointList});
 
   HomeModel.fromJson(Map<String, dynamic> json) {
     if (json['channelList'] != null) {
@@ -43,7 +48,19 @@ class HomeModel {
     if (json['addList'] != null) {
       addList = <AddList>[];
       json['addList'].forEach((v) {
-        addList!.add(new AddList.fromJson(v));
+        addList!.add(AddList.fromJson(v));
+      });
+    }
+    if (json['scholarshipList'] != null) {
+      scholarshipList = <ScholarshipModel>[];
+      json['scholarshipList'].forEach((v) {
+        scholarshipList!.add(ScholarshipModel.fromJson(v));
+      });
+    }
+    if (json['meritPointList'] != null) {
+      meritPointList = <MeritPointModel>[];
+      json['meritPointList'].forEach((v) {
+        meritPointList!.add(MeritPointModel.fromJson(v));
       });
     }
   }
@@ -66,23 +83,14 @@ class HomeModel {
     if (this.addList != null) {
       data['addList'] = this.addList!.map((v) => v.toJson()).toList();
     }
+    if (this.scholarshipList != null) {
+      data['scholarshipList'] =
+          this.scholarshipList!.map((v) => v.toJson()).toList();
+    }
+    if (this.meritPointList != null) {
+      data['meritPointList'] =
+          this.meritPointList!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

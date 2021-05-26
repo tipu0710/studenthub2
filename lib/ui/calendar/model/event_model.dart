@@ -1,7 +1,11 @@
+import 'package:intl/intl.dart';
+
 class EventModel {
   String? id;
   String? studentId;
-  String? date;
+  DateTime? startDateTime;
+  DateTime? endDateTime;
+  String? title;
   String? details;
   bool? isActive;
   String? createDate;
@@ -11,25 +15,33 @@ class EventModel {
   bool? isDeleted;
   bool? isSelected;
   bool? isAlreadyAdded;
+  bool? isEditable;
+
+  DateFormat _dateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
   EventModel(
       {this.id,
-        this.studentId,
-        this.date,
-        this.details,
-        this.isActive,
-        this.createDate,
-        this.createById,
-        this.lastChanged,
-        this.lastChangedById,
-        this.isDeleted,
-        this.isSelected,
-        this.isAlreadyAdded});
+      this.studentId,
+      this.startDateTime,
+      this.endDateTime,
+      this.details,
+      this.isActive,
+      this.createDate,
+      this.createById,
+      this.lastChanged,
+      this.lastChangedById,
+      this.isDeleted,
+      this.isSelected,
+      this.isAlreadyAdded,
+      this.isEditable,
+      this.title});
 
   EventModel.fromJson(Map<String, dynamic> json) {
-    id = json['Id'];
+    id = json['Id'].toString();
     studentId = json['StudentId'];
-    date = json['Date'];
+    startDateTime = _dateFormat.parse(json['StartDateTime']);
+    endDateTime = _dateFormat.parse(json['EndDateTime']);
+    title = json['Title'];
     details = json['Details'];
     isActive = json['IsActive'];
     createDate = json['CreateDate'];
@@ -39,13 +51,16 @@ class EventModel {
     isDeleted = json['IsDeleted'];
     isSelected = json['IsSelected'];
     isAlreadyAdded = json['IsAlreadyAdded'];
+    isEditable = json['IsEditable'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['Id'] = this.id;
     data['StudentId'] = this.studentId;
-    data['Date'] = this.date;
+    data['StartDateTime'] = _dateFormat.format(this.startDateTime!);
+    data['EndDateTime'] = _dateFormat.format(this.endDateTime!);
+    data['Title'] = this.title;
     data['Details'] = this.details;
     data['IsActive'] = this.isActive;
     data['CreateDate'] = this.createDate;
@@ -55,6 +70,7 @@ class EventModel {
     data['IsDeleted'] = this.isDeleted;
     data['IsSelected'] = this.isSelected;
     data['IsAlreadyAdded'] = this.isAlreadyAdded;
+    data['IsEditable'] = this.isEditable;
     return data;
   }
 }

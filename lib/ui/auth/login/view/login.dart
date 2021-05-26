@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:studenthub2/ui/auth/login/controller/login_controller.dart';
 import 'package:studenthub2/ui/auth/register/view/register.dart';
 import 'package:studenthub2/ui/university/view/university.dart';
@@ -59,10 +60,10 @@ class _LoginState extends State<Login> {
                       height: 100,
                     ),
                     Container(
-                      child: Image.asset(
-                        "assets/images/sb_text.png",
-                        height: 41.02,
-                        width: 186.82,
+                      child: SvgPicture.asset(
+                        "assets/svg/logo_with_text.svg",
+                        height: 185.9/3,
+                        width: 424.25/3,
                       ),
                     ),
                     Container(

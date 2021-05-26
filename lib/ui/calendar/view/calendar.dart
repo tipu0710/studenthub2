@@ -33,8 +33,8 @@ class _CalendarState extends State<Calendar> {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
       });
-      eventController
-      .selectedEvents.value = eventController.getEventsForDay(selectedDay);
+      eventController.selectedEvents.value =
+          eventController.getEventsForDay(selectedDay);
     }
   }
 
@@ -46,62 +46,63 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: ShimmerLoading(
-              isLoading: loading,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    height: 80,
-                  ),
-                  TableCalendar<EventModel>(
-                    firstDay: kFirstDay,
-                    lastDay: kLastDay,
-                    focusedDay: _focusedDay,
-                    selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                    calendarFormat: _calendarFormat,
-                    availableCalendarFormats: {
-                      CalendarFormat.month: 'Month',
-                    },
-                    eventLoader: eventController.getEventsForDay,
-                    startingDayOfWeek: StartingDayOfWeek.monday,
-                    calendarStyle: CalendarStyle(
-                      outsideDaysVisible: false,
-                    ),
-                    onDaySelected: _onDaySelected,
-                    onPageChanged: (focusedDay) {
-                      _focusedDay = focusedDay;
-                    },
-                  ),
-                  ValueListenableBuilder<List<EventModel>>(
-                    valueListenable: eventController.selectedEvents,
-                    builder: (context, value, _) {
-                      return ListView.builder(
-                        itemCount: value.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return eventCard(
-                              title: value[index].createDate!,
-                              subtitle: value[index].details!);
-                        },
-                      );
-                    },
-                  ),
-                ],
+      appBar: UiHelper.appBar(context, title: "Calendar", onTap: () {
+        Navigator.pop(context);
+      }),
+      body: SingleChildScrollView(
+        child: ShimmerLoading(
+          isLoading: loading,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TableCalendar<EventModel>(
+                firstDay: kFirstDay,
+                lastDay: kLastDay,
+                focusedDay: _focusedDay,
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                calendarFormat: _calendarFormat,
+                availableCalendarFormats: {
+                  CalendarFormat.month: 'Month',
+                },
+                eventLoader: eventController.getEventsForDay,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                calendarStyle: CalendarStyle(
+                  outsideDaysVisible: false,
+                ),
+                onDaySelected: _onDaySelected,
+                onPageChanged: (focusedDay) {
+                  _focusedDay = focusedDay;
+                },
               ),
-            ),
+              ValueListenableBuilder<List<EventModel>>(
+                valueListenable: eventController.selectedEvents,
+                builder: (context, value, _) {
+                  return SingleChildScrollView(
+                    child: ListView.builder(
+                      itemCount: value.length,
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return eventCard(
+                            title: value[index].title??"Title Not Available",
+                            subtitle: value[index].details??"Details not found");
+                      },
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
-          UiHelper().back(context, title: "Calendar", onTap: () {
-            Navigator.pop(context);
-          }),
-        ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: eventController.showAddDialog(context, _selectedDay!),
+        onPressed: () async {
+          await eventController.showAddDialog(context, _selectedDay!);
+          setState(() {
+            print("came");
+          });
+        },
       ),
     );
   }
@@ -158,14 +159,10 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  void getData() async{
+  void getData() async {
     var b = await eventController.getEvents();
     setState(() {
       loading = b;
     });
   }
-
-
-
-
 }

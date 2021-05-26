@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/global.dart';
 import 'package:studenthub2/service/sp/sp.dart';
@@ -7,6 +6,7 @@ import 'package:studenthub2/ui/auth/register/controller/reg_controller.dart';
 import 'package:studenthub2/ui/auth/register/model/intake.dart';
 import 'package:studenthub2/ui/auth/register/model/register_model.dart';
 import 'package:studenthub2/ui/university/model/university_mode.dart';
+import 'package:studenthub2/ui/university/view/university.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 import '../../../../ui_helper/ui_helper.dart';
 
@@ -36,14 +36,7 @@ class _RegisterState extends State<Register> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final StreamController<List<CountryModel>> _countryStream =
-      StreamController<List<CountryModel>>.broadcast();
-
-  final StreamController<List<ProgrammeList>> _programStream =
-      StreamController<List<ProgrammeList>>.broadcast();
-
-  final StreamController<List<IntakeList>> _intakeStream =
-      StreamController<List<IntakeList>>.broadcast();
+  bool agree = true;
 
   late CountryModel countryModel;
   late IntakeList intakeList;
@@ -55,16 +48,12 @@ class _RegisterState extends State<Register> {
 
   @override
   void initState() {
-    registerController = RegisterController(
-        context, _countryStream, _programStream, _intakeStream);
+    registerController = RegisterController(context);
     super.initState();
   }
 
   @override
   void dispose() {
-    _countryStream.close();
-    _programStream.close();
-    _intakeStream.close();
     registerController.dispose();
     super.dispose();
   }
@@ -72,6 +61,9 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: UiHelper.appBar(context, onTap: () {
+        Navigator.pop(context);
+      }),
       body: Stack(
         children: [
           Positioned(
@@ -90,9 +82,6 @@ class _RegisterState extends State<Register> {
                 margin: EdgeInsets.only(left: 20, right: 20),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 90,
-                    ),
                     UiHelper().input(passport, "NRIC/Passport"),
                     UiHelper().input(fullName, "Full Name"),
                     UiHelper().input(studentId, "Student ID"),
@@ -118,13 +107,14 @@ class _RegisterState extends State<Register> {
                         onChange: (value) {
                       registerController.updateCountryStream(value);
                     }),
-                    UiHelper().searchItem<CountryModel>(_countryStream,
+                    UiHelper().searchItem<CountryModel>(
+                        registerController.streamCountry,
                         titleGetFunction: (country) {
                       return country.name;
                     }, onTap: (c) {
                       country.text = c.name!;
                       countryModel = c;
-                      _countryStream.add([]);
+                      registerController.streamCountry.add([]);
                     }),
                     Focus(
                       onFocusChange: (b) {
@@ -138,25 +128,28 @@ class _RegisterState extends State<Register> {
                     UiHelper().input(program, "Course", onChange: (value) {
                       registerController.updateProgramStream(value);
                     }),
-                    UiHelper().searchItem<ProgrammeList>(_programStream,
+                    UiHelper().searchItem<ProgrammeList>(
+                        registerController.programStream,
                         titleGetFunction: (program) {
                       return program.name;
                     }, onTap: (c) {
                       program.text = c.name!;
                       programmeList = c;
-                      _programStream.add([]);
+                      registerController.programStream.add([]);
                     }),
                     UiHelper().input(intake, "Intake", onChange: (value) {
                       registerController.updateIntakeStream(value);
                     }),
-                    UiHelper().searchItem<IntakeList>(_intakeStream,
-                        titleGetFunction: (country) {
+                    UiHelper()
+                        .searchItem<IntakeList>(registerController.intakeStream,
+                            titleGetFunction: (country) {
                       return country.name;
                     }, onTap: (c) {
                       intake.text = c.name!;
                       intakeList = c;
-                      _intakeStream.add([]);
+                      registerController.intakeStream.add([]);
                     }),
+                    termsAndCondition(),
                     UiHelper().button(
                       context: context,
                       title: "REQUEST PIN CODE",
@@ -168,17 +161,54 @@ class _RegisterState extends State<Register> {
               ),
             ),
           ),
-          UiHelper().back(context, onTap: () {
-            Navigator.pop(context);
-          }),
         ],
       ),
     );
   }
 
+  Widget termsAndCondition() {
+    return CheckboxListTile(
+        title: GestureDetector(
+          onTap: () {},
+          child: Text(
+            "I've read the Terms Content",
+            style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 12,
+                fontStyle: FontStyle.italic,
+                color: const Color(0xff1e5aa7),
+                fontWeight: FontWeight.w500,
+                decoration: TextDecoration.underline),
+          ),
+        ),
+        value: agree,
+        onChanged: (value) {
+          setState(() {
+            agree = value ?? true;
+          });
+        });
+  }
+
   validate() async {
+    UniversityModel uni = SPData.spData.getUniversity()!;
     if (_formKey.currentState!.validate()) {
-      UniversityModel uni = SPData.spData.getUniversity()!;
+      if (registerController.declaration!.instituteId.toString() != uni.id) {
+        UiHelper.showSnackMessage(
+            context: context,
+            message: "Institute doesn't match!",
+            snackBarActionTitle: "Change",
+            onePressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => University()));
+            });
+        return;
+      }
+      if (!agree) {
+        UiHelper.showSnackMessage(
+            context: context,
+            message: 'Please read terms & content and continue!');
+        return;
+      }
       RegisterModel registerModel = RegisterModel(
           contactNumber: phoneNumber.text,
           countryId: countryModel.id,
