@@ -72,17 +72,12 @@ class NotificationController {
       required int id,
       required payload,
       required DateTime dateTime}) async {
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      id,
-      title,
-      body,
-      tz.TZDateTime.from(dateTime, tz.local),
-      platformChannelSpecifics,
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: DateTimeComponents.time
-    );
+    await flutterLocalNotificationsPlugin.zonedSchedule(id, title, body,
+        tz.TZDateTime.from(dateTime, tz.local), platformChannelSpecifics,
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time);
   }
 
   Future<List<PendingNotificationRequest>> getPendingNotifications() async {

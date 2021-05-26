@@ -84,8 +84,9 @@ class _CalendarState extends State<Calendar> {
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return eventCard(
-                            title: value[index].title??"Title Not Available",
-                            subtitle: value[index].details??"Details not found");
+                            title: value[index].title ?? "Title Not Available",
+                            subtitle:
+                                value[index].details ?? "Details not found");
                       },
                     ),
                   );
