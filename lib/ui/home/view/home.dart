@@ -69,11 +69,15 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                   children: [
                     profile(loading),
                     menu(loading),
-                    !loading && homeController!.homeModel!.eventList!.length > 0
+                    !loading &&
+                            homeController!.homeModel!.eventList != null &&
+                            homeController!.homeModel!.eventList!.length > 0
                         ? announcementTitle('Latest Events', loading)
                         : Container(),
                     event(loading),
                     !loading &&
+                            homeController!.homeModel!.announcementList !=
+                                null &&
                             homeController!
                                     .homeModel!.announcementList!.length >
                                 0
@@ -295,12 +299,15 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
 
   Widget event(bool loading) {
     return Container(
-      height: !loading && homeController!.homeModel!.eventList!.length > 0
+      height: !loading &&
+              homeController?.homeModel?.eventList != null &&
+              homeController!.homeModel!.eventList!.length > 0
           ? 196
           : 0,
       margin: EdgeInsets.only(top: 15),
       child: ListView.builder(
-          itemCount: loading ? 1 : homeController!.homeModel!.eventList!.length,
+          itemCount:
+              loading ? 1 : homeController?.homeModel?.eventList?.length ?? 0,
           scrollDirection: Axis.horizontal,
           itemBuilder: (_, position) => eventCard(
               loading ? null : homeController?.homeModel?.eventList![position],
@@ -311,14 +318,16 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
 
   Widget announcement(bool loading) {
     return Container(
-      height:
-          !loading && homeController!.homeModel!.announcementList!.length > 0
-              ? 196
-              : 0,
+      height: !loading &&
+              homeController?.homeModel?.announcementList != null &&
+              homeController!.homeModel!.announcementList!.length > 0
+          ? 196
+          : 0,
       margin: EdgeInsets.only(top: 15),
       child: ListView.builder(
-          itemCount:
-              loading ? 1 : homeController!.homeModel!.announcementList!.length,
+          itemCount: loading
+              ? 1
+              : homeController?.homeModel?.announcementList?.length ?? 0,
           scrollDirection: Axis.horizontal,
           itemBuilder: (_, position) => announcementCard(
               loading
@@ -599,11 +608,15 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
 
   Widget ad(bool loading) {
     return Container(
-      height:
-          !loading && homeController!.homeModel!.addList!.length > 0 ? 196 : 0,
+      height: !loading &&
+              homeController?.homeModel?.addList != null &&
+              homeController!.homeModel!.addList!.length > 0
+          ? 196
+          : 0,
       margin: EdgeInsets.only(top: 40),
       child: ListView.builder(
-          itemCount: loading ? 1 : homeController!.homeModel!.addList!.length,
+          itemCount:
+              loading ? 1 : homeController?.homeModel?.addList?.length ?? 0,
           scrollDirection: Axis.horizontal,
           itemBuilder: (_, position) => adCard(
               loading

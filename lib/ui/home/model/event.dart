@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Event {
   bool? isAlreadyAdded;
   int? id;
@@ -5,8 +7,8 @@ class Event {
   String? code;
   String? name;
   int? channelId;
-  String? dateFrom;
-  String? dateTo;
+  DateTime? dateFrom;
+  DateTime? dateTo;
   String? description;
   String? image;
   bool? isMeritPoint;
@@ -20,6 +22,7 @@ class Event {
   bool? isDeleted;
   bool? isSelected;
 
+  DateFormat _dateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
   Event(
       {this.isAlreadyAdded,
         this.id,
@@ -49,8 +52,8 @@ class Event {
     code = json['Code'];
     name = json['Name'];
     channelId = json['ChannelId'];
-    dateFrom = json['DateFrom'];
-    dateTo = json['DateTo'];
+    dateFrom = _dateFormat.parse(json['DateFrom']);
+    dateTo = _dateFormat.parse(json['DateTo']);
     description = json['Description'];
     image = json['Image'];
     isMeritPoint = json['IsMeritPoint'];
@@ -73,8 +76,8 @@ class Event {
     data['Code'] = this.code;
     data['Name'] = this.name;
     data['ChannelId'] = this.channelId;
-    data['DateFrom'] = this.dateFrom;
-    data['DateTo'] = this.dateTo;
+    data['DateFrom'] = _dateFormat.format(this.dateFrom!);
+    data['DateTo'] = _dateFormat.format(this.dateTo!);
     data['Description'] = this.description;
     data['Image'] = this.image;
     data['IsMeritPoint'] = this.isMeritPoint;

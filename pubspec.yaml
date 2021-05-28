@@ -21,6 +21,7 @@ dependencies:
   encrypt: ^5.0.0
   #f
   flutter_svg: ^0.22.0
+  flutter_widget_from_html: ^0.6.1
   #i
   intl: ^0.17.0
   image_picker: ^0.7.5+2

@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   goto() {
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(Duration(milliseconds: 1000), () {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -48,9 +48,25 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff888BBE),
       body: Stack(
         children: [
+          Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment(0.0, -1.0),
+                end: Alignment(0.0, 1.0),
+                colors: [
+                  const Color(0xff15173b),
+                  const Color(0xff1a1c3f),
+                  const Color(0xff030519),
+                  const Color(0xff808080)
+                ],
+                stops: [0.0, 0.51, 0.95, 1.0],
+              ),
+            ),
+          ),
           Center(
             child: AnimatedContainer(
               width: !logo ? 0 : MediaQuery.of(context).size.width,

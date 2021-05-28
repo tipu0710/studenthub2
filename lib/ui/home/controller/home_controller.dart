@@ -28,7 +28,9 @@ class HomeController {
         await ApiService.getMethod("/DashboardMobileApi/GetDashBoardDataExtra");
     DataModel dataModel = DataModel.fromJson(response.data);
     if (dataModel.hasError!) {
+      print(dataModel.errors!.first);
       showMessage(dataModel.errors!.first);
+      throw Exception(dataModel.errors!.first);
     } else {
       homeModel = HomeModel.fromJson(
           jsonDecode(DataProcess.getDecryptedData(dataModel.dataExtra)));

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/service/api/api_service.dart';
+import 'package:studenthub2/ui/calendar/view/calendar.dart';
 import 'package:studenthub2/ui/calendar/view/event_create_dialog.dart';
 import 'package:studenthub2/ui/home/model/event.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
@@ -107,8 +108,15 @@ class _EventUiState extends State<EventUi> {
                           await showDialog(
                             context: context,
                             builder: (context) => EventCreationDialog(
-                              selectedDate: DateTime.now(),
+                              selectedDate:
+                                  widget.event?.dateFrom ?? DateTime.now(),
                               event: widget.event,
+                            ),
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => Calendar(),
                             ),
                           );
                         }),

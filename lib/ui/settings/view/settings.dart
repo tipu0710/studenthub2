@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub2/global.dart';
+import 'package:studenthub2/ui/complainBox/view/complain_box.dart';
 import 'package:studenthub2/ui/settings/controller/settings_controller.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
@@ -21,8 +22,7 @@ class Settings extends StatelessWidget {
               height: 15,
             ),
             childCard("Uni Website", onTap: () {
-              settingsController.launchUrl(
-                  institute?.webUrl, AppType.web);
+              settingsController.launchUrl(institute?.webUrl, AppType.web);
             }),
             childCard("Uni Facebook", onTap: () {
               String? url = institute?.facebookUrl;
@@ -47,11 +47,14 @@ class Settings extends StatelessWidget {
             SizedBox(
               height: 15,
             ),
+            childCard("Complain Box", onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => ComplainBox()));
+            }),
             childCard("Contact Us", onTap: () {
               settingsController.contactUs();
             }),
-            childCard("Logout", iconData: CupertinoIcons.power,
-                onTap: () {
+            childCard("Logout", iconData: CupertinoIcons.power, onTap: () {
               settingsController.logout();
             }),
             SizedBox(

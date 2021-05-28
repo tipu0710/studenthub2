@@ -167,26 +167,42 @@ class _RegisterState extends State<Register> {
   }
 
   Widget termsAndCondition() {
-    return CheckboxListTile(
-        title: GestureDetector(
-          onTap: () {},
-          child: Text(
-            "I've read the Terms Content",
-            style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 12,
-                fontStyle: FontStyle.italic,
-                color: const Color(0xff1e5aa7),
-                fontWeight: FontWeight.w500,
-                decoration: TextDecoration.underline),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        InkWell(
+          onTap: () async {
+            if (referralCode.text.isEmpty || intake.text.isEmpty) {
+              UiHelper.showSnackMessage(
+                  context: context,
+                  message: "Enter Referral code and intake first");
+            } else {
+              registerController.termsAndConditions();
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "I've read the Terms Content",
+              style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
+                  color: const Color(0xff1e5aa7),
+                  fontWeight: FontWeight.w500,
+                  decoration: TextDecoration.underline),
+            ),
           ),
         ),
-        value: agree,
-        onChanged: (value) {
-          setState(() {
-            agree = value ?? true;
-          });
-        });
+        Checkbox(
+            value: agree,
+            onChanged: (value) {
+              setState(() {
+                agree = value ?? true;
+              });
+            }),
+      ],
+    );
   }
 
   validate() async {

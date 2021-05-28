@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:studenthub2/global.dart';
 import 'package:studenthub2/model/data_model.dart';
 import 'package:studenthub2/model/student_reg.dart';
@@ -15,6 +16,7 @@ import 'package:studenthub2/ui/auth/register/model/intake.dart';
 import 'package:studenthub2/ui/auth/register/model/register_model.dart';
 import 'package:studenthub2/ui/university/view/university.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RegisterController {
   late StreamController<List<CountryModel>> streamCountry;
@@ -144,9 +146,50 @@ class RegisterController {
     print(otp);
     await SPData.spData.setStudentRegInfo(
         StudentRegModel(data: dataModel.data, verified: false, otp: otp));
-    print(DataProcess.getDecryptedData(dataModel.data!));
-    print(DataProcess.getDecryptedData(dataModel.dataExtra));
     Navigator.push(_context, MaterialPageRoute(builder: (_) => Pin()));
+  }
+
+  termsAndConditions() async {
+    await showDialog(
+      context: _context,
+      builder: (context) => Dialog(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(_context).size.height - 60,
+            minHeight: 200,
+          ),
+          child: SingleChildScrollView(
+            child: Container(
+              padding:
+                  EdgeInsets.only(top: 20, bottom: 20, right: 20, left: 20),
+              child: Column(
+                children: [
+                  Text(
+                    declaration?.name ?? "",
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 16,
+                      color: const Color(0xff1e5aa7),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  HtmlWidget(
+                    declaration?.declarationContent ?? "",
+                    hyperlinkColor: primaryColor,
+                    onTapUrl: (url) async {
+                      await launch(url);
+                    },
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   void dispose() {

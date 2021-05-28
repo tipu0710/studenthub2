@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:studenthub2/service/sp/sp.dart';
 import 'package:studenthub2/ui/auth/login/controller/login_controller.dart';
 import 'package:studenthub2/ui/auth/register/view/register.dart';
 import 'package:studenthub2/ui/university/view/university.dart';
@@ -69,7 +70,7 @@ class _LoginState extends State<Login> {
                     Container(
                       margin: EdgeInsets.only(top: 35),
                       child: Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ',
+                        SPData.spData.getUniversity()!.name!,
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 16,
@@ -112,11 +113,11 @@ class _LoginState extends State<Login> {
                     SizedBox(
                       height: 40,
                     ),
-                    tfp(),
+                    changeUni(),
                     SizedBox(
                       height: 25,
                     ),
-                    changeUni(),
+                    tfp(),
                     SizedBox(
                       height: 40,
                     ),
@@ -172,7 +173,7 @@ class _LoginState extends State<Login> {
       },
       child: Center(
         child: Text(
-          'Change University?',
+          'Choose University?',
           style: TextStyle(
             fontFamily: 'Roboto',
             fontSize: 17,

@@ -89,7 +89,7 @@ class UiHelper {
           margin: EdgeInsets.only(left: 20),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: const Color(0xffecebef),
+            color: const Color(0xffafafaf),
           ),
           child: Center(
             child: Icon(

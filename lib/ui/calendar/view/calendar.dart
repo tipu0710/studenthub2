@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:studenthub2/global.dart';
 import 'package:studenthub2/ui/calendar/controller/calendar_controller.dart';
 import 'package:studenthub2/ui/calendar/model/event_model.dart';
@@ -16,7 +17,7 @@ class _CalendarState extends State<Calendar> {
   late EventController eventController;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
+  late DateTime _selectedDay;
   bool loading = true;
 
   @override
@@ -74,21 +75,22 @@ class _CalendarState extends State<Calendar> {
                   _focusedDay = focusedDay;
                 },
               ),
+              SizedBox(
+                height: 20,
+              ),
               ValueListenableBuilder<List<EventModel>>(
                 valueListenable: eventController.selectedEvents,
                 builder: (context, value, _) {
-                  return SingleChildScrollView(
-                    child: ListView.builder(
-                      itemCount: value.length,
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return eventCard(
-                            title: value[index].title ?? "Title Not Available",
-                            subtitle:
-                                value[index].details ?? "Details not found");
-                      },
-                    ),
+                  return ListView.builder(
+                    itemCount: value.length,
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return eventCard(
+                          eventModel: value[index],
+                          cardColor: getColor(index).first,
+                          shadowColor: getColor(index).last);
+                    },
                   );
                 },
               ),
@@ -99,7 +101,7 @@ class _CalendarState extends State<Calendar> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () async {
-          await eventController.showAddDialog(context, _selectedDay!);
+          await eventController.showAddDialog(context, _selectedDay);
           setState(() {
             print("came");
           });
@@ -108,7 +110,11 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  Widget eventCard({required String title, required String subtitle}) {
+  Widget eventCard(
+      {required EventModel eventModel,
+      required Color cardColor,
+      required Color shadowColor}) {
+    DateFormat _dateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
     return ShimmerLoading(
       isLoading: loading,
       key: UniqueKey(),
@@ -116,20 +122,58 @@ class _CalendarState extends State<Calendar> {
         margin: EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 15),
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(17.0),
-          color: primaryColor,
-        ),
+            borderRadius: BorderRadius.circular(17.0),
+            color: cardColor,
+            boxShadow: [
+              BoxShadow(
+                color: shadowColor.withOpacity(0.3),
+                offset: Offset(0, 6),
+                blurRadius: 6,
+              )
+            ]),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              title,
+              eventModel.title ?? "Title not available",
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 14,
-                color: Colors.white,
+                color: Colors.black,
                 fontWeight: FontWeight.w500,
+                height: 2.5714285714285716,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textHeightBehavior:
+                  TextHeightBehavior(applyHeightToFirstAscent: false),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              dateTimeFormatter(_dateFormat.format(eventModel.startDateTime!)) +
+                  " to \n",
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 10,
+                color: Colors.black87,
+                height: 2.5714285714285716,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textHeightBehavior:
+                  TextHeightBehavior(applyHeightToFirstAscent: false),
+              textAlign: TextAlign.left,
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Text(
+              dateTimeFormatter(_dateFormat.format(eventModel.endDateTime!)),
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 10,
+                color: Colors.black87,
                 height: 2.5714285714285716,
               ),
               maxLines: 1,
@@ -142,11 +186,11 @@ class _CalendarState extends State<Calendar> {
               height: 15,
             ),
             Text(
-              subtitle,
+              eventModel.details ?? "Details not found",
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 12,
-                color: Colors.white70,
+                color: Colors.black,
                 fontWeight: FontWeight.w500,
                 height: 2,
               ),
@@ -160,10 +204,30 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
+  final List<List<Color>> _colorList = [
+    [Color(0xffEEF6FF), Color(0xff5F9DEE)],
+    [Color(0xffF2FCFF), Color(0xff78cce2)],
+    [Color(0xffe7e0ff), Color(0xff967fe2)],
+    [Color(0xfffee0ff), Color(0xffd07fe2)],
+    [Color(0xffffe0e0), Color(0xffe27f7f)],
+    [Color(0xfffff6e0), Color(0xffe2c67f)],
+    [Color(0xfff1ffe0), Color(0xffa5e27f)],
+    [Color(0xffe0fff2), Color(0xff7fe2c3)],
+    [Color(0xffe0f8ff), Color(0xff7fc3e2)],
+  ];
+
+  List<Color> getColor(int position) {
+    return _colorList[position % _colorList.length];
+  }
+
   void getData() async {
     var b = await eventController.getEvents();
-    setState(() {
-      loading = b;
-    });
+    if (mounted) {
+      setState(() {
+        loading = b;
+        eventController.selectedEvents.value =
+            eventController.getEventsForDay(_selectedDay);
+      });
+    }
   }
 }

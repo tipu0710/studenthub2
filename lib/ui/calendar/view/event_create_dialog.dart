@@ -18,11 +18,11 @@ class EventCreationDialog extends StatefulWidget {
 }
 
 class _EventCreationDialogState extends State<EventCreationDialog> {
-  TextEditingController detailsController = new TextEditingController();
-  TextEditingController titleController = new TextEditingController();
-  TextEditingController? startDateController;
-  TextEditingController? endDateController;
-  TextEditingController? timeController;
+  late TextEditingController detailsController;
+  late TextEditingController titleController;
+  late TextEditingController startDateController;
+  late TextEditingController endDateController;
+  late TextEditingController timeController;
 
   double margin = 20;
   late DateTime startDate;
@@ -33,8 +33,14 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
 
   @override
   void initState() {
+    if (widget.event != null) {
+      selectedTime = TimeOfDay(
+          hour: widget.event!.dateTo!.hour,
+          minute: widget.event!.dateTo!.minute);
+    }
     startDate = widget.selectedDate;
-    endDate = widget.selectedDate;
+    endDate =
+        widget.event == null ? widget.selectedDate : widget.event!.dateTo!;
     startDateController =
         TextEditingController(text: DateFormat("yyyy-MM-dd").format(startDate));
     endDateController = TextEditingController(
@@ -46,6 +52,10 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
         text: dateTimeFormatter(
             "${selectedTime.hour}:${selectedTime.minute}:00",
             dateType: DateType.time));
+    titleController = TextEditingController(
+        text: widget.event == null ? "" : widget.event?.name ?? "");
+    detailsController = TextEditingController(
+        text: widget.event == null ? "" : widget.event?.description ?? "");
     super.initState();
   }
 
@@ -79,7 +89,7 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                     children: [
                       Container(
                         margin: EdgeInsets.only(
-                          top: margin,
+                          top: margin * 2,
                           left: margin * 2,
                           right: margin * 2,
                         ),
@@ -94,45 +104,48 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                           textAlign: TextAlign.left,
                         ),
                       ),
-                      Container(
-                        height: 45,
-                        margin: EdgeInsets.only(
-                          top: 5,
-                          left: margin * 2,
-                          right: margin * 2,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 0.2, color: const Color(0xff606060)),
-                        ),
-                        child: Center(
-                          child: TextFormField(
-                            controller: startDateController,
-                            readOnly: true,
-                            onTap: () {
-                              _selectDate(true);
-                            },
-                            keyboardType: TextInputType.text,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: const Color(0xff505763),
+                      IgnorePointer(
+                        ignoring: widget.event != null,
+                        child: Container(
+                          height: 45,
+                          margin: EdgeInsets.only(
+                            top: 5,
+                            left: margin * 2,
+                            right: margin * 2,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 0.2, color: const Color(0xff606060)),
+                          ),
+                          child: Center(
+                            child: TextFormField(
+                              controller: startDateController,
+                              readOnly: true,
+                              onTap: () {
+                                _selectDate(true);
+                              },
+                              keyboardType: TextInputType.text,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: const Color(0xff505763),
+                              ),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                    left: 20, right: 20, bottom: 0, top: 0),
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                              ),
+                              validator: (text) {
+                                if (text == null || text.isEmpty) {
+                                  return "";
+                                } else {
+                                  return null;
+                                }
+                              },
                             ),
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  left: 20, right: 20, bottom: 0, top: 0),
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                            ),
-                            validator: (text) {
-                              if (text == null || text.isEmpty) {
-                                return "";
-                              } else {
-                                return null;
-                              }
-                            },
                           ),
                         ),
                       ),
@@ -153,45 +166,48 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                           textAlign: TextAlign.left,
                         ),
                       ),
-                      Container(
-                        height: 45,
-                        margin: EdgeInsets.only(
-                          top: 5,
-                          left: margin * 2,
-                          right: margin * 2,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 0.2, color: const Color(0xff606060)),
-                        ),
-                        child: Center(
-                          child: TextFormField(
-                            controller: endDateController,
-                            readOnly: true,
-                            onTap: () {
-                              _selectDate(false);
-                            },
-                            keyboardType: TextInputType.text,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: const Color(0xff505763),
+                      IgnorePointer(
+                        ignoring: widget.event != null,
+                        child: Container(
+                          height: 45,
+                          margin: EdgeInsets.only(
+                            top: 5,
+                            left: margin * 2,
+                            right: margin * 2,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 0.2, color: const Color(0xff606060)),
+                          ),
+                          child: Center(
+                            child: TextFormField(
+                              controller: endDateController,
+                              readOnly: true,
+                              onTap: () {
+                                _selectDate(false);
+                              },
+                              keyboardType: TextInputType.text,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: const Color(0xff505763),
+                              ),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                    left: 20, right: 20, bottom: 0, top: 0),
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                              ),
+                              validator: (text) {
+                                if (text == null || text.isEmpty) {
+                                  return "";
+                                } else {
+                                  return null;
+                                }
+                              },
                             ),
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  left: 20, right: 20, bottom: 0, top: 0),
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                            ),
-                            validator: (text) {
-                              if (text == null || text.isEmpty) {
-                                return "";
-                              } else {
-                                return null;
-                              }
-                            },
                           ),
                         ),
                       ),
@@ -212,38 +228,102 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                           textAlign: TextAlign.left,
                         ),
                       ),
+                      IgnorePointer(
+                        ignoring: widget.event != null,
+                        child: Container(
+                          height: 45,
+                          margin: EdgeInsets.only(
+                            top: 5,
+                            left: margin * 2,
+                            right: margin * 2,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 0.2, color: const Color(0xff606060)),
+                          ),
+                          child: Center(
+                            child: TextFormField(
+                              controller: timeController,
+                              readOnly: true,
+                              onTap: _selectTime,
+                              keyboardType: TextInputType.text,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: const Color(0xff505763),
+                              ),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                    left: 20, right: 20, bottom: 0, top: 0),
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                              ),
+                              validator: (text) {
+                                if (text == null || text.isEmpty) {
+                                  return "";
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
                       Container(
-                        height: 45,
                         margin: EdgeInsets.only(
-                          top: 5,
+                          top: margin,
                           left: margin * 2,
                           right: margin * 2,
                         ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 0.2, color: const Color(0xff606060)),
+                        child: Text(
+                          'Title',
+                          style: TextStyle(
+                            fontFamily: 'HelveticaNeue LT 65 Medium',
+                            fontSize: 12,
+                            color: const Color(0xff505763),
+                            height: 1.83,
+                          ),
+                          textAlign: TextAlign.left,
                         ),
-                        child: Center(
+                      ),
+                      IgnorePointer(
+                        ignoring: widget.event != null,
+                        child: Container(
+                          height: 45,
+                          margin: EdgeInsets.only(
+                            top: 5,
+                            left: margin * 2,
+                            right: margin * 2,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 0.2, color: const Color(0xff606060)),
+                          ),
                           child: TextFormField(
-                            controller: timeController,
-                            readOnly: true,
-                            onTap: _selectTime,
-                            keyboardType: TextInputType.text,
+                            controller: titleController,
                             style: TextStyle(
+                              fontFamily: 'HelveticaNeue LT 65 Medium',
+                              height: 1.3,
                               fontSize: 13,
                               color: const Color(0xff505763),
                             ),
+                            textInputAction: TextInputAction.next,
+                            onSaved: (value) {
+                              FocusScope.of(context).requestFocus();
+                            },
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  left: 20, right: 20, bottom: 0, top: 0),
                               border: InputBorder.none,
                               focusedBorder: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               errorBorder: InputBorder.none,
                               disabledBorder: InputBorder.none,
+                              contentPadding: EdgeInsets.only(
+                                  left: 20, right: 20, top: 10, bottom: 10),
                             ),
                             validator: (text) {
-                              if (text == null || text.isEmpty) {
+                              if (text == null || text == "") {
                                 return "";
                               } else {
                                 return null;
@@ -252,128 +332,65 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                           ),
                         ),
                       ),
-                      widget.event != null
-                          ? Container()
-                          : Container(
-                              margin: EdgeInsets.only(
-                                top: margin,
-                                left: margin * 2,
-                                right: margin * 2,
-                              ),
-                              child: Text(
-                                'Title',
-                                style: TextStyle(
-                                  fontFamily: 'HelveticaNeue LT 65 Medium',
-                                  fontSize: 12,
-                                  color: const Color(0xff505763),
-                                  height: 1.83,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
+                      Container(
+                        margin: EdgeInsets.only(
+                          top: margin,
+                          left: margin * 2,
+                          right: margin * 2,
+                        ),
+                        child: Text(
+                          'Details',
+                          style: TextStyle(
+                            fontFamily: 'HelveticaNeue LT 65 Medium',
+                            fontSize: 12,
+                            color: const Color(0xff505763),
+                            height: 1.83,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      IgnorePointer(
+                        ignoring: widget.event != null,
+                        child: Container(
+                          height: 120,
+                          margin: EdgeInsets.only(
+                            top: 5,
+                            left: margin * 2,
+                            right: margin * 2,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 0.2, color: const Color(0xff606060)),
+                          ),
+                          child: TextFormField(
+                            controller: detailsController,
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            style: TextStyle(
+                              fontFamily: 'HelveticaNeue LT 65 Medium',
+                              height: 1.3,
+                              fontSize: 13,
+                              color: const Color(0xff505763),
                             ),
-                      widget.event != null
-                          ? Container()
-                          : Container(
-                              height: 45,
-                              margin: EdgeInsets.only(
-                                top: 5,
-                                left: margin * 2,
-                                right: margin * 2,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 0.2, color: const Color(0xff606060)),
-                              ),
-                              child: TextFormField(
-                                controller: titleController,
-                                style: TextStyle(
-                                  fontFamily: 'HelveticaNeue LT 65 Medium',
-                                  height: 1.3,
-                                  fontSize: 13,
-                                  color: const Color(0xff505763),
-                                ),
-                                textInputAction: TextInputAction.next,
-                                onSaved: (value) {
-                                  FocusScope.of(context).requestFocus();
-                                },
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
-                                  contentPadding: EdgeInsets.only(
-                                      left: 20, right: 20, top: 10, bottom: 10),
-                                ),
-                                validator: (text) {
-                                  if (text == null || text == "") {
-                                    return "";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              contentPadding: EdgeInsets.only(
+                                  left: 20, right: 20, top: 10, bottom: 10),
                             ),
-                      widget.event != null
-                          ? Container()
-                          : Container(
-                              margin: EdgeInsets.only(
-                                top: margin,
-                                left: margin * 2,
-                                right: margin * 2,
-                              ),
-                              child: Text(
-                                'Details',
-                                style: TextStyle(
-                                  fontFamily: 'HelveticaNeue LT 65 Medium',
-                                  fontSize: 12,
-                                  color: const Color(0xff505763),
-                                  height: 1.83,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                      widget.event != null
-                          ? Container()
-                          : Container(
-                              height: 120,
-                              margin: EdgeInsets.only(
-                                top: 5,
-                                left: margin * 2,
-                                right: margin * 2,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 0.2, color: const Color(0xff606060)),
-                              ),
-                              child: TextFormField(
-                                controller: detailsController,
-                                keyboardType: TextInputType.multiline,
-                                maxLines: null,
-                                style: TextStyle(
-                                  fontFamily: 'HelveticaNeue LT 65 Medium',
-                                  height: 1.3,
-                                  fontSize: 13,
-                                  color: const Color(0xff505763),
-                                ),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
-                                  contentPadding: EdgeInsets.only(
-                                      left: 20, right: 20, top: 10, bottom: 10),
-                                ),
-                                validator: (text) {
-                                  if (text == null || text == "") {
-                                    return "";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                            ),
+                            validator: (text) {
+                              if (text == null || text == "") {
+                                return "";
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                        ),
+                      ),
                       //remember(),
                       UiHelper().button(
                         context: context,
@@ -381,15 +398,8 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                         title: "SAVE",
                         onPressed: () async {
                           EventModel? event = await EventController()
-                              .createEvent(
-                                  startDate,
-                                  endDate,
-                                  selectedTime,
-                                  widget.event != null
-                                      ? widget.event!.description ??
-                                          "No Details"
-                                      : detailsController.text,
-                                  widget.event?.name ?? "Event");
+                              .createEvent(startDate, endDate, selectedTime,
+                                  detailsController.text, titleController.text);
                           Navigator.pop(context, event);
                         },
                         height: 27,
@@ -496,13 +506,12 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
           startDate = picked;
           if (endDate.isBefore(startDate)) {
             endDate = picked.add(Duration(days: 1));
-            endDateController!.text = DateFormat("yyyy-MM-dd").format(endDate);
+            endDateController.text = DateFormat("yyyy-MM-dd").format(endDate);
           }
-          startDateController!.text =
-              DateFormat("yyyy-MM-dd").format(startDate);
+          startDateController.text = DateFormat("yyyy-MM-dd").format(startDate);
         } else {
           endDate = picked;
-          endDateController!.text = DateFormat("yyyy-MM-dd").format(endDate);
+          endDateController.text = DateFormat("yyyy-MM-dd").format(endDate);
         }
       });
     }
@@ -518,7 +527,7 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
       print('Time selected: ${selectedTime.toString()}');
       setState(() {
         selectedTime = picked;
-        timeController!.text = dateTimeFormatter(
+        timeController.text = dateTimeFormatter(
             "${selectedTime.hour}:${selectedTime.minute}:00",
             dateType: DateType.time);
       });

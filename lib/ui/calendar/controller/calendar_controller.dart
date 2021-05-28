@@ -26,12 +26,13 @@ class EventController {
 
   Future<bool> getEvents({DateTime? startTime, DateTime? endTime}) async {
     _init();
+    DateTime now = DateTime.now();
     String startDate = startTime != null
         ? "${startTime.year}-${startTime.month}-${startTime.day}00:00:00.000"
-        : '';
+        : "${now.year}-${now.month-1}-${now.day}00:00:00.000";
     String endDate = endTime != null
         ? "${endTime.year}-${endTime.month}-${endTime.day}00:00:00.000"
-        : '';
+        : "${now.year}-${now.month+1}-${now.day}00:00:00.000";
     Response response = await ApiService.getMethod(
         ApiService.baseUrl +
             "/api/Home" +
@@ -50,26 +51,17 @@ class EventController {
         int diff = eventModel.endDateTime!
             .difference(eventModel.startDateTime!)
             .inDays;
-        print(diff);
         if (diff > 0) {
           for (int i = 0; i <= diff; i++) {
             EventModel childModel = EventModel.fromJson(eventModel.toJson());
             childModel.id = (int.parse(childModel.id!) + i).toString();
             childModel.startDateTime =
                 childModel.startDateTime!.add(Duration(days: i));
-            print(
-                "M= ${childModel.startDateTime!.month} D = ${childModel.startDateTime!.day}");
             _list.add(childModel);
           }
         } else {
-          eventModel.id = eventModel.id! + "0";
           _list.add(eventModel);
         }
-      });
-      print("----------------------------------------");
-      _list.forEach((element) {
-        print(
-            "M= ${element.startDateTime!.month} D = ${element.startDateTime!.day}");
       });
       return await _getData();
     }
@@ -105,30 +97,27 @@ class EventController {
 
   Future<bool> _getData() async {
     _kEvents.clear();
+    Map<DateTime, List<EventModel>> _kEventSource = {};
+    List<EventModel> list = [];
+    list..addAll(_list);
+    while(list.length != 0){
+      EventModel element = list[0];
+      DateTime dateTime = DateTime(element.startDateTime!.year,
+          element.startDateTime!.month, element.startDateTime!.day);
+      Iterable<EventModel> iterable = list.where((ele) {
+        DateTime date = DateTime(ele.startDateTime!.year,
+            ele.startDateTime!.month, ele.startDateTime!.day);
+        return date.compareTo(dateTime) == 0;
+      });
 
-    final _kEventSource = Map<DateTime, List<EventModel>>.fromIterable(_list,
-        key: (item) => DateTime(item.startDateTime.year,
-            item.startDateTime.month, item.startDateTime.day),
-        value: (item) {
-          Iterable<EventModel> iterable = _list.where((element) {
-            if (element.startDateTime!.isAfter(item.startDateTime)) {
-              return element.startDateTime!
-                      .difference(item.startDateTime)
-                      .inDays ==
-                  0;
-            } else {
-              return item.startDateTime!
-                      .difference(element.startDateTime)
-                      .inDays ==
-                  0;
-            }
-          });
-          List<EventModel> models = <EventModel>[];
-          iterable.forEach((element) {
-            models.add(element);
-          });
-          return models;
-        });
+      List<EventModel> tempList = [];
+      tempList.addAll(iterable);
+
+      _kEventSource[dateTime] = tempList;
+      tempList.forEach((element) {
+        list.removeWhere((ele) => ele.id == element.id);
+      });
+    }
     _kEvents.addAll(_kEventSource);
     return false;
   }
