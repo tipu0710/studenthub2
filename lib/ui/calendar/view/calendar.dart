@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:studenthub2/global.dart';
@@ -152,55 +153,100 @@ class _CalendarState extends State<Calendar> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    eventModel.title ?? "Title not available",
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 14,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                      height: 2.5714285714285716,
+                  Container(
+                    height: 55,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              eventModel.title ?? "Title not available",
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                                height: 2.5714285714285716,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textHeightBehavior: TextHeightBehavior(
+                                  applyHeightToFirstAscent: false),
+                              textAlign: TextAlign.left,
+                            ),
+                            Text(
+                              "From: " +
+                                  dateTimeFormatter(_dateFormat
+                                      .format(eventModel.startDateTime!)),
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 10,
+                                color: Colors.black87,
+                                height: 2.5714285714285716,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textHeightBehavior: TextHeightBehavior(
+                                  applyHeightToFirstAscent: false),
+                              textAlign: TextAlign.left,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "To     : " +
+                                  dateTimeFormatter(_dateFormat
+                                      .format(eventModel.endDateTime!)),
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 10,
+                                color: Colors.black87,
+                                height: 2.5714285714285716,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textHeightBehavior: TextHeightBehavior(
+                                  applyHeightToFirstAscent: false),
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: (){
+
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Icon(
+                                  CupertinoIcons.pen,
+                                  color: shadowColor,
+                                  size: 15,
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: (){
+
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Icon(
+                                  CupertinoIcons.delete,
+                                  color: Colors.red,
+                                  size: 15,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textHeightBehavior:
-                        TextHeightBehavior(applyHeightToFirstAscent: false),
-                    textAlign: TextAlign.left,
-                  ),
-                  Text(
-                    "From: " +
-                        dateTimeFormatter(
-                            _dateFormat.format(eventModel.startDateTime!)),
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 10,
-                      color: Colors.black87,
-                      height: 2.5714285714285716,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textHeightBehavior:
-                        TextHeightBehavior(applyHeightToFirstAscent: false),
-                    textAlign: TextAlign.left,
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    "To     : " +
-                        dateTimeFormatter(
-                            _dateFormat.format(eventModel.endDateTime!)),
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 10,
-                      color: Colors.black87,
-                      height: 2.5714285714285716,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textHeightBehavior:
-                        TextHeightBehavior(applyHeightToFirstAscent: false),
-                    textAlign: TextAlign.left,
                   ),
                   SizedBox(
                     height: 15,
