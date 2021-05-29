@@ -36,7 +36,8 @@ class _RegisterState extends State<Register> {
 
   final _formKey = GlobalKey<FormState>();
 
-  bool agree = true;
+  bool agree = false;
+  bool read = false;
 
   late CountryModel countryModel;
   late IntakeList intakeList;
@@ -172,12 +173,20 @@ class _RegisterState extends State<Register> {
       children: [
         InkWell(
           onTap: () async {
+            FocusScope.of(context).unfocus();
             if (referralCode.text.isEmpty || intake.text.isEmpty) {
               UiHelper.showSnackMessage(
                   context: context,
                   message: "Enter Referral code and intake first");
             } else {
-              registerController.termsAndConditions();
+              bool? b = await registerController.termsAndConditions();
+              print(b);
+              if (!read && b != null && b) {
+                setState(() {
+                  read = b;
+                  agree = true;
+                });
+              }
             }
           },
           child: Padding(
@@ -194,13 +203,19 @@ class _RegisterState extends State<Register> {
             ),
           ),
         ),
-        Checkbox(
-            value: agree,
-            onChanged: (value) {
-              setState(() {
-                agree = value ?? true;
-              });
-            }),
+        IgnorePointer(
+          ignoring: !read,
+          child: Checkbox(
+              value: agree,
+              onChanged: (value) {
+                setState(() {
+                  agree = value ?? true;
+                  if (!agree) {
+                    read = false;
+                  }
+                });
+              }),
+        ),
       ],
     );
   }

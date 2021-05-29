@@ -26,7 +26,7 @@ class _ComplainBoxState extends State<ComplainBox> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: UiHelper.appBar(context, title: "Complain Box", onTap: () {
+      appBar: UiHelper.appBar(context, title: "Complaint", onTap: () {
         Navigator.pop(context);
       }),
       body: FutureBuilder<bool>(
@@ -66,6 +66,7 @@ class _ComplainBoxState extends State<ComplainBox> {
                     : Container(
                         margin: EdgeInsets.only(left: 20, right: 20),
                         child: controller.getDropDown<ComplaintLevelCategory>(
+                          hints: "Select complaint level",
                           list:
                               controller.categoryModel.complaintLevelCategory ??
                                   [],
@@ -109,6 +110,7 @@ class _ComplainBoxState extends State<ComplainBox> {
                                 key: Key(controller.complaintLevelCategory?.id
                                         .toString() ??
                                     "Key"),
+                                hints: "Select complaint category",
                                 list: value ?? [],
                                 getValue: (AdminComplaintCategory s) =>
                                     s.name ?? '',
@@ -127,7 +129,7 @@ class _ComplainBoxState extends State<ComplainBox> {
                 ),
                 ShimmerLoading(
                   isLoading: loading,
-                  child: title("Complain"),
+                  child: title("Description"),
                 ),
                 getDetailsBox(loading, context),
                 SizedBox(
@@ -150,8 +152,9 @@ class _ComplainBoxState extends State<ComplainBox> {
                     title: "Submit",
                     anim: true,
                     onPressed: () async {
-                      bool b = await controller.submitComplain(detailsController.text);
-                      if(b){
+                      bool b = await controller
+                          .submitComplain(detailsController.text);
+                      if (b) {
                         Navigator.pop(context);
                       }
                     }),

@@ -47,7 +47,7 @@ class Settings extends StatelessWidget {
             SizedBox(
               height: 15,
             ),
-            childCard("Complain Box", onTap: () {
+            childCard("Complaint", onTap: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (_) => ComplainBox()));
             }),

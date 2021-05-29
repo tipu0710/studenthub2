@@ -105,7 +105,7 @@ class _PinState extends State<Pin> {
     return SingleChildScrollView(
       child: Container(
         width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.only(top: 171, left: 20, right: 20),
+        margin: EdgeInsets.only(top: 20, left: 20, right: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -218,18 +218,22 @@ class _PinState extends State<Pin> {
         animationType: AnimationType.fade,
         cursorHeight: 25,
         pinTheme: PinTheme(
-            shape: PinCodeFieldShape.box,
-            borderRadius: BorderRadius.circular(5),
-            fieldHeight: 50,
-            fieldWidth: 40,
-            activeFillColor: Colors.white,
-            inactiveColor: Colors.white,
-            activeColor: Colors.white,
-            inactiveFillColor: Colors.white,
-            selectedColor: Colors.white,
-            selectedFillColor: Colors.white),
+          shape: PinCodeFieldShape.box,
+          borderRadius: BorderRadius.circular(5),
+          borderWidth: 1.5,
+          fieldHeight: 50,
+          fieldWidth: 40,
+          activeFillColor: Colors.grey.withOpacity(0.5),
+          inactiveColor: Colors.grey.withOpacity(0.5),
+          activeColor: Colors.grey.withOpacity(0.5),
+          inactiveFillColor: Colors.grey.withOpacity(0.5),
+          selectedColor: Colors.grey.withOpacity(0.5),
+          selectedFillColor: Colors.grey.withOpacity(0.5),
+        ),
         animationDuration: Duration(milliseconds: 300),
         enableActiveFill: true,
+        cursorColor: primaryColor,
+        keyboardType: TextInputType.number,
         errorAnimationController: errorController,
         controller: textEditingController,
         onCompleted: (v) {

@@ -149,8 +149,8 @@ class RegisterController {
     Navigator.push(_context, MaterialPageRoute(builder: (_) => Pin()));
   }
 
-  termsAndConditions() async {
-    await showDialog(
+  Future<bool?> termsAndConditions() async {
+    return await showDialog(
       context: _context,
       builder: (context) => Dialog(
         child: ConstrainedBox(
@@ -161,7 +161,7 @@ class RegisterController {
           child: SingleChildScrollView(
             child: Container(
               padding:
-                  EdgeInsets.only(top: 20, bottom: 20, right: 20, left: 20),
+                  EdgeInsets.only(top: 40, bottom: 20, right: 20, left: 20),
               child: Column(
                 children: [
                   Text(
@@ -181,6 +181,18 @@ class RegisterController {
                     hyperlinkColor: primaryColor,
                     onTapUrl: (url) async {
                       await launch(url);
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  UiHelper().button(
+                    context: context,
+                    width: 100,
+                    height: 40,
+                    title: "Accept",
+                    onPressed: () {
+                      Navigator.pop(context, true);
                     },
                   )
                 ],

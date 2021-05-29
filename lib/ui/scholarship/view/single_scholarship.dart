@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:studenthub2/service/api/api_service.dart';
 import 'package:studenthub2/ui/home/model/scholarship_model.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
@@ -65,11 +66,10 @@ class SingleScholarship extends StatelessWidget {
                 Container(
                   margin:
                       EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 20),
-                  child: Text(
-                    scholarshipModel!.description!,
-                    style: TextStyle(height: 1.5),
-                    textAlign: TextAlign.center,
-                  ),
+                  child: HtmlWidget(scholarshipModel?.description ?? "",
+                      textStyle: TextStyle(height: 1.5), onTapUrl: (url) {
+                    launch(url);
+                  }),
                 ),
                 UiHelper().button(
                     context: context,
