@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return OKToast(
       child: MaterialApp(
-        title: 'Student Hub',
+        title: 'StudentHub',
         theme: ThemeData(
             primarySwatch: primaryColor,
             scaffoldBackgroundColor: Color(0xfffcfcfc)),

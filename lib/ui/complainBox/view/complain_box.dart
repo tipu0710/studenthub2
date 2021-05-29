@@ -152,6 +152,18 @@ class _ComplainBoxState extends State<ComplainBox> {
                     title: "Submit",
                     anim: true,
                     onPressed: () async {
+                      if (controller.complaintLevelCategory == null) {
+                        showMessage("Select complaint level");
+                        return;
+                      }
+                      if (controller.adminComplaintCategory == null) {
+                        showMessage("Select complaint category");
+                        return;
+                      }
+                      if (detailsController.text.isEmpty) {
+                        showMessage("Write down your complaint!");
+                        return;
+                      }
                       bool b = await controller
                           .submitComplain(detailsController.text);
                       if (b) {
@@ -173,7 +185,7 @@ class _ComplainBoxState extends State<ComplainBox> {
     return CheckboxListTile(
         value: controller.agree,
         title: Text(
-          "Hereby I declare that all the above information is tru and correct",
+          "Hereby I declare that all the above information is true and correct",
           style: TextStyle(
             fontFamily: 'Roboto',
             fontSize: 12,

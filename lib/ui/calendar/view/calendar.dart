@@ -12,6 +12,9 @@ import 'package:studenthub2/ui_helper/ui_helper.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Calendar extends StatefulWidget {
+  final DateTime? focusDate;
+
+  const Calendar({Key? key, this.focusDate}) : super(key: key);
   @override
   _CalendarState createState() => _CalendarState();
 }
@@ -19,12 +22,14 @@ class Calendar extends StatefulWidget {
 class _CalendarState extends State<Calendar> {
   late EventController eventController;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime _focusedDay = DateTime.now();
+  late DateTime _focusedDay;
   late DateTime _selectedDay;
   bool loading = true;
 
   @override
   void initState() {
+    _focusedDay = widget.focusDate ?? DateTime.now();
+
     eventController = EventController();
     super.initState();
     _selectedDay = _focusedDay;
@@ -42,10 +47,8 @@ class _CalendarState extends State<Calendar> {
     }
   }
 
-  final kFirstDay = DateTime(
-      DateTime.now().year, DateTime.now().month - 3, DateTime.now().day);
-  final kLastDay = DateTime(
-      DateTime.now().year, DateTime.now().month + 3, DateTime.now().day);
+  final kFirstDay = DateTime(DateTime.now().year, DateTime.january, 1);
+  final kLastDay = DateTime(DateTime.now().year, DateTime.december, 31);
 
   @override
   Widget build(BuildContext context) {
@@ -84,16 +87,21 @@ class _CalendarState extends State<Calendar> {
               ValueListenableBuilder<List<EventModel>>(
                 valueListenable: eventController.selectedEvents,
                 builder: (context, value, _) {
-                  Iterable<EventModel> list = value.reversed;
                   return ListView.builder(
-                    itemCount: list.length,
+                    itemCount: value.length + 1,
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return eventCard(
-                          eventModel: list.elementAt(index),
-                          cardColor: getColor(index).first,
-                          shadowColor: getColor(index).last);
+                      return index == value.length
+                          ? SizedBox(
+                              height: 40,
+                            )
+                          : eventCard(
+                              eventModel: value.elementAt(index),
+                              cardColor: getColor(index).first,
+                              shadowColor: getColor(index).last,
+                              position: index,
+                            );
                     },
                   );
                 },
@@ -117,7 +125,8 @@ class _CalendarState extends State<Calendar> {
   Widget eventCard(
       {required EventModel eventModel,
       required Color cardColor,
-      required Color shadowColor}) {
+      required Color shadowColor,
+      required int position}) {
     DateFormat _dateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
     return ShimmerLoading(
       isLoading: loading,
@@ -125,12 +134,15 @@ class _CalendarState extends State<Calendar> {
       child: GestureDetector(
         onTap: () {
           Navigator.push(
-              context,
-              HeroRoute(
-                  builder: (_) => SingleCalenderEvent(
-                      eventModel: eventModel,
-                      cardColor: cardColor,
-                      shadowColor: shadowColor)));
+            context,
+            HeroRoute(
+              builder: (_) => SingleCalenderEvent(
+                eventModel: eventModel,
+                cardColor: cardColor,
+                shadowColor: shadowColor,
+              ),
+            ),
+          );
         },
         child: Hero(
           tag: eventModel.id ?? "${DateTime.now().microsecondsSinceEpoch}",
@@ -218,8 +230,18 @@ class _CalendarState extends State<Calendar> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             InkWell(
-                              onTap: (){
-
+                              onTap: () async {
+                                print(eventModel.isEditable);
+                                if (eventModel.isEditable ?? true) {
+                                  await eventController.showAddDialog(
+                                      context, _selectedDay,
+                                      position: position, model: eventModel);
+                                } else {
+                                  UiHelper.showSnackMessage(
+                                      context: context,
+                                      message:
+                                          "You have no permission to edit admin event!");
+                                }
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(5.0),
@@ -231,8 +253,19 @@ class _CalendarState extends State<Calendar> {
                               ),
                             ),
                             InkWell(
-                              onTap: (){
-
+                              onTap: () async {
+                                bool b = await showAlertDialog(context);
+                                if (b) {
+                                  bool delete = await eventController.delete(
+                                      id: eventModel.id!,
+                                      position: position,
+                                      selectedDatetime: _selectedDay);
+                                  if (delete && mounted) {
+                                    setState(() {
+                                      print("Deleted");
+                                    });
+                                  }
+                                }
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(5.0),
@@ -276,6 +309,37 @@ class _CalendarState extends State<Calendar> {
         ),
       ),
     );
+  }
+
+  Future<bool> showAlertDialog(BuildContext context) async {
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context, true);
+      },
+    );
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.pop(context, false);
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text("Alert"),
+      content: Text("Are you sure want to delete this event?"),
+      actions: [
+        okButton,
+        cancelButton,
+      ],
+    );
+    bool? b = await showDialog<bool?>(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+    return b ?? false;
   }
 
   final List<List<Color>> _colorList = [

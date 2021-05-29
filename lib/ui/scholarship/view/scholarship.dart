@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:studenthub2/global.dart';
 import 'package:studenthub2/service/api/api_service.dart';
 import 'package:studenthub2/ui/home/model/scholarship_model.dart';
-import 'package:studenthub2/ui/scholarship/view/single_scholarship.dart';
-import 'package:studenthub2/ui_helper/hero_route.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Scholarship extends StatelessWidget {
   final List<ScholarshipModel> scholarshipList;
@@ -29,14 +29,15 @@ class Scholarship extends StatelessWidget {
       BuildContext context, ScholarshipModel? scholarshipModel, int position) {
     return GestureDetector(
       onTap: () async {
-        Navigator.of(context).push(
-          HeroRoute(
-            builder: (_) => SingleScholarship(
-              scholarshipModel: scholarshipModel,
-              position: position,
-            ),
-          ),
-        );
+        // Navigator.of(context).push(
+        //   HeroRoute(
+        //     builder: (_) => SingleScholarship(
+        //       scholarshipModel: scholarshipModel,
+        //       position: position,
+        //     ),
+        //   ),
+        // );
+        await launch(scholarshipModel?.uRL ?? "");
       },
       child: Container(
         height: 195,
@@ -97,11 +98,11 @@ class Scholarship extends StatelessWidget {
                     child: Text(
                       scholarshipModel?.name ?? "",
                       style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 14,
-                        color: const Color(0xff252525),
-                        fontWeight: FontWeight.w500,
-                      ),
+                          fontFamily: 'Roboto',
+                          fontSize: 14,
+                          color: primaryColor,
+                          fontWeight: FontWeight.w500,
+                          decoration: TextDecoration.underline),
                       textHeightBehavior:
                           TextHeightBehavior(applyHeightToFirstAscent: false),
                       textAlign: TextAlign.left,

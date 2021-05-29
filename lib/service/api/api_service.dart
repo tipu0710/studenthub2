@@ -34,6 +34,7 @@ class ApiService {
       bool allowToken = true}) async {
     Dio dio = new Dio();
     if (allowToken && loginInfo != null) {
+      print(endPoints);
       dio.options.headers['Authorization'] = 'Bearer ${loginInfo!.token}';
     }
     try {

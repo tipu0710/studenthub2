@@ -8,10 +8,13 @@ import 'package:studenthub2/ui/home/model/event.dart';
 import 'package:studenthub2/ui_helper/ui_helper.dart';
 
 class EventCreationDialog extends StatefulWidget {
+  /// to edit please pass the [position] argument of the [event]
   final DateTime selectedDate;
   final Event? event;
+  final int position;
 
-  const EventCreationDialog({Key? key, required this.selectedDate, this.event})
+  const EventCreationDialog(
+      {Key? key, required this.selectedDate, this.event, this.position = -1})
       : super(key: key);
   @override
   _EventCreationDialogState createState() => _EventCreationDialogState();
@@ -22,21 +25,26 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
   late TextEditingController titleController;
   late TextEditingController startDateController;
   late TextEditingController endDateController;
-  late TextEditingController timeController;
+  late TextEditingController startTimeController;
+  late TextEditingController endTimeController;
 
   double margin = 20;
   late DateTime startDate;
   late DateTime endDate;
-  TimeOfDay selectedTime = TimeOfDay.now();
+  TimeOfDay startTime = TimeOfDay.now();
+  TimeOfDay endTime = TimeOfDay.now();
 
   var rememberValue = true;
 
   @override
   void initState() {
     if (widget.event != null) {
-      selectedTime = TimeOfDay(
+      startTime = TimeOfDay(
           hour: widget.event!.dateTo!.hour,
           minute: widget.event!.dateTo!.minute);
+      endTime = TimeOfDay(
+          hour: widget.event!.dateFrom!.hour,
+          minute: widget.event!.dateFrom!.minute);
     }
     startDate = widget.selectedDate;
     endDate =
@@ -48,9 +56,11 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
         DateTime(startDate.year, startDate.month, startDate.day + 1),
       ),
     );
-    timeController = TextEditingController(
-        text: dateTimeFormatter(
-            "${selectedTime.hour}:${selectedTime.minute}:00",
+    startTimeController = TextEditingController(
+        text: dateTimeFormatter("${startTime.hour}:${startTime.minute}:00",
+            dateType: DateType.time));
+    endTimeController = TextEditingController(
+        text: dateTimeFormatter("${endTime.hour}:${endTime.minute}:00",
             dateType: DateType.time));
     titleController = TextEditingController(
         text: widget.event == null ? "" : widget.event?.name ?? "");
@@ -94,7 +104,7 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                           right: margin * 2,
                         ),
                         child: Text(
-                          'Start Date',
+                          'Date',
                           style: TextStyle(
                             fontFamily: 'HelveticaNeue LT 65 Medium',
                             fontSize: 12,
@@ -105,7 +115,7 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                         ),
                       ),
                       IgnorePointer(
-                        ignoring: widget.event != null,
+                        ignoring: widget.event != null && widget.position == -1,
                         child: Container(
                           height: 45,
                           margin: EdgeInsets.only(
@@ -149,14 +159,76 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                           ),
                         ),
                       ),
+                      // Container(
+                      //   margin: EdgeInsets.only(
+                      //     top: margin,
+                      //     left: margin * 2,
+                      //     right: margin * 2,
+                      //   ),
+                      //   child: Text(
+                      //     'End Date',
+                      //     style: TextStyle(
+                      //       fontFamily: 'HelveticaNeue LT 65 Medium',
+                      //       fontSize: 12,
+                      //       color: const Color(0xff505763),
+                      //       height: 1.83,
+                      //     ),
+                      //     textAlign: TextAlign.left,
+                      //   ),
+                      // ),
+                      // IgnorePointer(
+                      //   ignoring: widget.event != null && widget.position == -1,
+                      //   child: Container(
+                      //     height: 45,
+                      //     margin: EdgeInsets.only(
+                      //       top: 5,
+                      //       left: margin * 2,
+                      //       right: margin * 2,
+                      //     ),
+                      //     decoration: BoxDecoration(
+                      //       border: Border.all(
+                      //           width: 0.2, color: const Color(0xff606060)),
+                      //     ),
+                      //     child: Center(
+                      //       child: TextFormField(
+                      //         controller: endDateController,
+                      //         readOnly: true,
+                      //         onTap: () {
+                      //           _selectDate(false);
+                      //         },
+                      //         keyboardType: TextInputType.text,
+                      //         style: TextStyle(
+                      //           fontSize: 13,
+                      //           color: const Color(0xff505763),
+                      //         ),
+                      //         decoration: InputDecoration(
+                      //           contentPadding: EdgeInsets.only(
+                      //               left: 20, right: 20, bottom: 0, top: 0),
+                      //           border: InputBorder.none,
+                      //           focusedBorder: InputBorder.none,
+                      //           enabledBorder: InputBorder.none,
+                      //           errorBorder: InputBorder.none,
+                      //           disabledBorder: InputBorder.none,
+                      //         ),
+                      //         validator: (text) {
+                      //           if (text == null || text.isEmpty) {
+                      //             return "";
+                      //           } else {
+                      //             return null;
+                      //           }
+                      //         },
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       Container(
                         margin: EdgeInsets.only(
-                          top: margin,
+                          top: margin - 10,
                           left: margin * 2,
                           right: margin * 2,
                         ),
                         child: Text(
-                          'End Date',
+                          'Start Time',
                           style: TextStyle(
                             fontFamily: 'HelveticaNeue LT 65 Medium',
                             fontSize: 12,
@@ -167,7 +239,7 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                         ),
                       ),
                       IgnorePointer(
-                        ignoring: widget.event != null,
+                        ignoring: widget.event != null && widget.position == -1,
                         child: Container(
                           height: 45,
                           margin: EdgeInsets.only(
@@ -181,10 +253,10 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                           ),
                           child: Center(
                             child: TextFormField(
-                              controller: endDateController,
+                              controller: startTimeController,
                               readOnly: true,
-                              onTap: () {
-                                _selectDate(false);
+                              onTap: () async {
+                                await _selectTime(true);
                               },
                               keyboardType: TextInputType.text,
                               style: TextStyle(
@@ -218,7 +290,7 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                           right: margin * 2,
                         ),
                         child: Text(
-                          'Time',
+                          'End Time',
                           style: TextStyle(
                             fontFamily: 'HelveticaNeue LT 65 Medium',
                             fontSize: 12,
@@ -229,7 +301,7 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                         ),
                       ),
                       IgnorePointer(
-                        ignoring: widget.event != null,
+                        ignoring: widget.event != null && widget.position == -1,
                         child: Container(
                           height: 45,
                           margin: EdgeInsets.only(
@@ -243,9 +315,11 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                           ),
                           child: Center(
                             child: TextFormField(
-                              controller: timeController,
+                              controller: endTimeController,
                               readOnly: true,
-                              onTap: _selectTime,
+                              onTap: () async {
+                                await _selectTime(false);
+                              },
                               keyboardType: TextInputType.text,
                               style: TextStyle(
                                 fontSize: 13,
@@ -289,7 +363,7 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                         ),
                       ),
                       IgnorePointer(
-                        ignoring: widget.event != null,
+                        ignoring: widget.event != null && widget.position == -1,
                         child: Container(
                           height: 45,
                           margin: EdgeInsets.only(
@@ -350,7 +424,7 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                         ),
                       ),
                       IgnorePointer(
-                        ignoring: widget.event != null,
+                        ignoring: widget.event != null && widget.position == -1,
                         child: Container(
                           height: 120,
                           margin: EdgeInsets.only(
@@ -397,9 +471,20 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                         anim: true,
                         title: "SAVE",
                         onPressed: () async {
-                          EventModel? event = await EventController()
-                              .createEvent(startDate, endDate, selectedTime,
-                                  detailsController.text, titleController.text);
+                          EventModel? event =
+                              await EventController().createEvent(
+                            startDateTime: startDate,
+                            startTime: startTime,
+                            endTime: endTime,
+                            description: detailsController.text,
+                            title: titleController.text,
+                            position: widget.position,
+                            id: widget.position != -1
+                                ? widget.event?.id ?? -1
+                                : -1,
+                            event:
+                                widget.event != null && widget.position == -1,
+                          );
                           Navigator.pop(context, event);
                         },
                         height: 27,
@@ -425,7 +510,7 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
                         Container(
                           margin: EdgeInsets.only(top: 5),
                           child: Text(
-                            'Create Event',
+                            '${widget.position == -1 ? "Create" : "Edit"} Event',
                             style: TextStyle(
                               fontFamily: 'HelveticaNeue LT 65 Medium',
                               fontSize: 15,
@@ -490,9 +575,13 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
   }
 
   Future<void> _selectDate(bool start) async {
+    DateTime initDate = start ? startDate : endDate;
+    if (initDate.isBefore(DateTime.now())) {
+      initDate = DateTime.now();
+    }
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: start ? startDate : endDate, // Refer step 1
+      initialDate: initDate, // Refer step 1
       lastDate: DateTime(DateTime.now().year + 1),
       firstDate: start
           ? DateTime(
@@ -517,19 +606,29 @@ class _EventCreationDialogState extends State<EventCreationDialog> {
     }
   }
 
-  Future<void> _selectTime() async {
+  Future<void> _selectTime(bool start) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: selectedTime,
+      initialTime: startTime,
     );
 
-    if (picked != null && picked != selectedTime) {
-      print('Time selected: ${selectedTime.toString()}');
+    if (picked != null && picked != startTime) {
       setState(() {
-        selectedTime = picked;
-        timeController.text = dateTimeFormatter(
-            "${selectedTime.hour}:${selectedTime.minute}:00",
-            dateType: DateType.time);
+        if (start) {
+          startTime = picked;
+          startTimeController.text = dateTimeFormatter(
+              "${startTime.hour}:${startTime.minute}:00",
+              dateType: DateType.time);
+          endTime = picked.replacing(minute: picked.minute + 10);
+          endTimeController.text = dateTimeFormatter(
+              "${endTime.hour}:${endTime.minute}:00",
+              dateType: DateType.time);
+        } else {
+          endTime = picked;
+          endTimeController.text = dateTimeFormatter(
+              "${endTime.hour}:${endTime.minute}:00",
+              dateType: DateType.time);
+        }
       });
     }
   }

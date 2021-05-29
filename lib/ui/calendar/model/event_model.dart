@@ -37,6 +37,7 @@ class EventModel {
       this.title});
 
   EventModel.fromJson(Map<String, dynamic> json) {
+    print(json);
     id = json['Id'].toString();
     studentId = json['StudentId'];
     startDateTime = _dateFormat.parse(json['StartDateTime']);

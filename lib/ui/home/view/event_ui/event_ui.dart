@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:studenthub2/global.dart';
 import 'package:studenthub2/service/api/api_service.dart';
+import 'package:studenthub2/ui/calendar/model/event_model.dart';
 import 'package:studenthub2/ui/calendar/view/calendar.dart';
 import 'package:studenthub2/ui/calendar/view/event_create_dialog.dart';
 import 'package:studenthub2/ui/home/model/event.dart';
@@ -105,7 +107,12 @@ class _EventUiState extends State<EventUi> {
                         topMargin: 20,
                         fontSize: 11,
                         onPressed: () async {
-                          await showDialog(
+                          bool active = widget.event?.isActive??false;
+                          if(!active){
+                            showMessage("Event not active!");
+                            return;
+                          }
+                          EventModel? eventModel = await showDialog(
                             context: context,
                             builder: (context) => EventCreationDialog(
                               selectedDate:
@@ -113,12 +120,16 @@ class _EventUiState extends State<EventUi> {
                               event: widget.event,
                             ),
                           );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => Calendar(),
-                            ),
-                          );
+                          if (eventModel != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => Calendar(
+                                  focusDate: eventModel.startDateTime,
+                                ),
+                              ),
+                            );
+                          }
                         }),
                   ],
                 )
